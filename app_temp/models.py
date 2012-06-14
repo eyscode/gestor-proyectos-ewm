@@ -19,7 +19,9 @@ class User(models.Model):
     def __unicode__(self):
         return self.first_name
 
-#group and user
+class Group_has_User(models.Model):
+    gro_id = models.ForeignKey(Group)
+    use_id = models.ForeignKey(User)
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
@@ -29,7 +31,9 @@ class Project(models.Model):
     def __unicode__(self):
         return self.name
 
-#project and user
+class User_has_Project(models.Model):
+    use_id = models.ForeignKey(User)
+    pro_id = models.ForeignKey(Project)
 
 class Util(models.Model):
     name = models.CharField(max_length=45)
