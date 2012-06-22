@@ -1,0 +1,55 @@
+body {
+    margin-top: 40px;
+    background-attachment:fixed;
+    background-color:white;
+    background-image:url("../img/tile_fondo.png");
+    background-position:50% 0;
+    background-repeat:repeat repeat;
+    font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;
+    height:100%;
+    text-shadow:rgba(0, 0, 0, 0.0078125) 0 0 1px;
+    color: white;
+}
+
+.presentation{
+    height:150px;
+    display: block;
+    margin: 20px 0px 10px 0px;
+    background-color:#333366;
+    -webkit-box-shadow: 1px 1px 1px 1px #000;
+    box-shadow: 1px 1px 1px 1px #000;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    width:100%;
+}
+.menu{
+    display: block;
+    background-color:#333366;
+    -webkit-box-shadow: 1px 1px 1px 1px #000;
+    box-shadow: 1px 1px 1px 1px #000;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+.tarea{
+    display: block;
+    height:100px;
+    background-color:#3AAA55;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    width:90%;
+    margin-left:5%;
+    margin-top:10px;
+    margin-bottom :10px;
+}
+.contenedor{
+    display: block;
+    -webkit-box-shadow: 1px 1px 1px 1px #000;
+    box-shadow: 1px 1px 1px 1px #000;
+    margin-left:0px;
+    margin-top:10px;
+}
+/* boot strap*/
+.container{
+    width:95%;
+}
+
