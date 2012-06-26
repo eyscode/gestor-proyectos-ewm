@@ -1,82 +1,96 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-
-class Group(models.Model):
-    name = models.CharField(max_length=45)
-    information = models.CharField(max_length=45)
-    date_creation = models.CharField(max_length=45)
+class Profile(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.name
-
-class User(models.Model):
-    first_name = models.CharField(max_length=45)
-    last_name = models.CharField(max_length=45)
-    email = models.EmailField(max_length=45)
-    password = models.CharField(max_length=45)
-
-    def __unicode__(self):
-        return self.first_name
-
-class Group_has_User(models.Model):
-    gro_id = models.ForeignKey(Group)
-    use_id = models.ForeignKey(User)
 
 class Project(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
-    company = models.CharField(max_length=255)
+    company = models.CharField(max_length=250)
+    profile = models.ForeignKey(Profile)
 
     def __unicode__(self):
         return self.name
 
-class User_has_Project(models.Model):
-    use_id = models.ForeignKey(User)
-    pro_id = models.ForeignKey(Project)
+class Client(models.Model):
+    user  = models.OneToOneField(User)
+    profile = models.ForeignKey(Profile)
+    projects = models.ManyToManyField(Client,through='Client_has_Project')
+
+    def __unicode__(self):
+        return self.user.__unicode__()
+
+class Client_has_Project(models.Model):
+    client = models.ForeignKey(Client)
+    project = models.ForeignKey(Project)
+
+    def __unicode__(self):
+        return "{} | {}".format(self.client.__unicode__(),self.project.__unicode__())
+
+class Group(models.Model):
+    name = models.CharField(max_length=100)
+    information = models.CharField(max_length=250)
+    date_creation = models.DateTimeField()
+    clients = models.ManyToManyField(Client, through='Group_has_Client')
+
+    def __unicode__(self):
+        return self.name
+
+class Group_has_Client(models.Model):
+    group = models.ForeignKey(Group)
+    client = models.ForeignKey(Client)
+
+    def __unicode__(self):
+        return "{} | {}".format(self.client.__unicode__(),self.group.__unicode__())
+
 
 class Util(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=50)
     date = models.DateTimeField()
     path = models.FilePathField()
-    pro_id = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.name
 
 class Data(models.Model):
     max_members = models.IntegerField()
-    section = models.CharField(max_length=255)
-    pro_id = models.ForeignKey(Project)
+    section = models.CharField(max_length=100)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.max_members
 
 class Document(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=50)
     path = models.FilePathField()
     date_creation = models.DateTimeField()
-    pro_id = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.name
 
 class Meeting(models.Model):
-    summary = models.CharField(max_length=45)
+    summary = models.CharField(max_length=100)
     description = models.TextField()
     date_creation = models.DateTimeField()
     initial = models.DateTimeField()
     end = models.DateTimeField()
-    pro_id = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.summary
 
 class Table(models.Model):
-    name = models.CharField(max_length=45)
+    name = models.CharField(max_length=50)
     date_creation = models.DateTimeField()
     columns = models.IntegerField()
-    pro_id = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.name
@@ -84,17 +98,28 @@ class Table(models.Model):
 class Column(models.Model):
     name = models.CharField(max_length=45)
     position = models.IntegerField()
-    tab_id = models.ForeignKey(Table)
+    table = models.ForeignKey(Table)
+
+    def __unicode__(self):
+        return self.name
+
+class Work_Package(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=50)
+    prioridad = models.IntegerField()
+    table = models.ForeignKey(Table)
+    project = models.ForeignKey(Project)
 
     def __unicode__(self):
         return self.name
 
 class Task(models.Model):
-    title = models.CharField(max_length=45)
-    subtitle = models.CharField(max_length=45)
+    title = models.CharField(max_length=100)
+    subtitle = models.CharField(max_length=100)
     description = models.TextField()
-    state = models.CharField(max_length=45)
-    col_id = models.ForeignKey(Column)
+    state = models.CharField(max_length=50)
+    column = models.ForeignKey(Column)
+    work_package = models.ForeignKey(Work_Package)
 
     def __unicode__(self):
         return self.title
@@ -102,14 +127,14 @@ class Task(models.Model):
 class Comment(models.Model):
     content = models.TextField()
     like = models.IntegerField()
-    tas_id = models.ForeignKey(Task)
+    task = models.ForeignKey(Task)
 
     def __unicode__(self):
         return self.content
 
 class Image(models.Model):
     path = models.FilePathField()
-    tas_id = models.ForeignKey(Task)
+    task = models.ForeignKey(Task)
 
     def __unicode__(self):
         return self.path
@@ -118,7 +143,7 @@ class Check(models.Model):
     name = models.CharField(max_length=45)
     description = models.TextField()
     condition = models.IntegerField()
-    tas_id = models.ForeignKey(Task)
+    task = models.ForeignKey(Task)
 
     def __unicode__(self):
         return self.name
