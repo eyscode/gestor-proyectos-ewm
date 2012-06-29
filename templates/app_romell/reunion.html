@@ -1,11 +1,11 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/main.css"/>
-    <script type="text/javascript" src="../static/js/jquery-1.7.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../static/css/main.css"/>
+    <script type="text/javascript" src="../../static/js/jquery-1.7.1.js"></script>
     <script type="text/javascript">
         function aparecer(){
-                $('#registro').show();
+            $('#reunion').show();
         }
     </script>
     <title>Ofisis 2012</title>
@@ -23,43 +23,18 @@
 </header>
 <section>
     <article class="usuarios">
-        <div class="nuevo_usuario" id="nuevo_usuario">
-            <div id="img_registro">
-                <a onclick="aparecer()" >
-                    <img src="../static/img/lion.png" alt="">
-                </a>
-                <h2 id="txt_crear">Registrarse</h2>
-            </div>
-        </div>
-        <div class="logeo" id="logeo">
-            <div id="c_group" hidden>
+        <div class="reunion" id="logeo">
+            <div id="c_group" >
                 <form   action="">
 
-                    <label for="">Nombre del grupo:</label><input type="text">
-                    <label for="">Cantidad Maxima:</label><input type="text">
-                    <div class="captcha"></div>
-                    <div class="lower">
-                        <input type="submit" value="Incripcion">
-                    </div>
-                </form>
+                    <label for="">Motivo:</label><input type="text"><br>
+                    <label for="">Cuando:</label><input type="number"><br>
+                    <p><label>Date: <input type="date" name="checkin-date"></label>
+            <div class="lower">
+                <input type="submit" value="Avisar Grupo">
             </div>
-            <div id="logueando">
-                <form action="" >
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username"/>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password"/>
-                    <p>
-                        <br><br>
-                        <a href="#">Olvidaste tu contraseña?</a>
-                    </p>
-                    <div class="lower">
-                        <input type="checkbox"/>
-                        <label class="check" for="checkbox">Recordarme</label>
-                        <input type="submit" value="Login"/>
-                    </div>
-                </form>
-            </div>
+            </form>
+        </div>
 
         </div>
     </article>
