@@ -6,13 +6,13 @@ from django.template import RequestContext
 from django.core.files.uploadedfile import UploadedFile
 
 def home(request):
-    return render_to_response('index.html', context_instance=RequestContext(request))
+    return render_to_response('reunion.html', context_instance=RequestContext(request))
 
-def create_group(request):
+def create_reunion(request):
     if request.method == 'POST':
         return redirect('home')
     else:
-        return render_to_response('app_romell/group.html',context_instance=RequestContext(request))
+        return render_to_response('reunion.html',context_instance=RequestContext(request))
     #raise 404
 
 def upload_file(request):
@@ -20,8 +20,7 @@ def upload_file(request):
         if request.FILES == None:
             return HttpResponseBadRequest('Must have files attached')
         file = request.FILES['file']
-        file_name = UploadedFile(file).name
-        return render_to_response('upload.html',{'description':'File saving done'})
+        return render_to_response('/upload.html',{'description':'File saving done'})
     else:
         return HttpResponseRedirect('/login/')
     #raise 404
