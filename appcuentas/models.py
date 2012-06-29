@@ -20,7 +20,7 @@ class Project(models.Model):
 class Client(models.Model):
     user  = models.OneToOneField(User)
     profile = models.ForeignKey(Profile)
-    projects = models.ManyToManyField(Client,through='Client_has_Project')
+    projects = models.ManyToManyField(Project,through='Client_has_Project')
 
     def __unicode__(self):
         return self.user.__unicode__()
