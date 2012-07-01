@@ -53,3 +53,11 @@ body {
     width:95%;
 }
 
+.circulo {
+background-color: #29A694;
+width: 80px;
+height: 80px;
+border-radius: 150px; 
+-moz-border-radius: 350px;
+-webkit-border-radius: 350px; 
+}
