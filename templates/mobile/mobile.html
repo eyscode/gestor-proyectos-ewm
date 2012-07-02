@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+	<title>jQuery Mobile Page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+</head>
+<body>
+<section data-role="page" id="page1" data-theme="b">
+	<header data-role="header" data-theme="b">
+		<h1>Gestor de proyectos</h1>
+	</header><!-- /header -->
+	<article data-role="content">
+
+		<form data-role="form" action="C:\UNMSM\ofisis\gestor-proyectos-ewm\templates\mobile\menu.html">
+			<div data-role="fieldcontain">
+				<label for="email_name">E_mail</label>
+				<input type="email" name="email_name" id="email_name" value="" placeholder="ejemplo@email.ejm"/>
+			</div>
+			<div data-role="fieldcontain">
+				<label for="">Password</label>
+				<input type="password" name="" id="" value="" placeholder="*******" />
+			</div>
+			<a href="#no_password">Olvide mi password</a>
+			<input type="submit" data-role="button" value="submit"/>
+		</form>
+	</article><!-- /content -->
+	<footer data-role="footer" data-theme="a">
+		<h4>Ofisis 2012</h4>
+	</footer><!-- /footer -->
+</section><!-- /page -->
+<section data-role="page" id="no_password" data-theme="b">
+	<header data-role="header" data-theme="b">
+		<h1>Gestor de proyectos</h1>
+	</header><!-- /header -->
+	<article data-role="content">
+		<form data-role="form" action="#page1">
+			<div data-role="fieldcontain">
+				<label for="email_recuperacion">Email</label>
+				<input type="email" name="email_recuperacion" id="email_recuperacion" value="" />
+			</div>
+			<input type="submit" data-role="button" value="submit"/>
+		</form>
+	</article><!-- /content -->
+	<footer data-role="footer" >
+		<h4>Ofisis 2012</h4>
+	</footer><!-- /footer -->
+</section>
+</body>
+</html>
