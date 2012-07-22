@@ -8,12 +8,11 @@ from django.utils import simplejson
 from appcuentas.models import Project
 
 def view_login_movil(request):
-    to_json = None
     if request.is_ajax() and request.method == "POST":
-        username = request.POST.get("username","")
-        password = request.POST.get("password","")
+        username = request.POST.get("username", "")
+        password = request.POST.get("password", "")
         if username and password:
-            user = authenticate(username=username,password=password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 login(request,user)
                 to_json={
@@ -27,17 +26,15 @@ def view_login_movil(request):
     raise 404
 
 def view_password_movil(request):
-    to_json = None
     if request.is_ajax() and request.method == "GET":
         email = request.GET.get("email","")
         if email and User.objects.filter(email=email):
-            subject = "recuperar contraseña"
+            subject = "recuperar contrasenia"
             from_email = "acm.unmsm@gmail.com"
             to = email
             text_content = " "
-            #msg.attach_alternative(html_content, "text/html")
             msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-            msg.attach_alternative(html_content, "text/html")
+            #msg.attach_alternative(html_content, "text/html")
             msg.send()
             to_json={
                 "result": True
@@ -68,3 +65,4 @@ def view_traer_proyectos(request):
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
     raise 404
+
