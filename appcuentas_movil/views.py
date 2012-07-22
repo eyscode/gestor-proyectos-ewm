@@ -5,9 +5,10 @@ from django.contrib.auth.models import User
 from django.core.mail.message import EmailMultiAlternatives
 from django.http import HttpResponse
 from django.utils import simplejson
-from appcuentas.models import Project
+from appcuentas.models import Project, Table, Column
 
 def view_login_movil(request):
+    to_json = None
     if request.is_ajax() and request.method == "POST":
         username = request.POST.get("username", "")
         password = request.POST.get("password", "")
@@ -26,6 +27,7 @@ def view_login_movil(request):
     raise 404
 
 def view_password_movil(request):
+    to_json = None
     if request.is_ajax() and request.method == "GET":
         email = request.GET.get("email","")
         if email and User.objects.filter(email=email):
@@ -48,9 +50,9 @@ def view_password_movil(request):
     raise 404
 
 @login_required(login_url='/login/')
-def view_traer_proyectos(request):
+def view_traer_proyectos_movil(request):
     to_json = None
-    if request.is_ajax() and request.method == "GET":
+    if request.is_ajax() and request.method == "POST":
         id_user = request.POST.get("id_user",-1)
         if id_user == -1:
             proyectos = None
@@ -66,3 +68,61 @@ def view_traer_proyectos(request):
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
     raise 404
 
+@login_required(login_url='/login/')
+def view_traer_tableros_movil(request):
+    to_json = None
+    if request.is_ajax() and request.method == "GET":
+        id_proyecto = request.GET.get("id_proyecto",-1)
+        if id_proyecto == -1:
+            tableros = None
+            to_json={
+                "tableros": tableros
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+        else:
+            tableros = Table.objects.filter(project__id=id_proyecto)
+            to_json={
+                "tableros": tableros
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    raise 404
+
+@login_required(login_url='/login/')
+def view_datos_tableros_movil(request):
+    to_json = None
+    if request.is_ajax() and request.method == "GET":
+        id_tablero = request.GET.get("id_tablero",-1)
+        if id_tablero == -1:
+            tableros = None
+            to_json={
+                "tableros": tableros
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+        else:
+            #falta hacer la correccion de la consulta
+            tableros = None
+            to_json={
+                "tableros": tableros
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    raise 404
+
+@login_required(login_url='/login/')
+def view_datos_columnas_movil(request):
+    to_json = None
+    if request.is_ajax() and request.method == "GET":
+        id_tablero = request.GET.get("id_tablero",-1)
+        if id_tablero == -1:
+            columnas = None
+            to_json={
+                "columnas": columnas
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+        else:
+            #falta hacer la correccion de la consulta
+            columnas = Column.objects.filter(table__id=id_tablero)
+            to_json={
+                "columnas": columnas
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+    raise 404
