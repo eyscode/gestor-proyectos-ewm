@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'appcuentas',
+    'appcuentas_movil',
     )
 
 AUTH_PROFILE_MODULE = 'appcuentas.Client'
