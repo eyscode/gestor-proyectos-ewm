@@ -7,10 +7,6 @@ from django.template import RequestContext
 from models import Client, User
 from forms import RegisterForm
 
-def romell(request):
-    return HttpResponse("hola mundo")
-
-
 def view_login(request):
     error = None
     if request.method == "POST":
