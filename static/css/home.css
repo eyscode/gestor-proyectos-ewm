@@ -8,6 +8,19 @@ body {
     position: absolute;
     top: 0;
     width: 100%;
+    height: 600px;
+}
+
+#header {
+    width: 100%;
+    height: 102px;
+    background-color: #2d6987;
+    top: -20px;
+    position: relative;
+}
+
+html {
+    background-color: #2d6987;
 }
 
 #cuerpo {
@@ -18,34 +31,14 @@ body {
     position: relative;
     width: 100%;
     background-color: #2d6987;
-}
-
-#header {
-    z-index: 30;
-    position: fixed;
-    width: 100%;
-    height: 102px;
-    background-color: #2d6987;
-}
-
-#header-alt {
-    height: 102px;
-}
-
-#dock {
-    width: 100px;
-    background-color: #2d6987;
-    height: 100%;
-    position: fixed;
-    top: auto;
-    bottom: auto;
+    top: -20px;
 }
 
 #contentPane {
-    -bottom height: 100%;
+    min-height: 400px;
     bottom: 0;
     top: 0;
-    margin: 0 430px 0 100px;
+    margin: 0 25px 0 100px;
     width: auto;
     position: relative;
 }
@@ -58,40 +51,6 @@ body {
     border-radius: 10px;
     background-color: #f5f5f5;
     height: 1000px;
-}
-
-#contentPane .sombra {
-    -webkit-mask-box-image: -webkit-linear-gradient(left, transparent 0%, rgba(0, 0, 0, .8) 50%, transparent 100%);
-    background-color: transparent;
-    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
-    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
-    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
-    background-image: -o-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
-    background-image: linear-gradient(top, rgba(0, 0, 0, .2), transparent);
-    right: 430px;
-    border-top: 1px solid rgba(0, 0, 0, 0.4);
-    height: 8px;
-    left: 100px;
-    margin: -1px 0 -9px 0;
-    opacity: 0;
-    position: fixed;
-    z-index: 11;
-}
-
-#contentPane .marco-arriba {
-    right: 430px;
-    left: 101px;
-    position: fixed;
-    border-bottom: 2px solid gray;
-    margin: -1px 0 0;
-    z-index: 984;
-}
-
-#marca {
-    height: 80px;
-    overflow: hidden;
-    width: 420px;
-    margin: 20px 0 0 30px;
 }
 
 .marco-arriba .esquina-izq {
@@ -159,6 +118,31 @@ body {
     height: 10px;
 }
 
+#contentPane .sombra {
+    -webkit-mask-box-image: -webkit-linear-gradient(left, transparent 0%, rgba(0, 0, 0, .8) 50%, transparent 100%);
+    background-color: transparent;
+    background-image: -webkit-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
+    background-image: -moz-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
+    background-image: -ms-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
+    background-image: -o-linear-gradient(top, rgba(0, 0, 0, .2), transparent);
+    background-image: linear-gradient(top, rgba(0, 0, 0, .2), transparent);
+    right: 25px;
+    border-top: 1px solid rgba(0, 0, 0, 0.4);
+    height: 8px;
+    left: 100px;
+    margin: -1px 0 -9px 0;
+    opacity: 0;
+    z-index: 11;
+}
+
+#contentPane .marco-arriba {
+    right: 25px;
+    left: 101px;
+    border-bottom: 2px solid gray;
+    margin: -1px 0 0;
+    z-index: 984;
+}
+
 #footer {
     text-align: center;
     padding: 15px 0;
@@ -170,14 +154,99 @@ body {
     color: #f5f5f5;
 }
 
-#columna .home .contentPane {
-    padding-top: 34px;
-    padding-bottom: 34px;
+#columna .contentPane {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
-#columna .home .contentPane .icono {
+#columna .sub {
+    margin: 5px 5px 5px 5px;
+    border-radius: 5px;
+}
+
+#columna a {
+    text-decoration: none;
+    color: #f5f5f5;
+    font: normal 13px arial, sans-serif;
+}
+
+#columna .icono {
     height: 32px;
     width: 32px;
     margin: 0 auto 0 auto;
-    background: no-repeat url("../img/dock/house.png");
+}
+
+#columna .home {
+    background: no-repeat url("../img/dock/home.png");
+}
+
+#columna .group {
+    background: no-repeat url("../img/dock/group.png");
+}
+
+#columna .project {
+    background: no-repeat url("../img/dock/project.png");
+}
+
+#columna .account {
+    background: no-repeat url("../img/dock/account.png");
+}
+
+#columna .explore {
+    background: no-repeat url("../img/dock/explore.png");
+}
+
+#marca {
+    height: 80px;
+    overflow: hidden;
+    width: 420px;
+    position: relative;
+    top: 20px;
+    margin: 20px 0 0 30px;
+}
+
+#dock {
+    width: 100px;
+    background-color: #2d6987;
+    top: 0;
+    position: absolute;
+    bottom: auto;
+}
+
+@media (min-height:600px) {
+    #header {
+        z-index: 30;
+        position: fixed;
+        width: 100%;
+        height: 102px;
+        background-color: #2d6987;
+        top: 0;
+    }
+
+    #header-alt {
+        height: 102px;
+    }
+
+    #contentPane .sombra {
+        position: fixed;
+    }
+
+    #contentPane .marco-arriba {
+        position: fixed;
+    }
+
+    #cuerpo {
+        top: 0;
+    }
+
+    #marca {
+        top: 0;
+    }
+
+    #dock {
+        top: auto;
+        position: fixed;
+    }
+
 }
