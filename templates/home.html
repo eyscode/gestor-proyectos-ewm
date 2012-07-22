@@ -7,11 +7,17 @@
     <script type="text/javascript" src="../static/js/jquery-1.7.1.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#dock .option').mouseenter(function () {
-                $(this).children().children().children().css('background', 'no-repeat url("../static/img/dock/house_go.png")');
+            $('#dock .home').mouseenter(function () {
+                $(this).css('background', 'no-repeat url("../static/img/dock/house_go.png")');
             });
-            $('#dock .option').mouseleave(function () {
-                $(this).children().children().children().css('background', 'no-repeat url("../static/img/dock/house.png")');
+            $('#dock .home').mouseleave(function () {
+                $(this).css('background', 'no-repeat url("../static/img/dock/house.png")');
+            });
+            $('#dock .group').mouseenter(function () {
+                $(this).css('background', 'no-repeat url("../static/img/dock/group_go.png")');
+            });
+            $('#dock .group').mouseleave(function () {
+                $(this).css('background', 'no-repeat url("../static/img/dock/group.png")');
             });
         });
     </script>
@@ -32,10 +38,17 @@
         <div id="dock">
             <div id="triangulo"></div>
             <div id="columna">
-                <div class="option home">
+                <div class="option">
                     <a href="#home">
                         <div class="contentPane">
-                            <div class="icono"></div>
+                            <div class="home icono"></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="option">
+                    <a href="#group">
+                        <div class="contentPane">
+                            <div class="group icono"></div>
                         </div>
                     </a>
                 </div>
