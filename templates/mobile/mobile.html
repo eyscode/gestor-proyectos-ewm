@@ -9,6 +9,8 @@
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
 	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/events.js"></script>
+	
 </head>
 <body>
 <section data-role="page" id="page1" data-theme="b">
@@ -17,17 +19,17 @@
 	</header><!-- /header -->
 	<article data-role="content">
 
-		<form data-role="form" action="C:\UNMSM\ofisis\gestor-proyectos-ewm\templates\mobile\menu.html">
+		<form data-role="form" action="">
 			<div data-role="fieldcontain">
 				<label for="email_name">E_mail</label>
-				<input type="email" name="email_name" id="email_name" value="" placeholder="ejemplo@email.ejm"/>
+				<input type="email" name="email_name" id="email" value="" placeholder="ejemplo@email.ejm"/>
 			</div>
 			<div data-role="fieldcontain">
 				<label for="">Password</label>
-				<input type="password" name="" id="" value="" placeholder="*******" />
+				<input type="password" name="" id="password" value="" placeholder="*******" />
 			</div>
 			<a href="#no_password">Olvide mi password</a>
-			<input type="submit" data-role="button" value="submit"/>
+			<a id="btn_enter" href="" data-role="button">Entrar</a>
 		</form>
 	</article><!-- /content -->
 	<footer data-role="footer" data-theme="a">
@@ -39,12 +41,12 @@
 		<h1>Gestor de proyectos</h1>
 	</header><!-- /header -->
 	<article data-role="content">
-		<form data-role="form" action="#page1">
+		<form data-role="form" action="">
 			<div data-role="fieldcontain">
 				<label for="email_recuperacion">Email</label>
 				<input type="email" name="email_recuperacion" id="email_recuperacion" value="" />
 			</div>
-			<input type="submit" data-role="button" value="submit"/>
+			<a id="btn_remember" href="" data-role="button">Recordar</a>
 		</form>
 	</article><!-- /content -->
 	<footer data-role="footer" >

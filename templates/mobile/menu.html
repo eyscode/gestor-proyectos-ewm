@@ -8,19 +8,18 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
-
 </head>
 <body>
-<section data-role="page" data-theme="b">
+<section data-role="page" id="menu_principal" data-theme="b">
 	<header data-role="header" data-theme="b">
 		<h1>Gestor de Proyectos</h1>
 	</header><!-- /header -->
-	<article data-role="content" data-theme="d">
-		<ul data-role="listview">
-			<li><a href="projectos.html" ><img src="icons/projectos.png" alt=""> <h3>Proyectos</h3></a></li>
-			<li><a href="#"><img src="icons/grupos.png" alt=""><h3>Amigos</h3></a></li>
-			<li><a href="#"><img src="icons/cuenta.png" alt=""><h3>Cuenta</h3></a></li>
-			<li><a href="#"><img src="icons/manual.png" alt=""><h3>Manual</h3></a></li>
+	<article  data-role="content" data-theme="d">
+		<ul id='menu_principal_options' data-role="listview">
+			<li><a href="" id="option_projects"><img src="icons/projectos.png" alt=""> <h3>Proyectos</h3></a></li>
+			<li><a href="" name="manu" id="option_friends"><img src="icons/grupos.png" alt=""><h3>Amigos</h3></a></li>
+			<li><a href="" id="option_count"><img src="icons/cuenta.png" alt=""><h3>Cuenta</h3></a></li>
+			<li><a href="" id="option_readme"><img src="icons/manual.png" alt=""><h3>Manual</h3></a></li>
 		</ul>
 	</article><!-- /content -->
 	<footer data-role="footer">

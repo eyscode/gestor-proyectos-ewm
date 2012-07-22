@@ -8,31 +8,29 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+	<script type="text/javascript">
+		
+	</script>
 </head>
 <body>
-<section data-role="page" id="projectos">
-	<header data-role="header" data-theme="b">
-		<h1>Gestor de proyectos</h1>
+<section data-role="page">
+	<header data-role="header" data-theme="b"  data-position="fixed">
+		<h1>Getsor de proyectos</h1>
 	</header><!-- /header -->
-	
 	<article data-role="content">
-		<ul data-role="listview" >
-			<li>Mis proyectos
-				<ul id="projectos_list" data-role="listview"data-filter="true" data-filter-placeholder="buscar proyectos" >
-					<li><a name="p1" href="">Nombre Proyecto 1</a></li>
-					<li><a name="p2" href="">Nombre Proyecto 2</a></li>
-					<li><a name="p3" href="">Nombre Proyecto 3</a></li>
+		<ul data-role="listview">
+			<li><a href="">Nueva reunion</a>
+			</li>
+			<li>lista de reuniones
+				<ul data-role="listview">
+					<li><a href="#">Reunion 1</a></li>
+					<li><a href="#">Reunion 2</a></li>
+					<li><a href="#">Reunion 3</a></li>
 				</ul>
 			</li>
-			<li>
-				<a href="#">Nuevo Proyecto</a>
-			</li>
 		</ul>
-		
-		
 	</article><!-- /content -->
-	<!-- /content -->
-	<footer data-role="footer">
+	<footer data-role="footer" data-position="fixed">
 		<h4>Page footer</h4>
 	</footer><!-- /footer -->
 </section><!-- /page -->

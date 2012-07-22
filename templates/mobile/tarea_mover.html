@@ -9,10 +9,7 @@
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
 	<script type="text/javascript">
-		$(document).bind('mobileinit',function(){
-			$.mobile.touchOverflowEnabled=true;
-
-		})
+		
 	</script>
 </head>
 <body>
@@ -20,16 +17,22 @@
 	<header data-role="header" data-theme="b"  data-position="fixed">
 		<h1>Getsor de proyectos</h1>
 	</header><!-- /header -->
-	<div data-role="content" >
-		<ul data-role="listview">
-			<li><a href="columna.html">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-		</ul>
 	<article data-role="content">
-		
+		<div data-role="fieldcontain">
+			<label for="select_colum" class="select">Columnas:</label>
+			<select id="select_colum" name="select_colum" data-native-menu="false">
+				<option value="value1">Columna 1</option>
+				<option value="value2">Columna 2</option>
+				<option value="value3">Columna 3</option>
+			</select>
+		</div>
+		<div data-role="fieldcontain">
+			<fieldset data-role="controlgroup">
+				<a href="#" data-role="button">Mover</a>
+				
+			</fieldset>
+		</div>
 	</article><!-- /content -->
-
 	<footer data-role="footer" data-position="fixed">
 		<h4>Page footer</h4>
 	</footer><!-- /footer -->
