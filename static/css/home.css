@@ -1,3 +1,9 @@
+html {
+    background-color: #2d6987;
+    font: 14px/18px "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: rgb(102, 102, 102);
+}
+
 body {
     margin: 0;
 }
@@ -11,16 +17,16 @@ body {
     height: 600px;
 }
 
+p {
+    margin: 0;
+}
+
 #header {
     width: 100%;
     height: 102px;
     background-color: #2d6987;
     top: -20px;
     position: relative;
-}
-
-html {
-    background-color: #2d6987;
 }
 
 #cuerpo {
@@ -50,7 +56,8 @@ html {
     border-bottom: 2px solid gray;
     border-radius: 10px;
     background-color: #f5f5f5;
-    height: 1000px;
+    min-height: 750px;
+    padding: 20px 20px;
 }
 
 .marco-arriba .esquina-izq {
@@ -160,15 +167,25 @@ html {
     padding-bottom: 20px;
 }
 
+#dock .triangulo {
+    position: absolute;
+    width: 10px;
+    height: 15px;
+    right: -2px;
+    top: 47px;
+    background: no-repeat url("../img/triangulo.png");
+    z-index: 100;
+}
+
 #columna .sub {
-    margin: 5px 5px 5px 5px;
+    margin: 10px 10px 10px 10px;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 #columna a {
     text-decoration: none;
     color: #f5f5f5;
-    font: normal 13px arial, sans-serif;
 }
 
 #columna .icono {
@@ -177,16 +194,21 @@ html {
     margin: 0 auto 0 auto;
 }
 
+#columna {
+    color: #f5f5f5;
+    font: normal 13px arial, sans-serif;
+}
+
 #columna .home {
     background: no-repeat url("../img/dock/home.png");
 }
 
-#columna .group {
-    background: no-repeat url("../img/dock/group.png");
+#columna .groups {
+    background: no-repeat url("../img/dock/groups.png");
 }
 
-#columna .project {
-    background: no-repeat url("../img/dock/project.png");
+#columna .projects {
+    background: no-repeat url("../img/dock/projects.png");
 }
 
 #columna .account {
@@ -195,6 +217,14 @@ html {
 
 #columna .explore {
     background: no-repeat url("../img/dock/explore.png");
+}
+
+#more .icono {
+    background: no-repeat url("../img/dock/more.png");
+}
+
+#more {
+    display: none;
 }
 
 #marca {
@@ -212,6 +242,53 @@ html {
     top: 0;
     position: absolute;
     bottom: auto;
+}
+
+#extra-option {
+    position: absolute;
+    display: none;
+    left: 85px;
+    z-index: 200;
+    top: 414px;
+    white-space: nowrap;
+    color: rgb(102, 102, 102);
+}
+
+#extra-option .contentPane {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+#extra-option a {
+    color: #666;
+}
+
+#extra-option .options {
+    background-color: #f5f5f5;
+    border: 2px solid gray;
+    margin-left: 8px;
+    border-radius: 5px;
+}
+
+#extra-option .options .sub {
+    margin: 10px 10px 10px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#extra-option .option {
+    color: #666;
+    width: 100px;
+    display: inline-block;
+}
+
+#extra-option .tri {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    top: 47px;
+    z-index: 200;
+    background: no-repeat url("../img/triangulo.png");
 }
 
 @media (min-height:600px) {
