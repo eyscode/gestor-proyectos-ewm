@@ -20,11 +20,11 @@ def view_login_movil(request):
                     to_json = {
                         "id": request.user.id
                     }
-                    return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+                    return HttpResponse(simplejson.dumps(to_json), content_type="text/plain")
             to_json = {
                 "id": -1
             }
-            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+            return HttpResponse(simplejson.dumps(to_json), content_type="text/plain")
         raise Http404
     except Exception, ex:
         print ex
