@@ -7,10 +7,6 @@ from django.http import HttpResponse, Http404
 from django.utils import simplejson
 from appcuentas.models import Project, Table, Column
 
-class Http500(object):
-    pass
-
-
 def view_login_movil(request):
     try:
         to_json = None
@@ -32,7 +28,7 @@ def view_login_movil(request):
         raise Http404
     except Exception, ex:
         print ex
-        raise Http500
+        raise Http404
 
 
 def view_password_movil(request):
