@@ -2,6 +2,8 @@
 
 from os.path import join, realpath, dirname
 
+import dj_database_url
+
 ROOT_DIR = realpath(join(dirname(__file__), '..'))
 PROJECT_DIR = realpath(join(dirname(__file__)))
 
@@ -24,6 +26,8 @@ DATABASES = {
         'PORT': '3306', # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
