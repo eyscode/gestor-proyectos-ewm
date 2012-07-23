@@ -1,4 +1,3 @@
-<!doctype html>
 <html>
 <head>
 	<title>jQuery Mobile Page</title>
@@ -20,14 +19,17 @@
 	<header data-role="header" data-theme="b"  data-position="fixed">
 		<h1>Getsor de proyectos</h1>
 	</header><!-- /header -->
-	<div data-role="content" >
-		<ul data-role="listview">
-			<li><a href="columna.html">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-		</ul>
-	<article data-role="content">
 		
+	<article data-role="content">
+		<h2>Editar</h2>
+		<div data-role="fieldcontain">
+			<label for="edit_tablero_nombre">Nombre</label>
+			<input type="text" name="edit_tablero_nombre" id="edit_tablero_nombre" value="" />
+		</div>
+		<div data-role="fieldcontain">
+			<label for="edit_tablero_descripcion">Descripcion</label>
+			<textarea cols="40" rows="8" name="edit_tablero_descripcion" id="edit_tablero_descripcion"></textarea>
+		</div>
 	</article><!-- /content -->
 
 	<footer data-role="footer" data-position="fixed">
@@ -35,4 +37,3 @@
 	</footer><!-- /footer -->
 </section><!-- /page -->
 </body>
-</html>

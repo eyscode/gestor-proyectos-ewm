@@ -1,0 +1,69 @@
+<html>
+<head>
+	<title>jQuery Mobile Page</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).bind('mobileinit',function(){
+			$.mobile.touchOverflowEnabled=true;
+
+		})
+	</script>
+</head>
+<body>
+<section data-role="page">
+	<header data-role="header" data-theme="b"  data-position="fixed">
+		<h1>Getsor de proyectos</h1>
+	</header><!-- /header -->
+		
+	<article data-role="content">
+		<h2>Detalles</h2>
+		<div data-role="fieldcontain">
+			<label for="tablero_nombre">Nombre</label>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<legend>Nombre del tablero</legend>
+				</fieldset>
+			</div>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="tablero_nombre">Descripcion</label>
+			<div data-role="fieldcontain">
+				<p> esta es una descripcion esta es una descripcion esta es una descripcion esta es una descripcion esta es una descripcion esta es una descripcion</p>
+			</div>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="tablero_nombre">Fecha de inicio:</label>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<legend>12/01/2005</legend>
+				</fieldset>
+			</div>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="tablero_nombre">Fecha de fin:</label>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<legend>12/01/2005</legend>
+				</fieldset>
+			</div>
+		</div>
+		<div data-role="fieldcontain">
+			<label for="tablero_nombre">Avance:</label>
+			<div data-role="fieldcontain">
+				<fieldset data-role="controlgroup">
+					<legend>80%</legend>
+				</fieldset>
+			</div>
+		</div>
+	</article><!-- /content -->
+
+	<footer data-role="footer" data-position="fixed">
+		<h4>Page footer</h4>
+	</footer><!-- /footer -->
+</section><!-- /page -->
+</body>

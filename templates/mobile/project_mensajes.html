@@ -9,10 +9,7 @@
 	<script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.0.1/jquery.mobile-1.0.1.min.js"></script>
 	<script type="text/javascript">
-		$(document).bind('mobileinit',function(){
-			$.mobile.touchOverflowEnabled=true;
-
-		})
+		
 	</script>
 </head>
 <body>
@@ -20,16 +17,22 @@
 	<header data-role="header" data-theme="b"  data-position="fixed">
 		<h1>Getsor de proyectos</h1>
 	</header><!-- /header -->
-	<div data-role="content" >
-		<ul data-role="listview">
-			<li><a href="columna.html">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-		</ul>
 	<article data-role="content">
-		
+		<ul data-role="listview">
+			<li>
+				<div data-role="fieldcontain">
+					<label for="project_mensaje_nuevo">Tu mensaje</label>
+					<textarea cols="40" rows="8" name="project_mensaje_nuevo" id="project_mensaje_nuevo"></textarea>
+					<a href="#" data-role="button" >Enviar</a>
+				</div>				
+			</li>
+		</ul>
+		<ul data-role="listview">
+					<li><a href="mensaje.html"><h3>Mensaje 1</h3><p>Este es un resumen del mensaje Este es un resumen del mensaje Este es un resumen del mensajes un resumen del mensaje s un resumen del mensaje   </p></a></li>
+					<li><a href="mensaje.html"><h3>Mensaje 2</h3><p>Este es un resumen del mensaje Este es un resumen del mensaje Este es un resumen del mensajes un resumen del mensaje s un resumen del mensaje   </p></a></li>
+			
+		</ul>
 	</article><!-- /content -->
-
 	<footer data-role="footer" data-position="fixed">
 		<h4>Page footer</h4>
 	</footer><!-- /footer -->

@@ -22,13 +22,28 @@
 	</header><!-- /header -->
 	<div data-role="content" >
 		<ul data-role="listview">
-			<li><a href="columna.html">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
-			<li><a href="#">Columna 1</a><a href="#">editar</a></li>
+			<li>Ver Miembros
+				<ul data-role="listview">			
+					<li><a href="perfil.html">Jose Manuel Rios</a></li>
+					<li><a href="perfil.html">Jose Manuel Rios</a></li>
+					<li><a href="perfil.html">Jose Manuel Rios</a></li>
+				</ul>
+			</li>
+			<li>Nuevo Miembro
+				<ul data-role="listview">
+					<li>
+						<div data-role="fieldcontain">
+							<label for="nuevo_miembro">Nuevo miembro</label>
+							<input type="email" name="nuevo_miembro" id="nuevo_miembro" value="" />
+							<a href="#" data-role="button">enviar</a>
+						</div>
+						
+					</li>
+				</ul>
+			</li>
 		</ul>
-	<article data-role="content">
 		
-	</article><!-- /content -->
+	</div>
 
 	<footer data-role="footer" data-position="fixed">
 		<h4>Page footer</h4>
