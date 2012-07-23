@@ -83,32 +83,34 @@ $(document).ready(function () {
     $('#extra-option .option a').click(function () {
         var url = $(this).attr('href');
         var clase = $(this).find('.icono').attr('class').split(" ")[0];
-        $.ajax({
-            url:$(this).attr('href'),
-            type:"GET",
-            success:function (data) {
-                $('#contenido').html(data);
-                $(window).scrollTop(0);
-                window.history.pushState(data, clase, url);
-            }
-        });
-
         var cual;
-
+        var dim = -1;
         $('#sub-dock .option').each(function (index) {
             if (index < 5) {
                 if ($(this).css('display') != "none") {
                     cual = $(this);
+                    dim += 1;
                 }
             }
         });
-
-        cual.hide();
-        $('#extra-' + cual.attr('id')).show();
-
-        $(this).parent().parent().hide();
-        $('#' + clase).show();
-
+        var este = $(this).parent().parent();
+        $.ajax({
+            url:$(this).attr('href'),
+            type:"GET",
+            success:function (data) {
+                $('#dock .triangulo').animate({
+                    translateY:dim * 98 + 'px'
+                });
+                cual.hide();
+                $('#extra-' + cual.attr('id')).show();
+                este.hide();
+                $('#' + clase).show();
+                $('#contenido').html(data);
+                actual = clase;
+                $(window).scrollTop(0);
+                window.history.pushState(data, clase, url);
+            }
+        });
 
         return false;
     });
@@ -141,9 +143,9 @@ $(document).ready(function () {
             } else {
                 $('#explore').show();
                 $('#groups').hide();
-                $('#dock .triangulo').animate({
-                    translateY:294 + 'px'
-                });
+                /*$('#dock .triangulo').animate({
+                 translateY:294 + 'px'
+                 });*/
                 $('#extra-explore').hide();
                 $('#extra-groups').show();
             }
@@ -173,9 +175,9 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#account').hide();
                 $('#extra-account').show();
-                $('#dock .triangulo').animate({
-                    translateY:196 + 'px'
-                });
+                /*$('#dock .triangulo').animate({
+                 translateY:196 + 'px'
+                 });*/
             }
             $('#projects').show();
             $('#home').show();
@@ -203,9 +205,9 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#projects').hide();
                 $('#extra-projects').show();
-                $('#dock .triangulo').animate({
-                    translateY:98 + 'px'
-                });
+                /*$('#dock .triangulo').animate({
+                 translateY:98 + 'px'
+                 });*/
             }
             $('#home').show();
             $('#extra-option').css('top', '190px');
@@ -239,6 +241,25 @@ $(document).ready(function () {
             }
             $('#extra-option').css('top', '92px');
         }
+        var posini = {'home':0, 'projects':98, 'account':196, 'groups':294, 'explore':392};
+        var posis = {'home':0, 'projets':1, 'account':2, 'groups':3, 'explore':4};
+        var valor = posini[actual];
+        var menos = 0;
+        $('#sub-dock .option').each(function (index) {
+            if (index < 5) {
+                if (index < posis[actual]) {
+                    if ($(this).css('display') == 'none') {
+                        menos += 1;
+                    }
+                }
+                if ($(this).attr('id') == actual) {
+                    return;
+                }
+            }
+        });
+        $('#dock .triangulo').transform({
+            translateY:(valor - (menos * 98)) + 'px'
+        });
     });
     $(window).load(function () {
         if ($(window).height() > 640) {
