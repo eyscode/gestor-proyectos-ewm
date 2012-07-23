@@ -291,7 +291,8 @@ p {
     background: no-repeat url("../img/triangulo.png");
 }
 
-@media (min-height:600px) {
+@media only screen
+and (min-height:600px) {
     #header {
         z-index: 30;
         position: fixed;
@@ -325,5 +326,4 @@ p {
         top: auto;
         position: fixed;
     }
-
 }
