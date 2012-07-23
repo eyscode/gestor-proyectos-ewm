@@ -7,24 +7,32 @@ from django.http import HttpResponse, Http404
 from django.utils import simplejson
 from appcuentas.models import Project, Table, Column
 
+class Http500(object):
+    pass
+
+
 def view_login_movil(request):
-    to_json = None
-    if request.is_ajax() and request.method == "POST":
-        username = request.POST.get("email", "")
-        password = request.POST.get("password", "")
-        if username and password:
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                to_json = {
-                    "id": request.user.id
-                }
-                return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-        to_json = {
-            "id": -1
-        }
-        return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise Http404
+    try:
+        to_json = None
+        if request.is_ajax() and request.method == "POST":
+            username = request.POST.get("email", "")
+            password = request.POST.get("password", "")
+            if username and password:
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    to_json = {
+                        "id": request.user.id
+                    }
+                    return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+            to_json = {
+                "id": -1
+            }
+            return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
+        raise Http404
+    except Exception, ex:
+        print ex
+        raise Http500
 
 
 def view_password_movil(request):
