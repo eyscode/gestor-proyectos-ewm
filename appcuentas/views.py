@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response
 from django.template import RequestContext
+from appcuentas.models import Group, Group_has_Client
 from models import Client, User
 from forms import RegisterForm
 
@@ -39,49 +40,55 @@ def view_register(request):
     return render_to_response("desktop/register.html", {"rf": registerform}, context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login/')
 def view_home(request):
     if request.is_ajax():
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
     return render_to_response("desktop/home.html", {'ext': ext, 'actual': 'home'},
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login/')
 def view_projects(request):
     if request.is_ajax():
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
     return render_to_response("desktop/projects.html", {'ext': ext, 'actual': 'projects'},
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login/')
 def view_groups(request):
     if request.is_ajax():
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    return render_to_response("desktop/groups.html", {'ext': ext, 'actual': 'groups'},
-        context_instance=RequestContext(request))
+    grupos = Group_has_Client.objects.filter(client=Client.objects.get(user=request.user))
+    return render_to_response("desktop/groups.html", {'ext': ext, 'actual': 'groups', 'grupos': grupos},
+                              context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login/')
 def view_account(request):
     if request.is_ajax():
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
     return render_to_response("desktop/account.html", {'ext': ext, 'actual': 'account'},
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
+@login_required(login_url='/login/')
 def view_explore(request):
     if request.is_ajax():
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
     return render_to_response("desktop/explore.html", {'ext': ext, 'actual': 'explore'},
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required(login_url="/login")

@@ -1,4 +1,61 @@
-{% extends ext %}
 {% block contenido %}
-    <p>Aqui va la gestiond e grupos</p>
+    <div id="grupos">
+        <div class="lista-grupos">
+            <div class="crear-grupo clearfix">
+                <span class="icon x-large black" data-icon="p"></span>
+
+                <div class="nombre">
+                    <p class="nombre">Crear Nuevo Grupo</p>
+                </div>
+            </div>
+            {% for grupo in grupos %}
+                <div class="un-grupo">
+                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
+                    <span class="icon x-large darkgray" data-icon="U"></span>
+
+                    <div class="nombre-grupo">
+                        <p class="nombre">{{ grupo.group.name }}</p>
+
+                        <p class="descripcion">{{ grupo.group.information }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for grupo in grupos %}
+                <div class="un-grupo">
+                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
+                    <span class="icon x-large darkgray" data-icon="U"></span>
+
+                    <div class="nombre-grupo">
+                        <p class="nombre">{{ grupo.group.name }}</p>
+
+                        <p class="descripcion">{{ grupo.group.information }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            {% for grupo in grupos %}
+                <div class="un-grupo">
+                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
+                    <span class="icon x-large darkgray" data-icon="U"></span>
+
+                    <div class="nombre-grupo">
+                        <p class="nombre">{{ grupo.group.name }}</p>
+
+                        <p class="descripcion">{{ grupo.group.information }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="contenido-grupo">
+        <form class="vertical">
+            <label>Personas</label>
+            <input type="text" id="nombre" value="asda" placeholder="Ingrese un nombre para buscar...">
+        </form>
+        <div class="listado">
+            <ul class="alt">
+                <li>OPCIOn</li>
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
 {% endblock %}
