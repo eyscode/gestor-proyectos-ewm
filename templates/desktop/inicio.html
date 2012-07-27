@@ -47,8 +47,8 @@
         </div>
         <div class="logeo" id="logeo">
             <div id="registro" hidden>
-                <form action="">
-
+                <form action="/login/" method="post">
+                    {% csrf_token %}
                     <label for="">Nombre:</label><input type="text">
                     <label for="">Apellidos:</label><input type="text">
                     <label for="">Correo electronico:</label><input type="text">
@@ -67,7 +67,8 @@
                 </form>
             </div>
             <div id="logueando">
-                <form action="">
+                <form action="/login/" method="post">
+                    {% csrf_token %}
                     <label for="username">Username:</label>
                     <input type="text" id="username" name="username"/>
                     <label for="password">Password:</label>

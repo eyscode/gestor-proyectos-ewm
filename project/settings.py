@@ -2,7 +2,7 @@
 
 from os.path import join, realpath, dirname
 
-import dj_database_url
+#import dj_database_url
 
 ROOT_DIR = realpath(join(dirname(__file__), '..'))
 PROJECT_DIR = realpath(join(dirname(__file__)))
@@ -27,7 +27,7 @@ DATABASES = {
     }
 }
 
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+#DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -131,7 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'appcuentas',

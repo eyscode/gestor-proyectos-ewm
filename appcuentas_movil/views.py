@@ -52,7 +52,7 @@ def view_password_movil(request):
                 "result": False
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise 404
+    raise Http404
 
 
 @login_required(login_url='/login/')
@@ -72,7 +72,7 @@ def view_traer_proyectos_movil(request):
                 "proyectos": proyectos
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise 404
+    raise Http404
 
 
 @login_required(login_url='/login/')
@@ -92,7 +92,7 @@ def view_traer_tableros_movil(request):
                 "tableros": tableros
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise 404
+    raise Http404
 
 
 @login_required(login_url='/login/')
@@ -113,7 +113,7 @@ def view_datos_tableros_movil(request):
                 "tableros": tableros
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise 404
+    raise Http404
 
 
 @login_required(login_url='/login/')
@@ -134,4 +134,4 @@ def view_datos_columnas_movil(request):
                 "columnas": columnas
             }
             return HttpResponse(simplejson.dumps(to_json), mimetype='application/json')
-    raise 404
+    raise Http404
