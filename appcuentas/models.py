@@ -9,23 +9,29 @@ class Profile(models.Model):
         return self.name
 
 
-class Project(models.Model):
+class Template(models.Model):
     name = models.CharField(max_length=250)
-    date_creation = models.DateTimeField()
-    company = models.CharField(max_length=250)
     profile = models.ForeignKey(Profile)
-
-    def __unicode__(self):
-        return self.name
 
 
 class Client(models.Model):
     user = models.OneToOneField(User)
     profile = models.ForeignKey(Profile)
-    projects = models.ManyToManyField(Project, through='Client_has_Project')
 
     def __unicode__(self):
         return self.user.__unicode__()
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=250)
+    date_creation = models.DateTimeField()
+    company = models.CharField(max_length=250)
+    base = models.BooleanField(default=False)
+    template = models.ForeignKey(Template, null=True)
+    creador = models.ForeignKey(Client)
+
+    def __unicode__(self):
+        return self.name
 
 
 class Client_has_Project(models.Model):
@@ -40,6 +46,7 @@ class Group(models.Model):
     name = models.CharField(max_length=100)
     information = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
+    creador = models.ForeignKey(Client, related_name='mis_grupos')
 
     def __unicode__(self):
         return self.name

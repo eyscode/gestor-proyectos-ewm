@@ -41,12 +41,13 @@ $(document).ready(function () {
         }
         console.log($(dragSrcEl).attr('iduser'));
         var iduser = $(dragSrcEl).attr('iduser');
-        var idgroup = $(this).find('.grupo_id');
+        var idgroup = $(this).attr('idgroup');
+        console.log(idgroup);
         $.ajax({
-            url:'/add-client/?iduser=' + iduser,
+            url:'/add-client/?iduser=' + iduser + '&idgroup=' + idgroup,
             type:'GET',
             success:function (data) {
-                alert("+1");
+                alert(data);
             }
         });
         // See the section on the DataTransfer object.

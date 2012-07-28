@@ -2,7 +2,7 @@
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render_to_response
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils import simplejson
 from appcuentas.models import Group, Group_has_Client
@@ -69,7 +69,7 @@ def view_groups(request):
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    grupos = Group_has_Client.objects.filter(client=Client.objects.get(user=request.user))
+    grupos = Group.objects.filter(creador=Client.objects.get(user=request.user))
     return render_to_response("desktop/groups.html", {'ext': ext, 'actual': 'groups', 'grupos': grupos},
         context_instance=RequestContext(request))
 
@@ -90,17 +90,23 @@ def view_get_client(request):
 
 
 def view_add_client(request):
-    if 'iduser' in request.GET and 'idgroup' in request.GET and request.GET.get('name'):
+    if 'iduser' in request.GET and 'idgroup' in request.GET and request.GET.get('iduser') and request.GET.get(
+        'idgroup'):
         try:
-            client = request.GET.get('iduser')
-            clients_apellidos = User.objects.filter(last_name__icontains=client)
-            clients = set(clients_nombre).union(set(clients_apellidos))
-            clients = serializers.serialize('json', clients)
+            client = get_object_or_404(User, id=request.GET.get('iduser'))
+            client = get_object_or_404(Client, user=client)
+            group = get_object_or_404(Group, id=request.GET.get('idgroup'))
+            existe = Group_has_Client.objects.filter(client=client, group=group)
+            if not existe:
+                Group_has_Client.objects.create(client=client, group=group)
+                return HttpResponse(1, mimetype="application/json")
+            else:
+                return HttpResponse(2, mimetype="application/json")
         except Exception, ex:
-            clients = []
+            print ex
     else:
-        clients = []
-    return HttpResponse(clients, mimetype="application/json")
+        pass
+    return HttpResponse(0, mimetype="application/json")
 
 
 @login_required(login_url='/login/')

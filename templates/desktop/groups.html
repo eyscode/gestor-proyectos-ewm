@@ -10,39 +10,15 @@
                 </div>
             </div>
             {% for grupo in grupos %}
-                <div class="un-grupo">
-                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
+                <div class="un-grupo" idgroup="{{ grupo.id }}">
                     <span class="icon x-large darkgray" data-icon="U"></span>
 
                     <div class="nombre-grupo">
-                        <p class="nombre">{{ grupo.group.name }}</p>
+                        <p class="nombre">{{ grupo.name }}</p>
 
-                        <p class="descripcion">{{ grupo.group.information }}</p>
+                        <p class="descripcion">{{ grupo.information }}</p>
                     </div>
-                </div>
-            {% endfor %}
-            {% for grupo in grupos %}
-                <div class="un-grupo">
-                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
-                    <span class="icon x-large darkgray" data-icon="U"></span>
-
-                    <div class="nombre-grupo">
-                        <p class="nombre">{{ grupo.group.name }}</p>
-
-                        <p class="descripcion">{{ grupo.group.information }}</p>
-                    </div>
-                </div>
-            {% endfor %}
-            {% for grupo in grupos %}
-                <div class="un-grupo">
-                    <input class="grupo-id" type="hidden" value="{{ grupo.group.id }}">
-                    <span class="icon x-large darkgray" data-icon="U"></span>
-
-                    <div class="nombre-grupo">
-                        <p class="nombre">{{ grupo.group.name }}</p>
-
-                        <p class="descripcion">{{ grupo.group.information }}</p>
-                    </div>
+                    <div class="plus1"></div>
                 </div>
             {% endfor %}
         </div>
