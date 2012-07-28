@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils import simplejson
-from appcuentas.models import Group, Group_has_Client
+from appcuentas.models import Group, Group_has_Client, Project
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -70,8 +70,43 @@ def view_groups(request):
     else:
         ext = "desktop/layout.html"
     grupos = Group.objects.filter(creador=Client.objects.get(user=request.user))
-    return render_to_response("desktop/groups.html", {'ext': ext, 'actual': 'groups', 'grupos': grupos},
+    #clients = Client.objects.exclude(user=request.user)
+    clients = Client.objects.all()
+    return render_to_response("desktop/groups.html",
+            {'ext': ext, 'actual': 'groups', 'grupos': grupos, 'clients': clients},
         context_instance=RequestContext(request))
+
+
+def view_find_client(request):
+    clients = Client.objects.all()
+    return render_to_response("desktop/contenido-buscar.html",
+            {'clients': clients}, context_instance=RequestContext(request))
+
+
+def view_create_group(request):
+    try:
+        error = {'nombre': [], 'descripcion': []}
+        if request.method == "POST":
+            if request.POST.get('nombre') and request.POST.get('descripcion'):
+                nombre = request.POST.get('nombre')
+                descripcion = request.POST.get('descripcion')
+                if not Group.objects.filter(creador=request.user.get_profile(), nombre=nombre):
+                    Group.objects.create(name=nombre, information=descripcion, creador=request.user.get_profile())
+                    return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+                else:
+                    error['nombre'].append('Ya existe un grupo con ese nombre')
+            elif request.POST.get('nombre') and not request.POST.get('descripcion'):
+                error['descripcion'].append('Debe ingresar una descripcion')
+            elif request.POST.get('description') and not request.POST.get('nombre'):
+                error['nombre'].append('Debe ingresar un nombre')
+            elif not request.POST.get('description') and not request.POST.get('nombre'):
+                error['descripcion'].append('Debe ingresar una descripcion')
+                error['nombre'].append('Debe ingresar un nombre')
+            return HttpResponse(simplejson.dumps({'estado': 0, 'error': error}), mimetype='application/json')
+        else:
+            return render_to_response("desktop/create-group.html", context_instance=RequestContext(request))
+    except Exception, ex:
+        print ex
 
 
 def view_get_client(request):
@@ -83,9 +118,9 @@ def view_get_client(request):
             clients = set(clients_nombre).union(set(clients_apellidos))
             clients = serializers.serialize('json', clients)
         except Exception, ex:
-            clients = []
+            clients = User.objects.all()
     else:
-        clients = []
+        clients = User.objects.all()
     return HttpResponse(clients, mimetype="application/json")
 
 

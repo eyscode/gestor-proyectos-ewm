@@ -6,6 +6,14 @@ html {
 
 body {
     margin: 0;
+    scrollbar-arrow-color: white;
+    scrollbar-base-color: white;
+    scrollbar-dark-shadow-color: #000080;
+    scrollbar-track-color: #0080C0;
+    scrollbar-face-color: #000080;
+    scrollbar-shadow-color: white;
+    scrollbar-highlight-color: white;
+    scrollbar-3d-light-color: a;
 }
 
 #body {

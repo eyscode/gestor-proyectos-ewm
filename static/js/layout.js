@@ -1,3 +1,74 @@
+function handleDragStart(e) {
+    console.log("se llamoa al start");
+    dragSrcEl = this;
+    e.dataTransfer.effectAllowed = 'move';
+    var dragIcon = document.createElement('img');
+    dragIcon.src = '../static/img/user_drag.png';
+    dragIcon.width = 100;
+    e.dataTransfer.setDragImage(dragIcon, 0, 5);
+    e.dataTransfer.setData('text/html', this.innerHTML);
+}
+
+function handleDragOver(e) {
+    if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+    }
+
+    e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+    return false;
+}
+
+function handleDragEnter(e) {
+    // this / e.target is the current hover target.
+    this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+    this.classList.remove('over');  // this / e.target is previous target element.
+}
+
+function handleDrop(e) {
+    this.classList.remove('over');
+    // this / e.target is current target element.
+
+    if (e.stopPropagation) {
+        e.stopPropagation(); // stops the browser from redirecting.
+    }
+    var iduser = $(dragSrcEl).attr('iduser');
+    var idgroup = $(this).attr('idgroup');
+    var grupo = $(this);
+    console.log("ESTA HACIENDO LA CONSULTA");
+    $.ajax({
+        url:'/add-client/?iduser=' + iduser + '&idgroup=' + idgroup,
+        type:'GET',
+        success:function (data) {
+            if (data == '1') {
+                console.log(grupo.find('.plus1'));
+                grupo.find('.plus1').fadeIn();
+                grupo.find('.plus1').transition({ x:-100 }, function () {
+                    $(this).transition({ opacity:0 });
+                });
+            } else if (data == '2') {
+                console.log(grupo.find('.mensaje'));
+                grupo.find('.mensaje').fadeIn('slow');
+                grupo.find('.mensaje').fadeOut();
+            }
+        }
+    });
+    // See the section on the DataTransfer object.
+
+    return false;
+}
+
+function handleDragEnd(e) {
+    // this/e.target is the source node.
+
+    [].forEach.call(clientes, function (col) {
+        clientes.classList.remove('over');
+    });
+}
+
 $(document).ready(function () {
 
     var posini = {'home':0, 'projects':98, 'account':196, 'groups':294, 'explore':392};
@@ -76,6 +147,28 @@ $(document).ready(function () {
                 $(window).scrollTop(0);
                 window.history.pushState(data, clase, url);
                 actual = clase;
+                var grupos = document.querySelectorAll('#grupos .un-grupo');
+                console.log(grupos);
+                [].forEach.call(grupos, function (col) {
+                    console.log("VOLO 1");
+                    col.addEventListener('dragenter', handleDragEnter, false);
+                    console.log("VOLO 2");
+                    col.addEventListener('dragleave', handleDragLeave, false);
+                    col.addEventListener('drop', handleDrop, false);
+                    col.addEventListener('dragend', handleDragEnd, false);
+                    col.addEventListener('dragover', handleDragOver, false);
+                    console.log("VOLO");
+                });
+                console.log("se buscaron clientes");
+
+                var clientes = document.querySelectorAll('#contenido-grupo .listado li');
+                console.log(clientes);
+                [].forEach.call(clientes, function (col) {
+                    console.log("esta entrado=");
+                    col.addEventListener('dragstart', handleDragStart, false);
+                    col.addEventListener('dragover', handleDragOver, false);
+                    col.addEventListener('dragend', handleDragEnd, false);
+                });
             }
         });
         return false;

@@ -1,15 +1,16 @@
 #grupos {
-    width: 50%;
+    width: 45%;
     float: left;
 }
 
 #contenido-grupo {
+    padding-left: 20px;
     height: 500px;
     width: 50%;
     float: left;
 }
 
-#grupos .crear-grupo {
+.div-oscuro {
     overflow: hidden;
     color: #666666;
     width: 80%;
@@ -34,13 +35,17 @@
     position: relative;
 }
 
-#grupos .crear-grupo .icon {
+input[type="text"] {
+    height: 40px;
+}
+
+.icon-div-grande {
     float: left;
     margin: 22px 22px 40px 22px;
     display: block
 }
 
-#grupos .crear-grupo .nombre {
+.nombre-grande {
     font-size: 20px;
     float: left;
     margin-top: 14px;
@@ -89,6 +94,24 @@
     font-size: 1.5em;
     margin: 0;
     display: inline-block;
+}
+
+#grupos .un-grupo .plus1 {
+    display: none;
+    position: absolute;
+    top: 34px;
+    right: 14px;
+}
+
+#grupos .un-grupo .mensaje {
+    position: absolute;
+    right: 16px;
+    top: 31px;
+    display: none;
+}
+
+#grupos .un-grupo .mensaje p {
+    color: red;
 }
 
 #grupos .un-grupo .descripcion {

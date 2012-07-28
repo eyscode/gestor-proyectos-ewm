@@ -45,7 +45,7 @@ class Client_has_Project(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=100)
     information = models.CharField(max_length=250)
-    date_creation = models.DateTimeField()
+    date_creation = models.DateTimeField(auto_now_add=True)
     creador = models.ForeignKey(Client, related_name='mis_grupos')
 
     def __unicode__(self):
