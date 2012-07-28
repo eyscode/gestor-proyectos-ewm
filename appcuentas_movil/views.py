@@ -1,31 +1,41 @@
 # Create your views here.
+#import json
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail.message import EmailMultiAlternatives
+##from django.core.serializers import json
 from django.http import HttpResponse, Http404
 from django.utils import simplejson
 from appcuentas.models import Project, Table, Column
 
+"""
+    para jsonp
+    req = {}
+    req ['username'] = username
+    req ['password'] = password
+    response = simplejson.dumps(req)
+    response = callback + '(' + response + ');'
+    return HttpResponse(response, mimetype="application/json")
+"""
+
 def view_login_movil(request):
     try:
-        to_json = None
-        if request.is_ajax() and request.method == "POST":
-            username = request.POST.get("email", "")
-            password = request.POST.get("password", "")
-            if username and password:
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    login(request, user)
-                    to_json = {
-                        "id": request.user.id
-                    }
-                    return HttpResponse(simplejson.dumps(to_json), content_type="text/plain")
-            to_json = {
-                "id": -1
-            }
-            return HttpResponse(simplejson.dumps(to_json), content_type="text/plain")
-        raise Http404
+        req = {}
+        callback = request.GET.get('callback', '')
+        username = request.GET.get("email", "")
+        password = request.GET.get("password", "")
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                req['id']= request.user.id
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            req['id']= -1
+            response = callback + '(' + response + ');'
+            return HttpResponse(response, mimetype='application/json')
     except Exception, ex:
         print ex
         raise Http404
