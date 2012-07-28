@@ -1,3 +1,4 @@
+{% extends ext %}
 {% block contenido %}
     <div id="grupos">
         <div class="lista-grupos">
@@ -47,13 +48,12 @@
         </div>
     </div>
     <div id="contenido-grupo">
-        <form class="vertical">
-            <label>Personas</label>
-            <input type="text" id="nombre" value="asda" placeholder="Ingrese un nombre para buscar...">
-        </form>
+        <div class="form-busqueda clearfix">
+            <input type="text" id="nombre" placeholder="Ingrese un nombre para buscar...">
+            <span class="icon medium lupa" data-icon="s"></span>
+        </div>
         <div class="listado">
             <ul class="alt">
-                <li>OPCIOn</li>
             </ul>
         </div>
     </div>
