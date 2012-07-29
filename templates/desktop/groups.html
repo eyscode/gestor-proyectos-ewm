@@ -36,6 +36,21 @@
         </div>
     </div>
     <div id="contenido-grupo">
+        <div class="agregado-bien notice success">
+            <span class="icon medium" data-icon="C" style="display: inline-block; "></span>
+            Grupo agregado correctamente
+            <a href="#close" class="icon close" data-icon="x" style="display: inline-block; "></a>
+        </div>
+        <div class="eliminado-bien notice success">
+            <span class="icon medium" data-icon="C" style="display: inline-block; "></span>
+            Grupo eliminado correctamente
+            <a href="#close" class="icon close" data-icon="x" style="display: inline-block; "></a>
+        </div>
+        <div class="editado-bien notice success">
+            <span class="icon medium" data-icon="C" style="display: inline-block; "></span>
+            Grupo editado correctamente
+            <a href="#close" class="icon close" data-icon="x" style="display: inline-block; "></a>
+        </div>
         <div id="contenido-grupo-buscar">
             <div class="form-busqueda clearfix">
                 <input type="text" id="nombre" placeholder="Ingrese un nombre para buscar...">
@@ -43,7 +58,8 @@
             <div class="listado">
                 <ul class="alt">
                     {% for cliente in clients %}
-                        <li draggable="true" iduser='{{ cliente.user.id }}'>{{ cliente.user.get_full_name }}</li>
+                        <li draggable="true" iduser='{{ cliente.user.id }}'>
+                            <span class="icon darkgray" data-icon="u"></span>{{ cliente.user.get_full_name }}</li>
                     {% endfor %}
                 </ul>
             </div>

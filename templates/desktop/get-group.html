@@ -1,0 +1,30 @@
+<div id="form-crear-grupo">
+    <form class="vertical" method="POST" action="/create-group/">
+        <input class="group-id" type="hidden" name="groupid" value="{{ group.id }}">
+        <label>Nombre del grupo</label>
+
+        <div class="nombre-errors"></div>
+        <input type="text" name="nombre" value="{{ group.name }}">
+        <label>Descripcion</label>
+
+        <div class="descripcion-errors"></div>
+        <textarea name="descripcion">{{ group.information }}</textarea>
+
+        <div class="listado">
+            <p>Personas en este grupo</p>
+            <ul class="alt">
+                {% for cliente in clients %}
+                    <li draggable="true" iduser='{{ cliente.user.id }}'>
+                <span class="icon darkgray" data-icon="u" style="display: inline-block; "><span
+                        aria-hidden="true">u</span></span>{{ cliente.user.get_full_name }}
+                        <a>X</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="form-submits">
+            <input class="guardar button green" type="submit" name="guardar" value="Guardar">
+            <input class="eliminar button red" type="submit" name="eliminar" value="Eliminar">
+        </div>
+    </form>
+</div>

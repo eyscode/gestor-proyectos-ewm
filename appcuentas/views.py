@@ -2,9 +2,10 @@
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render_to_response, get_object_or_404
+from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.utils import simplejson
+from oauth2 import clients
 from appcuentas.models import Group, Group_has_Client, Project
 from models import Client, User
 from forms import RegisterForm
@@ -69,16 +70,15 @@ def view_groups(request):
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    grupos = Group.objects.filter(creador=Client.objects.get(user=request.user))
-    #clients = Client.objects.exclude(user=request.user)
-    clients = Client.objects.all()
+    grupos = Group.objects.filter(creador=Client.objects.get(user=request.user)).order_by('-date_creation')
+    clients = Client.objects.exclude(user=request.user)
     return render_to_response("desktop/groups.html",
             {'ext': ext, 'actual': 'groups', 'grupos': grupos, 'clients': clients},
         context_instance=RequestContext(request))
 
 
 def view_find_client(request):
-    clients = Client.objects.all()
+    clients = Client.objects.exclude(id=request.user.id)
     return render_to_response("desktop/contenido-buscar.html",
             {'clients': clients}, context_instance=RequestContext(request))
 
@@ -90,16 +90,19 @@ def view_create_group(request):
             if request.POST.get('nombre') and request.POST.get('descripcion'):
                 nombre = request.POST.get('nombre')
                 descripcion = request.POST.get('descripcion')
-                if not Group.objects.filter(creador=request.user.get_profile(), nombre=nombre):
+                if not Group.objects.filter(creador=request.user.get_profile(), name=nombre):
                     Group.objects.create(name=nombre, information=descripcion, creador=request.user.get_profile())
                     return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
                 else:
                     error['nombre'].append('Ya existe un grupo con ese nombre')
             elif request.POST.get('nombre') and not request.POST.get('descripcion'):
+                nombre = request.POST.get('nombre')
+                if Group.objects.filter(creador=request.user.get_profile(), name=nombre):
+                    error['nombre'].append('Ya existe un grupo con ese nombre')
                 error['descripcion'].append('Debe ingresar una descripcion')
-            elif request.POST.get('description') and not request.POST.get('nombre'):
+            elif request.POST.get('descripcion') and not request.POST.get('nombre'):
                 error['nombre'].append('Debe ingresar un nombre')
-            elif not request.POST.get('description') and not request.POST.get('nombre'):
+            elif not request.POST.get('descripcion') and not request.POST.get('nombre'):
                 error['descripcion'].append('Debe ingresar una descripcion')
                 error['nombre'].append('Debe ingresar un nombre')
             return HttpResponse(simplejson.dumps({'estado': 0, 'error': error}), mimetype='application/json')
@@ -107,20 +110,88 @@ def view_create_group(request):
             return render_to_response("desktop/create-group.html", context_instance=RequestContext(request))
     except Exception, ex:
         print ex
+        return HttpResponse(simplejson.dumps({'estado': 0, 'error': 'No se pudo crear el grupo'}),
+            mimetype='application/json')
+
+
+def view_delete_group(request):
+    try:
+        if 'groupid' in request.GET:
+            group = get_object_or_404(Group, id=request.GET.get('groupid'))
+            group.delete()
+            return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+    except Exception, ex:
+        print ex
+        return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+
+
+def view_get_group(request):
+    try:
+        error = {'nombre': [], 'descripcion': []}
+        if request.method == "POST":
+            if request.POST.get('nombre') and request.POST.get('descripcion'):
+                nombre = request.POST.get('nombre')
+                descripcion = request.POST.get('descripcion')
+                mi_grupo = Group.objects.get(creador=request.user.get_profile(), id=request.POST.get('groupid'))
+                existeotro = Group.objects.filter(creador=request.user.get_profile(), name=nombre).exclude(
+                    id=request.POST.get('groupid'))
+                if existeotro:
+                    print "va a salir un error"
+                    error['nombre'].append('Ya existe un grupo con ese nombre')
+                elif mi_grupo:
+                    mi_grupo.name = nombre
+                    mi_grupo.information = descripcion
+                    mi_grupo.save()
+                    users = request.POST.get('users')
+                    groups = Group_has_Client.objects.filter(group__id=request.POST.get('groupid'))
+                    for ghc in groups:
+                        ghc.delete()
+                    if users:
+                        users = users.split(',')
+                        for userid in users:
+                            Group_has_Client.objects.create(group=Group.objects.get(id=request.POST.get('groupid')),
+                                client=Client.objects.get(user__id=userid))
+                    return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+                else:
+                    return HttpResponse(simplejson.dumps({'estado': 2, 'error': 'No se pudo editar'}),
+                        mimetype='application/json')
+            elif request.POST.get('nombre') and not request.POST.get('descripcion'):
+                nombre = request.POST.get('nombre')
+                if Group.objects.filter(creador=request.user.get_profile(), name=nombre):
+                    error['nombre'].append('Ya existe un grupo con ese nombre')
+                error['descripcion'].append('Debe ingresar una descripcion')
+            elif request.POST.get('descripcion') and not request.POST.get('nombre'):
+                error['nombre'].append('Debe ingresar un nombre')
+            elif not request.POST.get('descripcion') and not request.POST.get('nombre'):
+                error['descripcion'].append('Debe ingresar una descripcion')
+                error['nombre'].append('Debe ingresar un nombre')
+            return HttpResponse(simplejson.dumps({'estado': 0, 'error': error}), mimetype='application/json')
+        else:
+            group = Group.objects.get(id=request.GET.get('idgroup'))
+            groups = Group_has_Client.objects.filter(group__id=request.GET.get('idgroup'))
+            clients = []
+            for ghc in groups:
+                clients.append(ghc.client)
+            return render_to_response("desktop/get-group.html", {'clients': clients, 'group': group},
+                context_instance=RequestContext(request))
+    except Exception, ex:
+        print ex
+        return HttpResponse(simplejson.dumps({'estado': 2, 'error': 'No se pudo editar'}),
+            mimetype='application/json')
 
 
 def view_get_client(request):
     if 'name' in request.GET and request.GET.get('name'):
         try:
             client = request.GET.get('name')
-            clients_nombre = User.objects.filter(first_name__icontains=client)
-            clients_apellidos = User.objects.filter(last_name__icontains=client)
+            clients_nombre = User.objects.filter(first_name__icontains=client).exclude(id=request.user.id)
+            clients_apellidos = User.objects.filter(last_name__icontains=client).exclude(id=request.user.id)
             clients = set(clients_nombre).union(set(clients_apellidos))
-            clients = serializers.serialize('json', clients)
         except Exception, ex:
-            clients = User.objects.all()
+            clients = User.objects.exclude(id=request.user.id)
     else:
-        clients = User.objects.all()
+        clients = User.objects.exclude(id=request.user.id)
+    clients = serializers.serialize('json', clients)
     return HttpResponse(clients, mimetype="application/json")
 
 

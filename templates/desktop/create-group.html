@@ -1,9 +1,13 @@
 <div id="form-crear-grupo">
     <form class="vertical" method="POST" action="/create-group/">
         <label>Nombre del grupo</label>
+
+        <div class="nombre-errors"></div>
         <input type="text" name="nombre">
         <label>Descripcion</label>
+
+        <div class="descripcion-errors"></div>
         <textarea name="descripcion"></textarea>
-        <input type="submit" value="Crear">
+        <input class="green" type="submit" value="Crear">
     </form>
 </div>

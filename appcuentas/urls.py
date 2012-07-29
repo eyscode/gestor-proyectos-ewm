@@ -15,4 +15,6 @@ urlpatterns = patterns('appcuentas.views',
     url(r'^add-client/$', 'view_add_client'),
     url(r'^groups/find-client/$', 'view_find_client'),
     url(r'^create-group/$', 'view_create_group'),
+    url(r'^get-group/$', 'view_get_group'),
+    url(r'^delete-group/$', 'view_delete_group'),
 )

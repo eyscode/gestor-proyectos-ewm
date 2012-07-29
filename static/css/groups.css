@@ -167,3 +167,21 @@ input[type="text"] {
 .over {
     border: 2px dashed #000 !important;
 }
+
+#form-crear-grupo .form-submits input[type="submit"] {
+    display: inline-block;
+    width: 40%;
+    margin: 0 10px 0 10px;
+}
+
+#contenido-grupo .editado-bien {
+    display: none;
+}
+
+#contenido-grupo .agregado-bien {
+    display: none;
+}
+
+#contenido-grupo .eliminado-bien {
+    display: none;
+}

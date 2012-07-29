@@ -5,7 +5,9 @@
 <div class="listado">
     <ul class="alt">
         {% for cliente in clients %}
-            <li draggable="true" iduser='{{ cliente.user.id }}'>{{ cliente.user.get_full_name }}</li>
+            <li draggable="true" iduser='{{ cliente.user.id }}'>
+                <span class="icon darkgray" data-icon="u" style="display: inline-block; "><span
+                        aria-hidden="true">u</span></span>{{ cliente.user.get_full_name }}</li>
         {% endfor %}
     </ul>
 </div>

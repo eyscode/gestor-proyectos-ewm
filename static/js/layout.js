@@ -1,5 +1,6 @@
+var clientes = [];
+var groups = [];
 function handleDragStart(e) {
-    console.log("se llamoa al start");
     dragSrcEl = this;
     e.dataTransfer.effectAllowed = 'move';
     var dragIcon = document.createElement('img');
@@ -38,20 +39,21 @@ function handleDrop(e) {
     var iduser = $(dragSrcEl).attr('iduser');
     var idgroup = $(this).attr('idgroup');
     var grupo = $(this);
-    console.log("ESTA HACIENDO LA CONSULTA");
     $.ajax({
         url:'/add-client/?iduser=' + iduser + '&idgroup=' + idgroup,
         type:'GET',
         success:function (data) {
             if (data == '1') {
-                console.log(grupo.find('.plus1'));
                 grupo.find('.plus1').fadeIn();
                 grupo.find('.plus1').transition({ x:-100 }, function () {
-                    $(this).transition({ opacity:0 });
+                    $(this).transition({ opacity:0 }, function () {
+                        grupo.find('.plus1').hide();
+                        grupo.find('.plus1').css('opacity', 100);
+                        grupo.find('.plus1').transition({x:0}, 0);
+                    }, 2000);
                 });
             } else if (data == '2') {
-                console.log(grupo.find('.mensaje'));
-                grupo.find('.mensaje').fadeIn('slow');
+                grupo.find('.mensaje').fadeIn();
                 grupo.find('.mensaje').fadeOut();
             }
         }
@@ -63,17 +65,18 @@ function handleDrop(e) {
 
 function handleDragEnd(e) {
     // this/e.target is the source node.
-
-    [].forEach.call(clientes, function (col) {
-        clientes.classList.remove('over');
-    });
+    if (clientes.classList) {
+        [].forEach.call(clientes, function (col) {
+            clientes.classList.remove('over');
+        });
+    }
 }
 
 $(document).ready(function () {
 
     var posini = {'home':0, 'projects':98, 'account':196, 'groups':294, 'explore':392};
-    $('#dock .triangulo').animate({
-        translateY:posini[actual] + 'px'
+    $('#dock .triangulo').transition({
+        y:posini[actual] + 'px'
     });
 
     $('#sub-dock .option').mouseenter(function () {
@@ -139,32 +142,25 @@ $(document).ready(function () {
             success:function (data) {
                 //var dim = final - parseInt($('#dock .triangulo').css('top'));
                 var dim = (valor - menos) * 98;
-                $('#dock .triangulo').animate({
-                    translateY:dim + 'px'
+                $('#dock .triangulo').transition({
+                    y:dim + 'px'
                 });
                 //$('#dock .triangulo').css('top', option.offset().top - 70);
                 $('#contenido').html(data);
                 $(window).scrollTop(0);
                 window.history.pushState(data, clase, url);
                 actual = clase;
-                var grupos = document.querySelectorAll('#grupos .un-grupo');
-                console.log(grupos);
+                grupos = document.querySelectorAll('#grupos .un-grupo');
                 [].forEach.call(grupos, function (col) {
-                    console.log("VOLO 1");
                     col.addEventListener('dragenter', handleDragEnter, false);
-                    console.log("VOLO 2");
                     col.addEventListener('dragleave', handleDragLeave, false);
                     col.addEventListener('drop', handleDrop, false);
                     col.addEventListener('dragend', handleDragEnd, false);
                     col.addEventListener('dragover', handleDragOver, false);
-                    console.log("VOLO");
                 });
-                console.log("se buscaron clientes");
 
-                var clientes = document.querySelectorAll('#contenido-grupo .listado li');
-                console.log(clientes);
+                clientes = document.querySelectorAll('#contenido-grupo .listado li');
                 [].forEach.call(clientes, function (col) {
-                    console.log("esta entrado=");
                     col.addEventListener('dragstart', handleDragStart, false);
                     col.addEventListener('dragover', handleDragOver, false);
                     col.addEventListener('dragend', handleDragEnd, false);
@@ -191,8 +187,8 @@ $(document).ready(function () {
             url:$(this).attr('href'),
             type:"GET",
             success:function (data) {
-                $('#dock .triangulo').animate({
-                    translateY:dim * 98 + 'px'
+                $('#dock .triangulo').transition({
+                    y:dim * 98 + 'px'
                 });
                 cual.hide();
                 $('#extra-' + cual.attr('id')).show();
@@ -256,8 +252,8 @@ $(document).ready(function () {
             } else {
                 $('#explore').show();
                 $('#groups').hide();
-                /*$('#dock .triangulo').animate({
-                 translateY:294 + 'px'
+                /*$('#dock .triangulo').transition({
+                 y:294 + 'px'
                  });*/
                 $('#extra-explore').hide();
                 $('#extra-groups').show();
@@ -288,8 +284,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#account').hide();
                 $('#extra-account').show();
-                /*$('#dock .triangulo').animate({
-                 translateY:196 + 'px'
+                /*$('#dock .triangulo').transition({
+                 y:196 + 'px'
                  });*/
             }
             $('#projects').show();
@@ -318,8 +314,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#projects').hide();
                 $('#extra-projects').show();
-                /*$('#dock .triangulo').animate({
-                 translateY:98 + 'px'
+                /*$('#dock .triangulo').transition({
+                 y:98 + 'px'
                  });*/
             }
             $('#home').show();
@@ -348,8 +344,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#home').hide();
                 $('#extra-home').show();
-                $('#dock .triangulo').animate({
-                    translateY:0 + 'px'
+                $('#dock .triangulo').transition({
+                    y:0 + 'px'
                 });
             }
             $('#extra-option').css('top', '92px');
@@ -370,9 +366,10 @@ $(document).ready(function () {
                 }
             }
         });
-        $('#dock .triangulo').transform({
-            translateY:(valor - (menos * 98)) + 'px'
-        });
+        /*$('#dock .triangulo').transform({
+         y:(valor - (menos * 98)) + 'px'
+         });*/
+        $('#dock .triangulo').transition({ y:(valor - (menos * 98)) + 'px' }, 'slow');
     });
     $(window).load(function () {
         if ($(window).height() > 640) {
@@ -392,8 +389,8 @@ $(document).ready(function () {
             } else {
                 $('#explore').show();
                 $('#groups').hide();
-                $('#dock .triangulo').animate({
-                    translateY:294 + 'px'
+                $('#dock .triangulo').transition({
+                    y:294 + 'px'
                 });
                 $('#extra-explore').hide();
                 $('#extra-groups').show();
@@ -424,8 +421,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#account').hide();
                 $('#extra-account').show();
-                $('#dock .triangulo').animate({
-                    translateY:196 + 'px'
+                $('#dock .triangulo').transition({
+                    y:196 + 'px'
                 });
             }
             $('#projects').show();
@@ -454,8 +451,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#projects').hide();
                 $('#extra-projects').show();
-                $('#dock .triangulo').animate({
-                    translateY:98 + 'px'
+                $('#dock .triangulo').transition({
+                    y:98 + 'px'
                 });
             }
             $('#home').show();
@@ -484,8 +481,8 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#home').hide();
                 $('#extra-home').show();
-                $('#dock .triangulo').animate({
-                    translateY:0 + 'px'
+                $('#dock .triangulo').transition({
+                    y:0 + 'px'
                 });
             }
             $('#extra-option').css('top', '92px');
