@@ -22,4 +22,6 @@ urlpatterns = patterns('appcuentas.views',
     url(r'^groups/get-group/$', 'view_get_group'),
     url(r'^groups/delete-group/$', 'view_delete_group'),
     url(r'^projects/delete-project/$', 'view_delete_project'),
+    url(r'^projects/tables/$','view_tables'),
+    url(r'^projects/reuniones/$','view_reuniones'),
 )
