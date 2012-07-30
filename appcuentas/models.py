@@ -24,10 +24,10 @@ class Client(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=250)
-    date_creation = models.DateTimeField()
-    company = models.CharField(max_length=250)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    company = models.CharField(max_length=250, null=True, blank=True)
     base = models.BooleanField(default=False)
-    template = models.ForeignKey(Template, null=True)
+    template = models.ForeignKey(Template, null=True, blank=True)
     creador = models.ForeignKey(Client)
 
     def __unicode__(self):

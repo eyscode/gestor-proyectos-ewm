@@ -3,7 +3,12 @@
     float: left;
 }
 
-#contenido-grupo {
+#proyectos {
+    width: 45%;
+    float: left;
+}
+
+#contenido-derecha {
     padding-left: 20px;
     height: 500px;
     width: 50%;
@@ -131,25 +136,25 @@ input[type="text"] {
     display: block;
 }
 
-#contenido-grupo .lupa {
+#contenido-derecha .lupa {
     float: left;
     margin: 12px 0px 0px 14px;
 }
 
-#contenido-grupo .listado {
+#contenido-derecha .listado {
     clear: both;
 }
 
-#contenido-grupo label {
+#contenido-derecha label {
     margin: 20px 0 20px 0;
     font-size: 1.5em;
 }
 
-#contenido-grupo .form-busqueda {
+#contenido-derecha .form-busqueda {
     margin-top: 20px;
 }
 
-#contenido-grupo li {
+#contenido-derecha li {
     cursor: pointer;
     font-size: 1em;
     padding: 18px 0 18px 0;
@@ -168,20 +173,24 @@ input[type="text"] {
     border: 2px dashed #000 !important;
 }
 
-#form-crear-grupo .form-submits input[type="submit"] {
+.form-submits input[type="submit"] {
     display: inline-block;
     width: 40%;
     margin: 0 10px 0 10px;
 }
 
-#contenido-grupo .editado-bien {
+#contenido-derecha .editado-bien {
     display: none;
 }
 
-#contenido-grupo .agregado-bien {
+#contenido-derecha .agregado-bien {
     display: none;
 }
 
-#contenido-grupo .eliminado-bien {
+#contenido-derecha .eliminado-bien {
+    display: none;
+}
+
+#contenido-derecha .abandonado-bien {
     display: none;
 }

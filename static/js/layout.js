@@ -21,8 +21,10 @@ function handleDragOver(e) {
 }
 
 function handleDragEnter(e) {
-    // this / e.target is the current hover target.
-    this.classList.add('over');
+    if ($(this).attr('otro') == undefined) {
+        // this / e.target is the current hover target.
+        this.classList.add('over');
+    }
 }
 
 function handleDragLeave(e) {
@@ -30,36 +32,39 @@ function handleDragLeave(e) {
 }
 
 function handleDrop(e) {
-    this.classList.remove('over');
-    // this / e.target is current target element.
+    if ($(this).attr('otro') == undefined) {
+        this.classList.remove('over');
+        // this / e.target is current target element.
 
-    if (e.stopPropagation) {
-        e.stopPropagation(); // stops the browser from redirecting.
-    }
-    var iduser = $(dragSrcEl).attr('iduser');
-    var idgroup = $(this).attr('idgroup');
-    var grupo = $(this);
-    $.ajax({
-        url:'/add-client/?iduser=' + iduser + '&idgroup=' + idgroup,
-        type:'GET',
-        success:function (data) {
-            if (data == '1') {
-                grupo.find('.plus1').fadeIn();
-                grupo.find('.plus1').transition({ x:-100 }, function () {
-                    $(this).transition({ opacity:0 }, function () {
-                        grupo.find('.plus1').hide();
-                        grupo.find('.plus1').css('opacity', 100);
-                        grupo.find('.plus1').transition({x:0}, 0);
-                    }, 2000);
-                });
-            } else if (data == '2') {
-                grupo.find('.mensaje').fadeIn();
-                grupo.find('.mensaje').fadeOut();
-            }
+        if (e.stopPropagation) {
+            e.stopPropagation(); // stops the browser from redirecting.
         }
-    });
-    // See the section on the DataTransfer object.
+        var iduser = $(dragSrcEl).attr('iduser');
+        var idgroup = $(this).attr('idgroup');
+        var grupo = $(this);
 
+        $.ajax({
+            url:'/' + actual + '/add-client/?iduser=' + iduser + '&idgroup=' + idgroup,
+            type:'GET',
+            success:function (data) {
+                if (data == '1') {
+                    grupo.find('.plus1').fadeIn();
+                    grupo.find('.plus1').transition({ x:-100 }, function () {
+                        $(this).transition({ opacity:0 }, function () {
+                            grupo.find('.plus1').hide();
+                            grupo.find('.plus1').css('opacity', 100);
+                            grupo.find('.plus1').transition({x:0}, 0);
+                        }, 2000, function () {
+                        });
+                    });
+                } else if (data == '2') {
+                    grupo.find('.mensaje').fadeIn();
+                    grupo.find('.mensaje').fadeOut();
+                }
+            }
+        });
+        // See the section on the DataTransfer object.
+    }
     return false;
 }
 
@@ -72,11 +77,28 @@ function handleDragEnd(e) {
     }
 }
 
-$(document).ready(function () {
+$('#contenido').ready(function () {
+
+    var grupos = document.querySelectorAll('#grupos .un-grupo');
+    [].forEach.call(grupos, function (col) {
+        col.addEventListener('dragenter', handleDragEnter, false)
+        col.addEventListener('dragleave', handleDragLeave, false);
+        col.addEventListener('drop', handleDrop, false);
+        col.addEventListener('dragend', handleDragEnd, false);
+        col.addEventListener('dragover', handleDragOver, false);
+    });
+
+    var clientes = document.querySelectorAll('#contenido-derecha .listado li');
+    [].forEach.call(clientes, function (col) {
+        col.addEventListener('dragstart', handleDragStart, false);
+        col.addEventListener('dragover', handleDragOver, false);
+        col.addEventListener('dragend', handleDragEnd, false);
+    });
 
     var posini = {'home':0, 'projects':98, 'account':196, 'groups':294, 'explore':392};
     $('#dock .triangulo').transition({
         y:posini[actual] + 'px'
+    }, function () {
     });
 
     $('#sub-dock .option').mouseenter(function () {
@@ -136,37 +158,46 @@ $(document).ready(function () {
                 }
             }
         });
-        $.ajax({
-            url:$(this).attr('href'),
-            type:"GET",
-            success:function (data) {
-                //var dim = final - parseInt($('#dock .triangulo').css('top'));
-                var dim = (valor - menos) * 98;
-                $('#dock .triangulo').transition({
-                    y:dim + 'px'
-                });
-                //$('#dock .triangulo').css('top', option.offset().top - 70);
-                $('#contenido').html(data);
-                $(window).scrollTop(0);
-                window.history.pushState(data, clase, url);
-                actual = clase;
-                grupos = document.querySelectorAll('#grupos .un-grupo');
-                [].forEach.call(grupos, function (col) {
-                    col.addEventListener('dragenter', handleDragEnter, false);
-                    col.addEventListener('dragleave', handleDragLeave, false);
-                    col.addEventListener('drop', handleDrop, false);
-                    col.addEventListener('dragend', handleDragEnd, false);
-                    col.addEventListener('dragover', handleDragOver, false);
-                });
+        if (clase != actual) {
+            $.ajax({
+                url:$(this).attr('href'),
+                type:"GET",
+                success:function (data) {
+                    var dim = (valor - menos) * 98;
+                    $('#dock .triangulo').transition({
+                        y:dim + 'px'
+                    }, function () {
+                    });
+                    $(window).scrollTop(0);
+                    window.history.pushState(data, clase, url);
+                    actual = clase;
+                    $('#contenido').html(data);
+                    console.log(actual);
+                    if (actual == 'groups' || actual == 'projects') {
+                        grupos = document.querySelectorAll('#grupos .un-grupo');
+                        [].forEach.call(grupos, function (col) {
+                            col.addEventListener('dragenter', handleDragEnter, false);
+                            col.addEventListener('dragleave', handleDragLeave, false);
+                            col.addEventListener('drop', handleDrop, false);
+                            col.addEventListener('dragend', handleDragEnd, false);
+                            col.addEventListener('dragover', handleDragOver, false);
+                        });
 
-                clientes = document.querySelectorAll('#contenido-grupo .listado li');
-                [].forEach.call(clientes, function (col) {
-                    col.addEventListener('dragstart', handleDragStart, false);
-                    col.addEventListener('dragover', handleDragOver, false);
-                    col.addEventListener('dragend', handleDragEnd, false);
-                });
-            }
-        });
+                        clientes = document.querySelectorAll('#contenido-derecha .listado li');
+                        [].forEach.call(clientes, function (col) {
+                            col.addEventListener('dragstart', handleDragStart, false);
+                            col.addEventListener('dragover', handleDragOver, false);
+                            col.addEventListener('dragend', handleDragEnd, false);
+                        });
+                    }
+                    console.log("cargo el ajax");
+                },
+                error:function (data) {
+                    console.log("que mierda pasa");
+                }
+            });
+            console.log("termino la llamada de ajax");
+        }
         return false;
     });
     $('#extra-option .option a').click(function () {
@@ -189,6 +220,7 @@ $(document).ready(function () {
             success:function (data) {
                 $('#dock .triangulo').transition({
                     y:dim * 98 + 'px'
+                }, function () {
                 });
                 cual.hide();
                 $('#extra-' + cual.attr('id')).show();
@@ -252,9 +284,6 @@ $(document).ready(function () {
             } else {
                 $('#explore').show();
                 $('#groups').hide();
-                /*$('#dock .triangulo').transition({
-                 y:294 + 'px'
-                 });*/
                 $('#extra-explore').hide();
                 $('#extra-groups').show();
             }
@@ -284,9 +313,6 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#account').hide();
                 $('#extra-account').show();
-                /*$('#dock .triangulo').transition({
-                 y:196 + 'px'
-                 });*/
             }
             $('#projects').show();
             $('#home').show();
@@ -314,9 +340,6 @@ $(document).ready(function () {
                 $('#extra-' + actual).hide();
                 $('#projects').hide();
                 $('#extra-projects').show();
-                /*$('#dock .triangulo').transition({
-                 y:98 + 'px'
-                 });*/
             }
             $('#home').show();
             $('#extra-option').css('top', '190px');
@@ -346,6 +369,7 @@ $(document).ready(function () {
                 $('#extra-home').show();
                 $('#dock .triangulo').transition({
                     y:0 + 'px'
+                }, function () {
                 });
             }
             $('#extra-option').css('top', '92px');
@@ -369,7 +393,8 @@ $(document).ready(function () {
         /*$('#dock .triangulo').transform({
          y:(valor - (menos * 98)) + 'px'
          });*/
-        $('#dock .triangulo').transition({ y:(valor - (menos * 98)) + 'px' }, 'slow');
+        $('#dock .triangulo').transition({ y:(valor - (menos * 98)) + 'px' }, 'slow', function () {
+        });
     });
     $(window).load(function () {
         if ($(window).height() > 640) {
@@ -391,6 +416,7 @@ $(document).ready(function () {
                 $('#groups').hide();
                 $('#dock .triangulo').transition({
                     y:294 + 'px'
+                }, function () {
                 });
                 $('#extra-explore').hide();
                 $('#extra-groups').show();
@@ -423,6 +449,7 @@ $(document).ready(function () {
                 $('#extra-account').show();
                 $('#dock .triangulo').transition({
                     y:196 + 'px'
+                }, function () {
                 });
             }
             $('#projects').show();
@@ -453,6 +480,7 @@ $(document).ready(function () {
                 $('#extra-projects').show();
                 $('#dock .triangulo').transition({
                     y:98 + 'px'
+                }, function () {
                 });
             }
             $('#home').show();
@@ -483,6 +511,7 @@ $(document).ready(function () {
                 $('#extra-home').show();
                 $('#dock .triangulo').transition({
                     y:0 + 'px'
+                }, function () {
                 });
             }
             $('#extra-option').css('top', '92px');
