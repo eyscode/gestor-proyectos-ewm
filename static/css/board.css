@@ -1,95 +1,103 @@
-#Kboard{
-    background:#ccc;
-    border:groove 2px #999;
-    padding:15px;
-    overflow:hidden;
-}
-#Ktablero{
-    background:#ddd;
-    overflow:scroll;
-    overflow-y:hidden;
-}
-#Ktablero .Ktask{
-    width:31%;
-    margin:0.5em;
-    display:inline-block;
-    height:400px;
-    background:#eee;
-    border:solid #888 0.1em;
-    border-radius:12px;
-    overflow:scroll;
-    overflow-x:hidden;
-}
-#Ktablero div div{
-    margin:10px;
-    background:#efd;
-    border:green 1px solid;
-    border-radius:12px;
-    height:auto;
+#Kboard {
+    background: #ccc;
+    border: groove 2px #999;
+    padding: 15px;
+    overflow: hidden;
 }
 
-.footOp{
-    width:25%;
-    float:left;
+#Ktablero {
+    background: #ddd;
+    overflow: scroll;
+    overflow-y: hidden;
+}
+
+#Ktablero .Ktask {
+    width: 31%;
+    margin: 0.5em;
+    display: inline-block;
+    height: 400px;
+    background: #eee;
+    border: solid #888 0.1em;
+    border-radius: 12px;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#Ktablero div div {
+    margin: 10px;
+    background: #efd;
+    border: green 1px solid;
+    border-radius: 12px;
+    height: auto;
+}
+
+.footOp {
+    width: 25%;
+    float: left;
     background: rgb(200, 214, 193);
 }
-.footOp div{
-    background:#eee;
-    border-radius:5px;    
-    border:groove 3px;    
-    overflow:hidden;
-    margin:5px;
-    padding:5px;
+
+.footOp div {
+    background: #eee;
+    border-radius: 5px;
+    border: groove 3px;
+    overflow: hidden;
+    margin: 5px;
+    padding: 5px;
 }
-.footOp div h6{
-    margin:0;
-    
+
+.footOp div h6 {
+    margin: 0;
+
 }
-.handTask{
-    float:right;
-    padding:0;
-    width:auto;
-    margin:3px;
-    overflow:hidden;
+
+.handTask {
+    float: right;
+    padding: 0;
+    width: auto;
+    margin: 3px;
+    overflow: hidden;
 }
-.handTask img{
-    margin:2px;
-    transform:rotate(0deg);
-    -ms-transform:rotate(0deg); /* Internet Explorer */
-    -moz-transform:rotate(0deg); /* Firefox */
-    -webkit-transform:rotate(0deg); /* Safari and Chrome */
-    -o-transform:rotate(0deg); /* Opera */
-        
+
+.handTask img {
+    margin: 2px;
+    transform: rotate(0deg);
+    -ms-transform: rotate(0deg); /* Internet Explorer */
+    -moz-transform: rotate(0deg); /* Firefox */
+    -webkit-transform: rotate(0deg); /* Safari and Chrome */
+    -o-transform: rotate(0deg); /* Opera */
+
     transition: transform 1s;
-    -moz-transition:-moz-transform 1s; /* Firefox 4 */
+    -moz-transition: -moz-transform 1s; /* Firefox 4 */
     -webkit-transition: -webkit-transform 1s; /* Safari and Chrome */
-    -o-transition:-o-transform s; /* Opera */
+    -o-transition: -o-transform s; /* Opera */
 }
-.handTask img:active{
-    
-    transform:rotate(360deg);
-    -ms-transform:rotate(360deg); /* Internet Explorer */
-    -moz-transform:rotate(360deg); /* Firefox */
-    -webkit-transform:rotate(360deg); /* Safari and Chrome */
-    -o-transform:rotate(360deg); /* Opera */   
+
+.handTask img:active {
+
+    transform: rotate(360deg);
+    -ms-transform: rotate(360deg); /* Internet Explorer */
+    -moz-transform: rotate(360deg); /* Firefox */
+    -webkit-transform: rotate(360deg); /* Safari and Chrome */
+    -o-transform: rotate(360deg); /* Opera */
 }
 
 /**********/
 /* Scroll */
 /**********/
 ::-webkit-scrollbar {
-    width: 25px;
-    background:#fff;
-    -webkit-box-shadow: inset 0 0 3px #a55
+    width: 15px;
+    background: #fff;
+    -webkit-box-shadow: inset 0 0 3px #a55;
 }
- 
-::-webkit-scrollbar-track {    
-    -webkit-box-shadow: inset 0 0 6px #2D6987; 
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px #2D6987;
     border-radius: 8px;
 }
- 
+
 ::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background:#E0EEE0;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    background: #E0EEE0;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
 }

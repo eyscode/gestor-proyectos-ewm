@@ -24,10 +24,10 @@ class Client(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=250)
-    date_creation = models.DateTimeField()
-    company = models.CharField(max_length=250)
+    date_creation = models.DateTimeField(auto_now_add=True)
+    company = models.CharField(max_length=250, null=True, blank=True)
     base = models.BooleanField(default=False)
-    template = models.ForeignKey(Template, null=True, default=None,blank=True)
+    template = models.ForeignKey(Template, null=True, blank=True)
     creador = models.ForeignKey(Client)
 
     def __unicode__(self):
@@ -45,7 +45,7 @@ class Client_has_Project(models.Model):
 class Group(models.Model):
     name = models.CharField(max_length=100)
     information = models.CharField(max_length=250)
-    date_creation = models.DateTimeField()
+    date_creation = models.DateTimeField(auto_now_add=True)
     creador = models.ForeignKey(Client, related_name='mis_grupos')
 
     def __unicode__(self):
@@ -124,7 +124,7 @@ class Work_Package(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
     prioridad = models.IntegerField()
-    table = models.ForeignKey(Table,null=True, default=None,blank=True)
+    table = models.ForeignKey(Table)
     project = models.ForeignKey(Project)
 
     def __unicode__(self):
@@ -136,8 +136,8 @@ class Task(models.Model):
     subtitle = models.CharField(max_length=100)
     description = models.TextField()
     state = models.CharField(max_length=50)
-    column = models.ForeignKey(Column,null=True, default=None,blank=True)
-    work_package = models.ForeignKey(Work_Package,null=True, default=None,blank=True)
+    column = models.ForeignKey(Column)
+    work_package = models.ForeignKey(Work_Package)
 
     def __unicode__(self):
         return self.title

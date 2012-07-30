@@ -1,76 +1,84 @@
-#Khome{
-    overflow:auto;
-    height:100%;    
-}
-#Khome header{
-    margin:0 0 20px 0;
-    border-radius:5px;
-    background:#ccc;
-}
-#Khome footer{
-    clear:both;
-    margin:0 0 20px 0;
-    border-radius:5px;
-    background:#ddd;
-}
-#shortMethods,#record{
-    width:50%;
-    float:left;
-}
-#record{
-    background:#eee;
-    border-radius:12px;
+#Khome {
+    overflow: auto;
+    height: 100%;
 }
 
-#Kproy button{
-    width:80%;
-    float:left;
-    display:inline;
-}
-#Kproy a:nth-of-type(1),#Kproy a:nth-of-type(2),#Kproy a:nth-of-type(3){    
-    margin:3px; 
-    height:30px;
-    background:#ddd;
-    border:solid 1px #aaa;
-    border-radius:4px;
-    float:left;   
-}
-.KshortEnter{
-    width:50%;
-    float:left;
+#Khome header {
+    margin: 0 0 20px 0;
+    border-radius: 5px;
+    background: #ccc;
 }
 
-.KshortLinks{
-    width:50%;    
-    float:left;
+#Khome footer {
+    clear: both;
+    margin: 0 0 20px 0;
+    border-radius: 5px;
+    background: #ddd;
 }
 
-.KshortLinks button{
-    width:100%;
-    display:block;
+#shortMethods, #record {
+    width: 50%;
+    float: left;
 }
-.KshortLinks a{
-    float:right;   
+
+#record {
+    background: #eee;
+    border-radius: 12px;
 }
-.Kplus{    
-    text-align:right;    
-    text-decoration:none;
-    color:green;
-    font-weight:bold;
-    
-    width:100%;
-    display:block;
+
+#Kproy button {
+    width: 80%;
+    float: left;
+    display: inline;
 }
-.clearFloat{
-    
-    overflow:hidden;
-    clear:both;
-    margin-bottom:10px;
-    margin-right:10px;
+
+#Kproy a:nth-of-type(1), #Kproy a:nth-of-type(2), #Kproy a:nth-of-type(3) {
+    margin: 3px;
+    height: 30px;
+    background: #ddd;
+    border: solid 1px #aaa;
+    border-radius: 4px;
+    float: left;
+}
+
+.KshortEnter {
+    width: 50%;
+    float: left;
+}
+
+.KshortLinks {
+    width: 50%;
+    float: left;
+}
+
+.KshortLinks button {
+    width: 100%;
+    display: block;
+}
+
+.KshortLinks a {
+    float: right;
+}
+
+.Kplus {
+    text-align: right;
+    text-decoration: none;
+    font-weight: bold;
+
+    width: 100%;
+    display: block;
+}
+
+.clearFloat {
+
+    overflow: hidden;
+    clear: both;
+    margin-bottom: 10px;
+    margin-right: 10px;
     /*******/
     /*******/
-    
-    padding: 4px 10px 4px;    
+
+    padding: 4px 10px 4px;
     font-size: 13px;
     line-height: 18px;
     *line-height: 20px;
@@ -78,7 +86,7 @@
     text-align: center;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
     vertical-align: middle;
-    
+
     background-color: #f5f5f5;
     *background-color: #e6e6e6;
     background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
@@ -96,39 +104,45 @@
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
     border-radius: 4px;
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0);
-    filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr = '#ffffff', endColorstr = '#e6e6e6', GradientType = 0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled = false);
     *zoom: 1;
     -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-#record li{
-    list-style-type:none;
-    
+
+#record li {
+    list-style-type: none;
+
 }
-#record li a{
-    text-decoration:none;
-    
+
+#record li a {
+    text-decoration: none;
+
 }
-#ayuda div a{
-    padding-top:10;
-    color:blue;
-    text-align:center;
+
+#ayuda div a {
+    padding-top: 10;
+    color: blue;
+    text-align: center;
 }
-.clearFloat span{
-    margin-right:12px;
+
+.clearFloat span {
+    margin-right: 12px;
 }
-#ayuda h5{
-    font-family:Chiller;
-    color:#153;
-    font-size:30px;
+
+#ayuda h5 {
+    font-family: Chiller;
+    color: #153;
+    font-size: 30px;
 }
-#record h3{
-    margin:0 0 2px 0;
-    border-radius:12px;
-    text-align:center;
-    color:#ddd;
+
+#record h3 {
+    margin: 0 0 2px 0;
+    border-radius: 12px;
+    text-align: center;
+    color: #ddd;
     background-color: #414141;
     *background-color: #222222;
     background-image: -ms-linear-gradient(top, #555555, #222222);
@@ -140,48 +154,54 @@
     background-repeat: repeat-x;
     border-color: #222222 #222222 #000000;
     border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
-    filter: progid:dximagetransform.microsoft.gradient(startColorstr='#555555', endColorstr='#222222', GradientType=0);
-    filter: progid:dximagetransform.microsoft.gradient(enabled=false);
-    
-}
-#contenido{
-    overflow:auto;
-    height: 100%;
-}
-#ayuda .KshortLinks{
-    margin:25px auto;
-    
-}
-.recordDivision{
-    float:left;
-    width:50%;
-    height:100%;
-}
-.recordDivision .Kseparador{
-    background:#ffd;
-    margin:5px;
-    border-left:solid 2px #aaa;
-    padding:10px;
-    border-radius:10px;
-    height:100%;
+    filter: progid:dximagetransform.microsoft.gradient(startColorstr = '#555555', endColorstr = '#222222', GradientType = 0);
+    filter: progid:dximagetransform.microsoft.gradient(enabled = false);
+
 }
 
-#Kfoto{
-    overflow:hidden;
-    
+#contenido {
+    overflow: auto;
+    height: 100%;
 }
-#Kfoto img{
-    float:right;
-    width:80px;
-    height:90px;  
-    border:groove #aaa;
-    border-radius:5px;
+
+#ayuda .KshortLinks {
+    margin: 25px auto;
+
 }
-#Kfoto p span{
-    position:relative;
-    top:20px;
-    left:10px;
-    float:left;
-    width:60%;
-    word-wrap:break-word;
+
+.recordDivision {
+    float: left;
+    width: 50%;
+    height: 100%;
+}
+
+.recordDivision .Kseparador {
+    background: #ffd;
+    margin: 5px;
+    border-left: solid 2px #aaa;
+    padding: 10px;
+    border-radius: 10px;
+    height: 100%;
+}
+
+#Kfoto {
+    overflow: hidden;
+
+}
+
+#Kfoto img {
+    float: right;
+    width: 80px;
+    height: 90px;
+    border: groove #aaa;
+    border-radius: 5px;
+}
+
+#Kfoto p span {
+    position: relative;
+    top: 20px;
+    left: 10px;
+    float: left;
+    width: 60%;
+    word-wrap: break-word;
 }

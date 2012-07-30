@@ -1,17 +1,16 @@
-<div id="form-crear-grupo">
-    <form class="vertical" method="POST" action="/groups/create-group/">
-        <input class="group-id" type="hidden" name="groupid" value="{{ group.id }}">
-        <label>Nombre del grupo</label>
+<div id="form-crear-project">
+    <form class="vertical" method="POST" action="/projects/create-project/">
+        <input class="group-id" type="hidden" name="groupid" value="{{ project.id }}">
+        <label>Nombre del proyecto</label>
 
         <div class="nombre-errors"></div>
-        <input type="text" name="nombre" value="{{ group.name }}">
-        <label>Descripcion</label>
+        <input type="text" name="nombre" value="{{ project.name }}">
+        <label>Compañia</label>
 
-        <div class="descripcion-errors"></div>
-        <textarea name="descripcion">{{ group.information }}</textarea>
+        <input type="text" name="company" value="{{ project.company}}">
 
         <div class="listado">
-            <p>Personas en este grupo</p>
+            <p>Personas en este proyecto</p>
             <ul class="alt">
                 {% for cliente in clients %}
                     <li draggable="true" iduser='{{ cliente.user.id }}'>

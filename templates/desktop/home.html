@@ -4,81 +4,85 @@
         <header>===============================================================</header>
         <div id="shortMethods">
 
-        <div class="clearFloat">
-            <div class="KshortEnter">
-                <h5><span class="icon x-large gray" data-icon="S"></span>Proyectos Recientes</h5>
+            <div class="clearFloat">
+                <div class="KshortEnter">
+                    <h5><span class="icon x-large gray" data-icon="S"></span>Proyectos Recientes</h5>
+                </div>
+                <div class="KshortLinks" id="Kproy">
+                    {% for proy in proyectos %}
+                        <button href="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
+                                                                                alt=""
+                                                                                style="margin:0.5em;"></a>
+                        <!--[El mas]-->
+                    {% endfor %}
+                    <a href="" class="Kplus"
+                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Ver más</span></a>
+                </div>
             </div>
-            <div class="KshortLinks" id="Kproy">
-                <button href="">Proyecto 1</button><a href=""><img src="../../static/img/tablero.png" alt="" style="margin:0.5em;"></a>
-                <button href="">Proyecto 2</button><a href=""><img src="../../static/img/tablero.png" alt="" style="margin:0.5em;"></a>
-                <button href="">Proyecto 3</button><a href=""><img src="../../static/img/tablero.png" alt="" style="margin:0.5em;"></a>
-                <!--[El mas]-->
-                <a href="" class="Kplus" style="background:#ddd;border-bottom:2px solid #aaa;"><span>Recientes</span></a>
+
+
+            <div class="clearFloat">
+                <div class="KshortEnter">
+                    <h5><span class="icon x-large gray" data-icon="U"></span>Grupos Recientes</h5>
+                </div>
+
+                <div class="KshortLinks">
+                    {% for grupo in grupos %}
+                        <button href="">{{ grupo.name }}</button>
+                        <!--[El mas]-->
+                    {% endfor %}
+                    <a href="" class="Kplus"
+                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Recientes</span></a>
+                </div>
+            </div>
+
+
+            <div class="clearFloat" id="ayuda">
+                <div class="KshortEnter">
+                    <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO</h5>
+                </div>
+                <div class="KshortLinks">
+                    <a href="" class="Kplus">Ayuda? <span class="icon x-large gray" data-icon="?"></span></a>
+                </div>
             </div>
         </div>
-
-
-        <div class="clearFloat">
-            <div class="KshortEnter">
-                <h5><span class="icon x-large gray" data-icon="U"></span>Grupos Recientes</h5>
-            </div>
-
-            <div class="KshortLinks">
-                <button href="">Group 1</button>
-                <button href="">Group 2</button>
-                <button href="">Group 3</button>
-                <!--[El mas]-->
-                <a href="" class="Kplus" style="background:#ddd;border-bottom:2px solid #aaa;"><span>Recientes</span></a>
-            </div>
-        </div>
-
-
-        <div class="clearFloat" id="ayuda">
-            <div class="KshortEnter">
-                <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO</h5>
-            </div>
-            <div class="KshortLinks">
-                <a href="" class="Kplus" >Ayuda? <span class="icon x-large gray" data-icon="?"></span></a>
-            </div>
-        </div>
-    </div>
 
         <div id="record">
 
-        <h3>Mi Historial</h3>
+            <h3>Mi Historial</h3>
 
-        <div class="recordDivision">
-            <div class="Kseparador">
-                <h4>Ultimos movimientos</h4>
-                <ul>
-                    <li><a href="">op1</a></li>
-                    <li><a href="">op2</a></li>
-                    <li><a href="">op3</a></li>
-                    <li><a href="">op4</a></li>
-                    <li><a href="">op5</a></li>
-                    <li><a href="">op6</a></li>
-                </ul>
-            </div>
-        </div>
-        <div  class="recordDivision">
-            <div class="Kseparador">
-                <div id="Kfoto">
-                    <p><span>Eysenk Gomez Orihuela</span>
-                    <img src="../../static/img/perfil.jpg" alt="">
-                    </p>
-                </div>
-                <div id="KperfilDescricion">
-                    <p>Descripcion</p>
+            <div class="recordDivision">
+                <div class="Kseparador">
+                    <h4>Ultimos movimientos</h4>
+                    <ul>
+                        <li><a href="">op1</a></li>
+                        <li><a href="">op2</a></li>
+                        <li><a href="">op3</a></li>
+                        <li><a href="">op4</a></li>
+                        <li><a href="">op5</a></li>
+                        <li><a href="">op6</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
+            <div class="recordDivision">
+                <div class="Kseparador">
+                    <div id="Kfoto">
+                        <p><span>Eysenk Gomez Orihuela</span>
+                            <img src="../../static/img/perfil.jpg" alt="">
+                        </p>
+                    </div>
+                    <div id="KperfilDescricion">
+                        <p>Descripcion</p>
+                    </div>
+                </div>
+            </div>
 
-      </div>
+        </div>
 
         <footer>
-            <a href=""class="btn">Mas opciones</a>
-            <a href=""class="btn">Mas opciones</a>
-            <a href=""class="btn">Mas Opciones</a>
+            <a href="" class="btn">Mas opciones</a>
+            <a href="" class="btn">Mas opciones</a>
+            <a href="" class="btn">Mas Opciones</a>
         </footer>
     </div>
 {% endblock %}
