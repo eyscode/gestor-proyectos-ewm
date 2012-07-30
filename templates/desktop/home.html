@@ -1,7 +1,6 @@
 {% extends ext %}
 {% block contenido %}
     <div id="Khome">
-        <header>===============================================================</header>
         <div id="shortMethods">
 
             <div class="clearFloat">
@@ -15,8 +14,7 @@
                                                                                 style="margin:0.5em;"></a>
                         <!--[El mas]-->
                     {% endfor %}
-                    <a href="" class="Kplus"
-                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Ver más</span></a>
+
                 </div>
             </div>
 
@@ -26,13 +24,12 @@
                     <h5><span class="icon x-large gray" data-icon="U"></span>Grupos Recientes</h5>
                 </div>
 
-                <div class="KshortLinks">
+                <div class="KshortLinks"  id="Kgroup">
                     {% for grupo in grupos %}
                         <button href="">{{ grupo.name }}</button>
                         <!--[El mas]-->
                     {% endfor %}
-                    <a href="" class="Kplus"
-                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Recientes</span></a>
+
                 </div>
             </div>
 
