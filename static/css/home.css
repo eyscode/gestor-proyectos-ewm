@@ -32,7 +32,7 @@
     display: inline;
 }
 
-#Kproy a:nth-of-type(1), #Kproy a:nth-of-type(2), #Kproy a:nth-of-type(3) {
+#Kproy a,#Kgroup a{
     margin: 3px;
     height: 30px;
     background: #ddd;
@@ -71,13 +71,14 @@
 
 .clearFloat {
 
-    overflow: hidden;
+    overflow:hidden;
     clear: both;
     margin-bottom: 10px;
     margin-right: 10px;
     /*******/
     /*******/
-
+    min-height:150px;
+    
     padding: 4px 10px 4px;
     font-size: 13px;
     line-height: 18px;

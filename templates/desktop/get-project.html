@@ -1,16 +1,16 @@
 <script type="text/javascript">
-        $("#tableros").click(function(){
+    $(document).ready(function(){
+        $('#tableros').click(function(){
             $.ajax({
-                method: "GET",
-                url: "/projects/tables/",
+                method: 'GET',
+                url: '/projects/tables/',
+                data: {'project_id='+{{ project.id }}},
                 success:function(data){
                     $('#tab_reu').html(data);
-                },
-                error: function(){
-                    $('#tab_reu').text('error en el ajax');
                 }
             });
         });
+    })
 </script>
 <div id="form-crear-project">
     <form class="vertical" method="POST" action="/projects/create-project/">
@@ -40,9 +40,9 @@
             <input class="eliminar button red" type="submit" name="eliminar" value="Eliminar" id="eliminar">
         </div>
     </form>
-    <div>
-        <input type="submit" id="tableros" value="tableros"/>
-        <button class="button" accesskey="" id="reuniones">Reuniones</button>
-    </div>
-    <div id="tab_reu"></div>
 </div>
+<div>
+    <button class="button" accesskey="" id="tableros">Tableros</button>
+    <button class="button" accesskey="" id="reuniones">Reuniones</button>
+</div>
+<div id="#tab_reu"></div>
