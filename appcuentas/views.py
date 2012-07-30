@@ -5,7 +5,6 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.utils import simplejson
-from oauth2 import clients
 from appcuentas.models import Group, Group_has_Client, Project
 from models import Client, User
 from forms import RegisterForm
