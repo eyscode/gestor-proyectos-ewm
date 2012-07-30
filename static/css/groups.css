@@ -194,3 +194,23 @@ input[type="text"] {
 #contenido-derecha .abandonado-bien {
     display: none;
 }
+/*********/
+#tabyreu{
+    border:solid 2px #ccc;
+    padding:8px;
+    border-radius:8px;
+}
+#opMostrar{
+    overflow:hidden; 
+             
+}
+#Kmostrar{
+    border:solid 2px #ccc;
+    padding:8px;
+}
+#Kmostrar li{
+    list-style-type:none;
+}
+#Kmostrar li a{
+    text-decoration:none;
+}
