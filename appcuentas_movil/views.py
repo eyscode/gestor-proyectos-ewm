@@ -10,7 +10,8 @@ from django.core.mail.message import EmailMultiAlternatives
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.utils import simplejson
-from appcuentas.models import Project, Table, Column, Work_Package, Task, Client, Client_has_Project
+from appcuentas.models import Project, Table, Column, Work_Package, Task, Client, Client_has_Project, Template, Comment, Group, Group_has_Client, Meeting
+
 
 """
     para jsonp
@@ -399,8 +400,11 @@ def view_crear_tarea(request):
 
 def view_traer_plantillas(request):
     try:
-        projects=Project.objects.filter(template= True )
-        response = serializers.serialize("json", projects)
+        callback=request.GET.get('callback', '')
+        id_user=request.GET.get('id_user', '')
+        user=get_object_or_404(Client,id = id_user)
+        templates=Template.objects.filter(profile= user.profile)
+        response = serializers.serialize("json", templates)
         response = callback + '(' + response + ');'
         return HttpResponse(response, mimetype='application/json')
     except Exception, ex:
@@ -408,32 +412,22 @@ def view_traer_plantillas(request):
     raise Http404
 
 @login_required(login_url='/login/')
-def view_crear_project(request):
+def view_crear_proyecto(request):
     try:
         if request.method == "GET":
-            nombre = request.GET.get("nombre", -1)
+            nombre = request.GET.get("name", -1)
             compania = request.GET.get("compania", -1)
             template = request.GET.get("id_template", -1)
             id_user = request.GET.get("id_usuario", -1)
             callback = request.GET.get('callback', '')
             req={}
-            print titulo
-            print descripcion
-            print id_paquete
+            print nombre
+            print compania
+            print template
             if nombre!=-1 and id_user!=-1:
                 c=get_object_or_404(Client,user__id=id_user)
-                project = Project(name=nombre,data_creation=datetime.datetime.now(),company=compania, template=False , creador=c)
+                project = Project(name=nombre,date_creation=datetime.datetime.now(),company=compania,creador=c)
                 project.save()
-                if template!=-1 or template!='':
-                    pt=get_object_or_404(Project,id=template)
-                    pt_tableros= Table.objects.filter(project=pt)
-                    for pt in pt_tableros:
-                        table_project=Table(name=pt.name,date_creation=datetime.datetime.now(),columns=pt.columns,project=project)
-                        table_project.save()
-                        colum=Column.objects.filter(table=pt)
-                        for pt_co in colum:
-                            co_porject=Column(name=pt_co.name,position=pt_co.position,table=table_project)
-                            co_porject.save()
                 req['id']= 1
                 response = simplejson.dumps(req)
                 response = callback + '(' + response + ');'
@@ -445,4 +439,313 @@ def view_crear_project(request):
                 return HttpResponse(response, mimetype='application/json')
     except Exception, ex:
         print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_eliminar_proyecto(request):
+    try:
+        if request.method == "GET":
+            user = request.GET.get("id_usuario", -1)
+            project = request.GET.get("id_proyecto", -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            print titulo
+            print descripcion
+            print id_paquete
+            if user!=-1 and project!=-1:
+                p = get_object_or_404(Project,id=project)
+                c = get_object_or_404(Client,user__id=user)
+                if p.creador.user==c.user:
+                    p.delete()
+                task = Task(title=titulo,subtitle=subtitulo,description=descripcion,state='',work_package=p)
+                task.save()
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_eliminar_proyecto(request):
+    try:
+        if request.method == "GET":
+            user = request.GET.get("id_usuario", -1)
+            project = request.GET.get("id_proyecto", -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            if user!=-1 and project!=-1:
+                p = get_object_or_404(Project,id=project)
+                c = get_object_or_404(Client,user__id=user)
+                if p.creador.user==c.user:
+                    p.delete()
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_agregar_paquete_tablero(request):
+    try:
+        if request.method == "GET":
+            tablero = request.GET.get("id_tablero", -1)
+            paquete = request.GET.get('id_paquete', -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            if tablero!=-1 and paquete!=-1:
+                p = get_object_or_404(Work_Package,id=paquete)
+                t = get_object_or_404(Table,id=tablero)
+                p.table=t
+                p.save()
+                colum=Column.objects.filter(table=tablero,position=1)
+                tareas=Task.objects.filter(work_package= p)
+                if len(colum)>0 and len(tareas)>0:
+                    for t in tareas:
+                        t.column = colum[0]
+                        t.save()
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_agregar_tarea_columna(request):
+    try:
+        if request.method == "GET":
+            id_tarea = request.GET.get("id_tarea", -1)
+            id_columna = request.GET.get('id_columna', -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            if id_tarea!=-1 and id_columna!=-1:
+                tarea = get_object_or_404(Task,id=id_tarea)
+                columna = get_object_or_404(Column,id=id_columna)
+                tarea.column=columna
+                tarea.save()
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_detalles_tarea(request):
+    try:
+        if request.method == "GET":
+            id_tarea = request.GET.get("id_tarea", -1)
+            callback = request.GET.get('callback', '')
+            if id_tarea!=-1:
+                tarea = get_object_or_404(Task,id=id_tarea)
+                response = serializers.serialize("json", tarea)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                response = callback + '([]);'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_add_miembros_proyecto(request):
+    try:
+        if request.method == "GET":
+            id_proyecto = request.GET.get("id_proyecto",-1)
+            email = request.GET.get("email",-1)
+            callback = request.GET.get('callback', '')
+            u =User.objects.filter(email=email)
+            if u:
+                client = get_object_or_404(Client, user=u[0])
+                project = get_object_or_404(Project, id=id_proyecto)
+                existe = Client_has_Project.objects.filter(client=client, project=project)
+                if not existe:
+                    Client_has_Project.objects.create(client=client, project=project)
+            req['id']= 1
+            response = simplejson.dumps(req)
+            response = callback + '(' + response + ');'
+            return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_agregar_comentario_tarea(request):
+    try:
+        if request.method == "GET":
+            id_tarea = request.GET.get("id_tarea", -1)
+            comentario = request.GET.get('comentario', -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            if id_tarea!=-1 and comentario!=-1:
+                tarea = get_object_or_404(Task,id=id_tarea)
+                Comment.objects.create(task=tarea, content=comentario)
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_mover_tarea(request):
+    try:
+        if request.method == "GET":
+            id_tarea = request.GET.get("id_tarea", -1)
+            id_columna = request.GET.get('id_columna', -1)
+            callback = request.GET.get('callback', '')
+            req={}
+            if id_tarea!=-1 and comentario!=-1:
+                tarea = get_object_or_404(Task,id=id_tarea)
+                columna= get_object_or_404(Column,id=id_columna)
+                tarea.column=columna
+                tarea.save()
+                req['id']= 1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                req['id']= -1
+                response = simplejson.dumps(req)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_add_miembros_grupo(request):
+    try:
+        if request.method == "GET":
+            id_grupo = request.GET.get("id_grupo",-1)
+            email = request.GET.get("email",-1)
+            callback = request.GET.get('callback', '')
+            u =User.objects.filter(email=email)
+            client = get_object_or_404(Client, user=u)
+            group = get_object_or_404(Group, id=id_grupo)
+            existe = Group_has_Client.objects.filter(client=client, group=group)
+            if not existe:
+                Group_has_Client.objects.create(client=client, group=group)
+            req['id']= 1
+            response = simplejson.dumps(req)
+            response = callback + '(' + response + ');'
+            return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_add_grupo(request):
+    try:
+        req={}
+        nombre = request.GET.get('nombre',-1)
+        descripcion = request.GET.get('descripcion',-1)
+        user=  request.GET.get('id_user',-1)
+        if nombre!=-1 and user!=-1:
+            creador=get_object_or_404(Client, user__id=user)
+            if not Group.objects.filter(creador=creador, name=nombre):
+                Group.objects.create(name=nombre, information=descripcion, creador=creador)
+                req['id']= 1
+            else:
+                req['id']= -1
+            response = simplejson.dumps(req)
+            response = callback + '(' + response + ');'
+            return HttpResponse(response, mimetype='application/json')
+        else:
+            req['id']= -1
+            response = simplejson.dumps(req)
+            response = callback + '(' + response + ');'
+            return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_traer_reuniones(request):
+    to_json = {}
+    id_project = request.GET.get("id_project", -1)
+    callback = request.GET.get('callback', '')
+    if id_project == -1:
+        groups = None
+        to_json['reuniones'] = groups
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
+    else:
+        reuniones = Meeting.objects.filter(project__id=id_project)
+        to_json['reuniones'] = reuniones
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_traer_comentarios(request):
+    to_json = {}
+    id_task = request.GET.get("id_task", -1)
+    callback = request.GET.get('callback', '')
+    if id_project == -1:
+        comentarios = None
+        to_json['comentarios'] = comentarios
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
+    else:
+        comentarios = Comment.objects.filter(task__id=id_task)
+        to_json['comentarios'] = comentarios
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_traer_profile(request):
+    to_json = {}
+    id_user= request.GET.get("id_user", -1)
+    callback = request.GET.get('callback', '')
+    if id_project == -1:
+        user = None
+        to_json['user'] = user
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
+    else:
+        user = get_object_or_404(User,id=id_user)
+        to_json['user'] = user
+        response = simplejson.dumps(to_json)
+        response = callback + '(' + response + ');'
+        return HttpResponse(response, mimetype='application/json')
     raise Http404
