@@ -153,7 +153,7 @@ def view_delete_group(request):
         print ex
         return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
 
-
+#la puta mare no te borres puto view ._.
 def view_delete_project(request):
     try:
         if 'groupid' in request.GET:
