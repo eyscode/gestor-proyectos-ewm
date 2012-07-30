@@ -355,7 +355,7 @@ def view_board(request):
 
 @login_required(login_url="/login/")
 def view_tables(request):
-    render_to_response("tableros.html",context_instance=RequestContext(request))
+    return render_to_response("desktop/tableros.html",context_instance=RequestContext(request))
     raise Http404
 
 @login_required(login_url="/login/")
