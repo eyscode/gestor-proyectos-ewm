@@ -1,5 +1,5 @@
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
@@ -352,3 +352,13 @@ def view_explore(request):
 @login_required(login_url="/login")
 def view_board(request):
     return render_to_response("board.html", context_instance=RequestContext(request))
+
+@login_required(login_url="/login/")
+def view_tables(request):
+    render_to_response("tableros.html",context_instance=RequestContext(request))
+    raise Http404
+
+@login_required(login_url="/login/")
+def view_reuniones(request):
+    render_to_response("reuniones.html",context_instance=RequestContext(request))
+    raise Http404

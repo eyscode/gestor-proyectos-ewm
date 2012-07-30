@@ -1,3 +1,17 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#tableros').click(function(){
+            $.ajax({
+                method: 'GET',
+                url: '/projects/tables/',
+                data: {'project_id='+{{ project.id }}},
+                success:function(data){
+                    $('#tab_reu').html(data);
+                }
+            });
+        });
+    })
+</script>
 <div id="form-crear-project">
     <form class="vertical" method="POST" action="/projects/create-project/">
         <input class="group-id" type="hidden" name="groupid" value="{{ project.id }}">
@@ -22,8 +36,13 @@
             </ul>
         </div>
         <div class="form-submits">
-            <input class="guardar button green" type="submit" name="guardar" value="Guardar">
-            <input class="eliminar button red" type="submit" name="eliminar" value="Eliminar">
+            <input class="guardar button green" type="submit" name="guardar" value="Guardar" id="guardar">
+            <input class="eliminar button red" type="submit" name="eliminar" value="Eliminar" id="eliminar">
         </div>
     </form>
 </div>
+<div>
+    <button class="button" accesskey="" id="tableros">Tableros</button>
+    <button class="button" accesskey="" id="reuniones">Reuniones</button>
+</div>
+<div id="#tab_reu"></div>
