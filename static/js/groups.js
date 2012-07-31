@@ -445,22 +445,66 @@ $(document).ready(function () {
             type:'GET',
             success:function (data) {
                 $('#contenido-derecha').html(data);
+                $('#form-crear-board').submit(function () {
+                    $.ajax({
+                        url:'/projects/create-board/',
+                        type:'POST',
+                        data:$(this).serialize(),
+                        success:function (data) {
+                            if (data.estado == 0) {
+                                if (data.error.nombre.length > 0) {
+                                    for (i in data.error.nombre) {
+                                        $('#form-crear-board .nombre-errors').append('<div class="notice error">' +
+                                                '<span class="icon medium" data-icon="X" style="display: inline-block; "><span aria-hidden="true">X</span></span>' + data.error.nombre[i] + '</div>');
+                                    }
+                                }
+                            } else {
+                                //se agrego el project entonces cargar con ajax la busqueda y mostrar mensaje
+                                $.ajax({
+                                    url:'/projects/',
+                                    type:'GET',
+                                    success:function (data) {
+                                        $('#contenido').html(data);
+                                        $(window).scrollTop(0);
+                                        grupos = document.querySelectorAll('#grupos .un-grupo');
+                                        [].forEach.call(grupos, function (col) {
+                                            col.addEventListener('dragenter', handleDragEnter, false);
+                                            col.addEventListener('dragleave', handleDragLeave, false);
+                                            col.addEventListener('drop', handleDrop, false);
+                                            col.addEventListener('dragend', handleDragEnd, false);
+                                            col.addEventListener('dragover', handleDragOver, false);
+                                        });
+
+                                        clientes = document.querySelectorAll('#contenido-derecha .listado li');
+                                        [].forEach.call(clientes, function (col) {
+                                            col.addEventListener('dragstart', handleDragStart, false);
+                                            col.addEventListener('dragover', handleDragOver, false);
+                                            col.addEventListener('dragend', handleDragEnd, false);
+                                        });
+                                        $('#contenido-derecha .creado-board-bien').show();
+                                    }
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
             }
         })
         return false;
     });
 
     /*$('#grupos .un-grupo .tablero').click(function () {
-        var idgroup = $(this).parent().parent().parent().attr('idgroup');
-        $.ajax({
-            url:"/projects/get-board/?idgroup=" + idgroup,
-            type:'GET',
-            success:function (data) {
-                $('#contenido').html(data);
-            }
-        })
-        return false;
-    });*/
+     var idgroup = $(this).parent().parent().parent().attr('idgroup');
+     $.ajax({
+     url:"/projects/get-board/?idgroup=" + idgroup,
+     type:'GET',
+     success:function (data) {
+     $('#contenido').html(data);
+     }
+     })
+     return false;
+     });*/
 
     $('#grupos .buscar-client').click(function () {
         $.ajax({

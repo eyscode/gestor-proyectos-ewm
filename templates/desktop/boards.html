@@ -2,10 +2,23 @@
 <div class="listado">
     <ul class="alt">
         {% for board in boards %}
-            <li draggable="true" iduser="2">
+            <li iduser="2">
                 <span class="icon darkgray" data-icon="Y" style="display: inline-block; "><span
                         aria-hidden="true">Y</span></span>{{ board.name }}
+            </li>
+        {% empty %}
+            <li>
+                El proyecto no tiene tableros
             </li>
         {% endfor %}
     </ul>
 </div>
+<p class="titulo">Crear tablero</p>
+<form id="form-crear-board" method="POST" class="vertical" action="/projects/create-table/">
+    <label>Nombre</label>
+
+    <div class="nombre-errors"></div>
+    <input type="text" name="nombre">
+    <input type="hidden" name="idproject" value="{{ idproject }}">
+    <input class="button green" type="submit" value="Crear">
+</form>

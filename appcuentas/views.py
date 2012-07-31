@@ -358,7 +358,27 @@ def view_get_boards(request):
     if request.GET.get('idgroup'):
         project = get_object_or_404(Project, id=request.GET.get('idgroup'))
         boards = Table.objects.filter(project=project)
-    return render_to_response("desktop/boards.html", {'boards': boards}, context_instance=RequestContext(request))
+        proyectos = Project.objects.filter(creador=request.user.get_profile()).order_by('-date_creation')
+        chp = Client_has_Project.objects.filter(client=Client.objects.get(user=request.user))
+        proyectos = set([proy.project for proy in chp]).union(set(proyectos))
+    return render_to_response("desktop/boards.html", {'boards': boards, 'idproject': project.id},
+        context_instance=RequestContext(request))
+
+
+def view_create_board(request):
+    error = {'nombre': []}
+    if request.method == "POST":
+        if request.POST.get('nombre'):
+            nombre = request.POST.get('nombre')
+            project = Project.objects.get(id=request.POST.get('idproject'))
+            if not Table.objects.filter(project=project, name=nombre):
+                Table.objects.create(name=nombre, columns=0, project=project)
+                return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+            else:
+                error['nombre'].append('Ya existe un tablero con ese nombre')
+        else:
+            error['nombre'].append('Debe ingresar un nombre')
+        return HttpResponse(simplejson.dumps({'estado': 0, 'error': error}), mimetype='application/json')
 
 
 @login_required(login_url="/login/")
