@@ -66,20 +66,17 @@
             <div class="recordDivision">
                 <div class="Kseparador">
                     <div id="Kfoto">
-                        <p><span>Eysenk Gomez Orihuela</span>
+                        <p><span>{{ user.first_name }}</span>
                             <img src="../../static/img/perfil.jpg" alt="">
                         </p>
                     </div>
                     <div id="KperfilDescripcion">
                         <h6>Mis Datos:</h6>
                         <ul>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>Apellidos:</h5><p>{{ user.last_name }}</p></li>
+                            <li><h5>Correo:</h5><p>{{ user.email }}</p></li>
                         </ul>
 
-                        <button class="blue">Editar Perfil</button>
                     </div>
                 </div>
             </div>

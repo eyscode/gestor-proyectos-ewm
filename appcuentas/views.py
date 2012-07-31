@@ -50,6 +50,29 @@ def view_register(request):
                 error="Datos insertados incorrectos"
     return render_to_response("desktop/inicio.html", {"error": error}, context_instance=RequestContext(request))
 
+login_required(login_url='/login/')
+def view_change_password(request):
+    error=''
+    if request.is_ajax():
+        delete_pass= request.POST.get('password','')
+        passw = request.POST.get('password_new','')
+        repassw = request.POST.get('repassword_new','')
+        if delete_pass!='' and passw!='' and repassw!='':
+            if passw==repassw:
+                client=get_object_or_404(Client,user__id=request.user.id)
+                user=client.user
+                if user.check_password(delete_pass):
+                    user.set_password(repassw)
+                    user.save()
+                    error='password cambiado correctamente'
+                else:
+                    error='password incorrecto'
+            else:
+                error='password diferente'
+        else:
+            error="todos los campos son obligatorios"
+    print error
+    return HttpResponse(simplejson.dumps({'error': error}),mimetype='application/json')
 
 @login_required(login_url='/login/')
 def view_home(request):
@@ -345,7 +368,7 @@ def view_account(request):
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    return render_to_response("desktop/account.html", {'ext': ext, 'actual': 'account'},
+    return render_to_response("desktop/account.html", {'error':'','ext': ext, 'actual': 'account'},
         context_instance=RequestContext(request))
 
 

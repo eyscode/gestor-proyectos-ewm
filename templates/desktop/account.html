@@ -1,4 +1,58 @@
 {% extends ext %}
 {% block contenido %}
-    <p>Aqui la la gestion de la cuenta</p>
+<div id="account_content">
+    <div id="account" style="width: 50%;float: left;">
+            <div class="div-oscuro clearfix" style="height: 80%;width: 100%;overflow-x: auto;">
+                <span class="icon x-large black icon-div-grande" data-icon="K"></span>
+                <ul style="display: block;margin-left: 25%;list-style: none;">
+                    <li>
+                    <div class="">
+                        <p class="">Nombre:</p>
+                        <span class="" id="nombre_profile" style="font-size: 200%;color: #000000;">{{user.first_name}}</span>
+                    </div>
+                    </li>
+                    <li>
+                        <div class="">
+                            <p class="">Apellidos:</p>
+                            <span class="" id="apellido_profile" style="font-size: 200%;color: #000000;">{{user.last_name}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="">
+                            <p class="">Email:</p>
+                            <span class="" id="email_profile" style="font-size: 200%;color: #000000;">{{user.email}}</span>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+    </div>
+
+    <div id="contenido-derecha" style="width: 45%;margin-left: 3%;">
+        <div class="notice success" id="div_error_account" hidden style="width: 80%;" >
+            <a href="#close" class="icon close" data-icon="x" style="display: inline-block; ">
+                <span aria-hidden="true">x</span>
+            </a>
+            <span id="error_account">error</span>
+        </div>
+        <div id="form-cambiar-password">
+            <form class="vertical"  id="form-change-password" action="">
+                <label>Password Actual</label>
+
+                <div class="nombre-errors"></div>
+                <input type="password" name="password" id="password" style="width: 75%;">
+                <label>Nuevo Password</label>
+
+                <div class="nombre-errors"></div>
+                <input type="password" name="password_new" id="password_new" style="width: 75%;">
+                <label>Repetir Nuevo Password</label>
+
+                <div class="nombre-errors"></div>
+                <input type="password" name="repassword_new" id="repassword_new" style="width: 75%;">
+                <input class="green" type="submit" id="btn_change_password" value="Cambiar" style="width: 75%;margin-top: 10%;">
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
 {% endblock %}

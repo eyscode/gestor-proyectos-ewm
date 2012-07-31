@@ -29,4 +29,5 @@ urlpatterns = patterns('appcuentas.views',
     url(r'^projects/get-boards/$', 'view_get_boards'),
     url(r'^projects/get-board/$', 'view_board'),
     url(r'^projects/create-board/$', 'view_create_board'),
+    url(r'^change_password/', 'view_change_password'),
 )
