@@ -5,6 +5,7 @@ from appcuentas import views
 
 urlpatterns = patterns('appcuentas.views',
     url(r'^$', 'view_login'),
+    url(r'^register/$', 'view_register'),
     url(r'^login/$', 'view_login'),
     url(r'^home/$', 'view_home'),
     url(r'^projects/$', 'view_projects'),
