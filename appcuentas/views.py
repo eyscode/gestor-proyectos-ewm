@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404, ge
 from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import now
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table
+from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table, Profile
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -27,20 +27,28 @@ def view_login(request):
 
 
 def view_register(request):
-    registerform = RegisterForm()
+    #registerform = RegisterForm()
+    error = None
     if request.POST:
-        registerform = RegisterForm(request.POST)
-        if registerform.is_valid():
-            nombre = registerform.cleaned_data["nombre"]
-            apellidos = registerform.cleaned_data["apellidos"]
-            email = registerform.cleaned_data["email"]
-            perfil = registerform.cleaned_data["perfil"]
-            passw = registerform.cleaned_data["password"]
-            repassw = registerform.cleaned_data["repassw"]
-            u = User.objects.create(nombre, apellidos, email)
-            Client.objects.create(user=u, profile=perfil)
-            return redirect(to="/board")
-    return render_to_response("desktop/register.html", {"rf": registerform}, context_instance=RequestContext(request))
+        #registerform = RegisterForm(request.POST)
+        #if registerform.is_valid():
+            nombre = request.POST.get('nombre',-1)
+            apellidos = request.POST.get("apellidos",-1)
+            email = request.POST.get("email",-1)
+            profiles = Profile.objects.all()
+            passw = request.POST.get("password",-1)
+            repassw = request.POST.get("repassw",-1)
+            if repassw==passw and email!=-1 and apellidos!=-1 and nombre!=-1:
+                print nombre
+                print apellidos
+                u = User(username=nombre,first_name=nombre,last_name=apellidos,email=email)
+                u.set_password(repassw)
+                u.save()
+                Client.objects.create(user=u, profile=profiles[0])
+                return redirect(to="/register")
+            else:
+                error="Datos insertados incorrectos"
+    return render_to_response("desktop/inicio.html", {"error": error}, context_instance=RequestContext(request))
 
 
 @login_required(login_url='/login/')
