@@ -8,19 +8,32 @@
                     <li>
                     <div class="">
                         <p class="">Nombre:</p>
-                        <span class="" id="nombre_profile" style="font-size: 200%;color: #000000;">{{user.first_name}}</span>
+                        <span class="" id="nombre_profile" style="font-size: 200%;color: #000000;">{{user.first_name}}<button id="edit_nombre_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
+
+                        <form hidden id="form_cambiar_nombre" method="">
+                            <input type="text"  id="nombre_change_profile" name="nombre_change_profile" value="{{ user.first_name}}">
+                            <input type="submit" value="cambiar" style="width: 100px;">
+                        </form>
                     </div>
                     </li>
                     <li>
                         <div class="">
                             <p class="">Apellidos:</p>
-                            <span class="" id="apellido_profile" style="font-size: 200%;color: #000000;">{{user.last_name}}</span>
+                            <span class="" id="apellido_profile" style="font-size: 200%;color: #000000;">{{user.last_name}}<button id="edit_apellido_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
+                            <form hidden id="form_cambiar_apellido" action="">
+                                <input type="text" id="apellido_change_profile" name="apellido_change_profile" value="{{ user.last_name}}">
+                                <input type="submit" value="cambiar" style="width: 100px;">
+                            </form>
                         </div>
                     </li>
                     <li>
                         <div class="">
                             <p class="">Email:</p>
-                            <span class="" id="email_profile" style="font-size: 200%;color: #000000;">{{user.email}}</span>
+                            <span class="" id="email_profile" style="font-size: 200%;color: #000000;">{{user.email}}<button id="edit_email_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
+                            <form hidden id="form_cambiar_email" action="">
+                                <input type="text" id="email_change_profile" name="email_change_profile" value="{{ user.email}}">
+                                <input type="submit" value="cambiar" style="width: 100px;">
+                            </form>
                         </div>
                     </li>
 
@@ -55,4 +68,72 @@
     </div>
     <div class="clear"></div>
 </div>
+    <script type="text/javascript">
+        $('#form-change-password').submit(function () {
+            $.ajax({
+                url:'/change_password/',
+                type:'POST',
+                data:$(this).serialize(),
+                success:function (data) {
+                    $('#error_account').html("");
+                    $('#error_account').html(data.error);
+                    $('#div_error_account').show();
+                }
+            });
+        });
+        $('#form_cambiar_nombre').submit(function () {
+            $.ajax({
+                url:'/change_data/',
+                type:'POST',
+                data:$(this).serialize(),
+                success:function (data) {
+                    $('#error_account').html("");
+                    $('#error_account').html(data.error);
+                    $('#div_error_account').show();
+                }
+            });
+        });
+        $('#form_cambiar_email').submit(function () {
+            $.ajax({
+                url:'/change_data/',
+                type:'POST',
+                data:$(this).serialize(),
+                success:function (data) {
+                    $('#error_account').html("");
+                    $('#error_account').html(data.error);
+                    $('#div_error_account').show();
+                }
+            });
+        });
+        $('#form_cambiar_apellido').submit(function () {
+            $.ajax({
+                url:'/change_data/',
+                type:'POST',
+                data:$(this).serialize(),
+                success:function (data) {
+                    $('#error_account').html("");
+                    $('#error_account').html(data.error);
+                    $('#div_error_account').show();
+                }
+            });
+        });
+        $('#edit_nombre_profile').click(function(){
+            //alert("llega");
+            $('#form_cambiar_nombre').show();
+            $('#nombre_profile').hide();
+
+        });
+        $('#edit_apellido_profile').click(function(){
+            //alert("llega");
+            $('#form_cambiar_apellido').show();
+            $('#apellido_profile').hide();
+
+        });
+        $('#edit_email_profile').click(function(){
+            //alert("llega");
+            $('#form_cambiar_email').show();
+            $('#email_profile').hide();
+
+        });
+    </script>
 {% endblock %}

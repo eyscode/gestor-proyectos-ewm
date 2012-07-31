@@ -74,6 +74,25 @@ def view_change_password(request):
     print error
     return HttpResponse(simplejson.dumps({'error': error}),mimetype='application/json')
 
+login_required(login_url='/login/')
+def view_change_datos(request):
+    error=''
+    if request.is_ajax():
+        nombre= request.POST.get('nombre_change_profile','')
+        apellidos = request.POST.get('apellido_change_profile','')
+        email = request.POST.get('email_change_profile','')
+        client=get_object_or_404(Client,user__id=request.user.id)
+        user=client.user
+        if nombre!='':
+            user.first_name=nombre
+        if apellidos!='':
+            user.last_name=apellidos
+        if email!='':
+            user.email=email
+        user.save()
+    ext = "desktop/layout.html"
+    return render_to_response("desktop/account.html", {'error':'','ext': ext, 'actual': 'account'},context_instance=RequestContext(request))
+
 @login_required(login_url='/login/')
 def view_home(request):
     if request.is_ajax():
