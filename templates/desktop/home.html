@@ -5,38 +5,44 @@
 
             <div class="clearFloat">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="S"></span>Proyectos Recientes</h5>
+                    <h5>Proyectos Recientes</h5><span class="icon x-large gray" data-icon="S"></span>
                 </div>
                 <div class="KshortLinks" id="Kproy">
                     {% for proy in proyectos %}
-                        <button href="" ><img src="../../static/img/group.png" alt="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
-                                                                                alt=""
-                                                                                style="margin:0.5em;"></a>
-                        <!--[El mas]-->
+                        <div id="botonCont">
+                        <button ><img src="../../static/img/group.png" alt="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
+                                                                                                                      alt=""
+                                                                                                                      style="margin:0.5em;"></a>
+                        </div>
                     {% endfor %}
 
+                </div>
+                <div class="mas">
+                   <a href="">mas</a>
                 </div>
             </div>
 
 
             <div class="clearFloat">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="U"></span>Grupos Recientes</h5>
+                    <h5>Grupos Recientes</h5"><span class="icon x-large gray" data-icon="U"></span>
                 </div>
 
                 <div class="KshortLinks"  id="Kgroup">
                     {% for grupo in grupos %}
-                        <button href="">{{ grupo.name }}</button>
-                        <!--[El mas]-->
+                        <button >{{ grupo.name }}</button>
                     {% endfor %}
+                </div>
 
+                <div class="mas">
+                    <a href="">mas</a>
                 </div>
             </div>
 
 
             <div class="clearFloat" id="ayuda">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO <button><span class="icon x-large gray" data-icon="?"></span>Ayuda</button></h5>
+                    <h5><img src="../../static/img/master.png" alt=""></span>Master Task <button style="float:right;"><span class="icon x-large gray" data-icon="?"></span>Ayuda</button></h5>
 
                 </div>
             </div>
@@ -70,7 +76,8 @@
                             <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
                             <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
                         </ul>
-                        <button>Editar Perfil</button>
+
+                        <button class="blue">Editar Perfil</button>
                     </div>
                 </div>
             </div>

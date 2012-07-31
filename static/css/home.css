@@ -8,7 +8,20 @@
     border-radius: 5px;
     background: #ccc;
 }
-
+.mas{
+    float:right;
+    margin:25px;
+    }
+#botonCont{
+    overflow:hidden;
+}
+.mas a{
+     color:#156;   
+     text-decoration:none;
+     border:solid 2px;
+     padding:0 5px 0 5px;
+     border-radius:5px;
+}    
 #Khome footer {
     clear: both;
     margin: 0 0 20px 0;
@@ -30,11 +43,12 @@
 
 #Kproy button {
     width: 80%;
+    margin:2px;
     float: left;
     display: inline;
 }
 #Kproy button img{
-    margin:3px;
+    margin:1%;
     float:left;    
 }
 #Kproy a,#Kgroup a{
@@ -47,13 +61,20 @@
 }
 
 .KshortEnter {
-    width: 50%;
+    border:solid 1px #ccc;
+    border-radius:8px;
+    margin-right:2%;
+    width: 44%;
     float: left;
+}
+
+.KshortEnter img{
+    margin:10px;
 }
 .KshortEnter h5{
     margin-top:15%;
     font-size:2em;
-    width:80%;
+    width:100%;
     word-wrap:break-word;
 }
 .KshortLinks {
@@ -142,6 +163,7 @@
     font-family: Chiller;
     color: #153;
     float:left;
+    width:100%;
     font-size: 30px;
 }
 #ayuda h5 a{
@@ -149,6 +171,7 @@
 }
 #ayuda .KshortEnter{
     width:100%;
+    border:none;
     
 }
 #record h3 {
