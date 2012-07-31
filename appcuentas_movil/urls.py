@@ -29,4 +29,7 @@ urlpatterns = patterns('appcuentas_movil.views',
     url(r'^app/reuniones','view_traer_reuniones'),
     url(r'^app/comentarios','view_traer_comentarios'),
     url(r'^app/profile','view_traer_profile'),
+    url(r'^app/traer_grupos','view_traer_grupos_movil'),
+    url(r'^app/traer_miembros_grupo','view_traer_miembros_grupo'),
+    url(r'^app/traer_miembros_proyecto','view_traer_miembros_proyecto'),
 )
