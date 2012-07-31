@@ -407,7 +407,9 @@ def view_reuniones(request):
 @login_required(login_url="/login/")
 def view_crear_reunion(request):
     try:
+        print 'hola'
         if request.method == 'GET' and request.is_ajax():
+            print 'hola'
             summary = request.GET.get('summary', '')
             description = request.GET.get('description', '')
             initial = now()#request.GET.get('initial',datetime.now())
@@ -415,9 +417,10 @@ def view_crear_reunion(request):
             date_creation = now()
             project = Project.objects.filter(id=request.GET.get('project_id', ''))[0]
             reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
+            print 'hola'
             Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,date_creation=date_creation, project=project)
-            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},
-                    context_instance=RequestContext(request))
+            print 'hola'
+            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
     except Exception, ex:
         print ex
     raise Http404
