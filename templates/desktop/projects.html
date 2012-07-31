@@ -23,7 +23,7 @@
                     <div class="nombre-grupo">
                         <p class="nombre">{{ proyecto.name }}</p>
 
-                        <p class="descripcion">{{ proyecto.company }}</p>
+                        <p class="descripcion span-right">{{ proyecto.company }}</p>
                     </div>
                     <div class="plus1">
                         <img src="../../static/img/plus1.png" width="30px">
@@ -31,6 +31,11 @@
                     <div class="mensaje">
                         <p>Ya esta agregado</p>
                     </div>
+                    <ul class="button-bar">
+                        <li><a href="" class="tablero"><span class="icon" data-icon="Y"></span> Tablero</a></li>
+                        <li><a href="" class="reuniones"><span class="icon" data-icon="&"></span> Reuniones</a></li>
+                        <li><a href="" class="editar"><span class="icon" data-icon="7"></span> Editar</a></li>
+                    </ul>
                 </div>
             {% endfor %}
             {% for proyecto in proyectos2 %}

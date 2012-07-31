@@ -1,16 +1,22 @@
 <script type="text/javascript">
-    $(document).ready(function(){
         $('#tableros').click(function(){
             $.ajax({
                 method: 'GET',
-                url: '/projects/tables/',
-                data: {'project_id='+{{ project.id }}},
+                url: '/projects/tables/?project_id='+{{ project.id }},
                 success:function(data){
-                    $('#tab_reu').html(data);
+                    $('#Kmostrar').html(data);
                 }
             });
         });
-    });
+        $('#reuniones').click(function(){
+            $.ajax({
+                method: 'GET',
+                url: '/projects/reuniones/?project_id='+{{ project.id }},
+                success:function(data){
+                    $('#Kmostrar').html(data);
+                }
+            });
+        });
 </script>
 <div id="form-crear-project">
     <form class="vertical" method="POST" action="/projects/create-project/">
@@ -40,14 +46,12 @@
             <input class="eliminar button red" type="submit" name="eliminar" value="Eliminar" id="eliminar">
         </div>
     </form>
-</div>
-<div id="tab_reu">
-    <div id="opMostrar">
-    <button class="button" accesskey="" id="tableros">Tableros</button>
-    <button class="button" accesskey="" id="reuniones">Reuniones</button>
-    </div>
-    <div id="Kmostrar">
-        <li><a href="">lista</a></li>
-        <li><a href="">lista</a></li>
+    <div id="tab_reu">
+        <div id="opMostrar">
+            <input type="submit" value="tableros" id="tableros"/>
+            <input type="submit" value="reuniones" id="reuniones"/>
+        </div>
+        <div id="Kmostrar"></div>
     </div>
 </div>
+

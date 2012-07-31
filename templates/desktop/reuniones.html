@@ -1,3 +1,7 @@
 <p>
-    desde las reuniones
+    {% for reunion in reuniones %}
+        <p>{{ reunion.summary }}</p>
+        <p>{{ reunion.description }}</p>
+        <p>{{ reunion.initial }}</p>
+    {% endfor %}
 </p>
