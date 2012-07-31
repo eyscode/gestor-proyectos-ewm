@@ -18,38 +18,41 @@
         return false;
     });
 </script>
-<p class="titulo">Listado de reuniones</p>
-<div class="listado">
-    <ul class="alt">
-        {% for reunion in reuniones %}
-            Resumen
-            <li>{{ reunion.summary }}</li>
-            Fecha de creaci&oacute;n;
-            <li>{{ reunion.date_creation }}</li>
-            Descripci&oacute;n
-            <li>{{ reunion.description }}</li>
-            Fecha de inicio
-            <li>{{ reunion.initial }}</li>
-            Fecha de fin
-            <li>{{ reunion.end }}</li>
-            <p>
-                ----------------------
-            </p>
-        {% endfor %}
-    </ul>
-</div>
 
-<p class="titulo">Crear reuni&oacute;n</p>
-<form id="enviar_reunion" class="vertical">
-   <section>
-       <label>Resumen</label>
-       <input type="text" id="summary"/>
-       <label>Descripci&oacute;n</label>
-       <input type="text" id="description"/>
-       <label>Fecha de inicio</label>
-       <input type="date" id="initial"/>
-       <label>Fecha de fin</label>
-       <input type="date" id="end"/>
-       <input type="submit" value="enviar"/>
-   </section>
-</form>
+<p class="titulo" style="text-align: center;width: 100%;">Listado de Reuniones</p>
+<div class="listado" style="width: 100%;height: 80%;overflow-y: auto" >
+    <div id="navigation" class="alt ui-accordion" style="width: 100%;">
+        {% for reunion in reuniones %}
+            <div class="div-oscuro clearfix" style="height: 500px; overflow-y: auto;>
+            <ul style="list-style: none;">
+            <li style="margin-left: 10%; "><label for="">Resumen:</label>
+                {{ reunion.summary }}</li>
+            <li style="margin-left: 10%;"><label for="">Fecha de creaci&oacute;n;</label>
+                {{ reunion.date_creation }}</li>
+            <li style="margin-left: 10%;"><label for="">Descripci&oacute;n:</label>
+                {{ reunion.description }}</li>
+            <li style="margin-left: 10%;"><label for="">Fecha de inicio:</label>
+                {{ reunion.initial }}</li>
+            <li style="margin-left: 10%;"> <label for="">Fecha de fin:</label>
+               {{ reunion.end }}</li>
+            </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<div>
+    <p class="titulo" style="text-align: center;width: 100%;">Crear reuni&oacute;n</p>
+    <form id="enviar_reunion" class="vertical">
+        <section>
+            <label>Resumen</label>
+            <input type="text" id="summary"/>
+            <label>Descripci&oacute;n</label>
+            <input type="text" id="description"/>
+            <label>Fecha de inicio</label>
+            <input type="date" id="initial"/>
+            <label>Fecha de fin</label>
+            <input type="date" id="end"/>
+            <input class="green" type="submit" value="enviar"/>
+        </section>
+    </form>
+</div>
