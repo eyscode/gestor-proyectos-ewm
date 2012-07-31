@@ -24,4 +24,5 @@ urlpatterns = patterns('appcuentas.views',
     url(r'^projects/delete-project/$', 'view_delete_project'),
     url(r'^projects/tables/$','view_tables'),
     url(r'^projects/reuniones/$','view_reuniones'),
+    url(r'^projects/crear_reunion','view_crear_reunion'),
 )
