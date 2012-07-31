@@ -9,7 +9,7 @@
                 </div>
                 <div class="KshortLinks" id="Kproy">
                     {% for proy in proyectos %}
-                        <button href="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
+                        <button href="" ><img src="../../static/img/group.png" alt="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
                                                                                 alt=""
                                                                                 style="margin:0.5em;"></a>
                         <!--[El mas]-->
@@ -36,28 +36,22 @@
 
             <div class="clearFloat" id="ayuda">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO</h5>
-                </div>
-                <div class="KshortLinks">
-                    <a href="" class="Kplus">Ayuda? <span class="icon x-large gray" data-icon="?"></span></a>
+                    <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO <button><span class="icon x-large gray" data-icon="?"></span>Ayuda</button></h5>
+
                 </div>
             </div>
         </div>
 
         <div id="record">
 
-            <h3>Mi Historial</h3>
+            <h3>Perfil</h3>
 
             <div class="recordDivision">
                 <div class="Kseparador">
                     <h4>Ultimos movimientos</h4>
                     <ul>
-                        <li><a href="">op1</a></li>
-                        <li><a href="">op2</a></li>
-                        <li><a href="">op3</a></li>
-                        <li><a href="">op4</a></li>
-                        <li><a href="">op5</a></li>
-                        <li><a href="">op6</a></li>
+                        <li><a href="">........</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -69,17 +63,20 @@
                         </p>
                     </div>
                     <div id="KperfilDescricion">
-                        <p>Descripcion</p>
+                        <h6>Mis Datos:</h6>
+                        <ul>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                        </ul>
+                        <button>Editar Perfil</button>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <footer>
-            <a href="" class="btn">Mas opciones</a>
-            <a href="" class="btn">Mas opciones</a>
-            <a href="" class="btn">Mas Opciones</a>
-        </footer>
+
     </div>
 {% endblock %}
