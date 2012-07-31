@@ -109,6 +109,9 @@
     width: 100%;
     display: block;
 }
+.KshortEnter h5 button {
+    margin-top:35px;
+}
 
 .KshortLinks a {
     float: right;

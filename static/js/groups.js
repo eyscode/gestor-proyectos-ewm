@@ -638,4 +638,15 @@ $(document).ready(function () {
         });
     });
 
+    $('#grupos .un-grupo .reuniones').click(function () {
+        var idgroup = $(this).parent().parent().parent().attr('idgroup');
+        $.ajax({
+            url:"/projects/reuniones/?project_id=" + idgroup,
+            type:'GET',
+            success:function (data) {
+                $('#contenido-derecha').html(data);
+            }
+        })
+        return false;
+    });
 });

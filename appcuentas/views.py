@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404, ge
 from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import now
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table, Task, Column, Work_Package
+from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table, Profile
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -27,21 +27,71 @@ def view_login(request):
 
 
 def view_register(request):
-    registerform = RegisterForm()
+    #registerform = RegisterForm()
+    error = None
     if request.POST:
-        registerform = RegisterForm(request.POST)
-        if registerform.is_valid():
-            nombre = registerform.cleaned_data["nombre"]
-            apellidos = registerform.cleaned_data["apellidos"]
-            email = registerform.cleaned_data["email"]
-            perfil = registerform.cleaned_data["perfil"]
-            passw = registerform.cleaned_data["password"]
-            repassw = registerform.cleaned_data["repassw"]
-            u = User.objects.create(nombre, apellidos, email)
-            Client.objects.create(user=u, profile=perfil)
-            return redirect(to="/board")
-    return render_to_response("desktop/register.html", {"rf": registerform}, context_instance=RequestContext(request))
+        #registerform = RegisterForm(request.POST)
+        #if registerform.is_valid():
+            nombre = request.POST.get('nombre',-1)
+            apellidos = request.POST.get("apellidos",-1)
+            email = request.POST.get("email",-1)
+            profiles = Profile.objects.all()
+            passw = request.POST.get("password",-1)
+            repassw = request.POST.get("repassw",-1)
+            if repassw==passw and email!=-1 and apellidos!=-1 and nombre!=-1:
+                print nombre
+                print apellidos
+                u = User(username=nombre,first_name=nombre,last_name=apellidos,email=email)
+                u.set_password(repassw)
+                u.save()
+                Client.objects.create(user=u, profile=profiles[0])
+                return redirect(to="/register")
+            else:
+                error="Datos insertados incorrectos"
+    return render_to_response("desktop/inicio.html", {"error": error}, context_instance=RequestContext(request))
 
+login_required(login_url='/login/')
+def view_change_password(request):
+    error=''
+    if request.is_ajax():
+        delete_pass= request.POST.get('password','')
+        passw = request.POST.get('password_new','')
+        repassw = request.POST.get('repassword_new','')
+        if delete_pass!='' and passw!='' and repassw!='':
+            if passw==repassw:
+                client=get_object_or_404(Client,user__id=request.user.id)
+                user=client.user
+                if user.check_password(delete_pass):
+                    user.set_password(repassw)
+                    user.save()
+                    error='password cambiado correctamente'
+                else:
+                    error='password incorrecto'
+            else:
+                error='password diferente'
+        else:
+            error="todos los campos son obligatorios"
+    print error
+    return HttpResponse(simplejson.dumps({'error': error}),mimetype='application/json')
+
+login_required(login_url='/login/')
+def view_change_datos(request):
+    error=''
+    if request.is_ajax():
+        nombre= request.POST.get('nombre_change_profile','')
+        apellidos = request.POST.get('apellido_change_profile','')
+        email = request.POST.get('email_change_profile','')
+        client=get_object_or_404(Client,user__id=request.user.id)
+        user=client.user
+        if nombre!='':
+            user.first_name=nombre
+        if apellidos!='':
+            user.last_name=apellidos
+        if email!='':
+            user.email=email
+        user.save()
+    ext = "desktop/layout.html"
+    return render_to_response("desktop/account.html", {'error':'','ext': ext, 'actual': 'account'},context_instance=RequestContext(request))
 
 @login_required(login_url='/login/')
 def view_home(request):
@@ -432,16 +482,15 @@ def view_move_task(request):
 def view_reuniones(request):
     if request.method == 'GET' and request.is_ajax():
         reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-        return render_to_response("desktop/reuniones.html",
-                {'reuniones': reuniones, 'project': request.GET.get('project_id')},
-            context_instance=RequestContext(request))
+        return render_to_response("desktop/reuniones.html",{'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
     raise Http404
-
 
 @login_required(login_url="/login/")
 def view_crear_reunion(request):
     try:
+        print 'hola'
         if request.method == 'GET' and request.is_ajax():
+            print 'hola'
             summary = request.GET.get('summary', '')
             description = request.GET.get('description', '')
             initial = now()#request.GET.get('initial',datetime.now())
@@ -449,11 +498,10 @@ def view_crear_reunion(request):
             date_creation = now()
             project = Project.objects.filter(id=request.GET.get('project_id', ''))[0]
             reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,
-                date_creation=date_creation, project=project)
-            return render_to_response("desktop/reuniones.html",
-                    {'reuniones': reuniones, 'project': request.GET.get('project_id')},
-                context_instance=RequestContext(request))
+            print 'hola'
+            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,date_creation=date_creation, project=project)
+            print 'hola'
+            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
     except Exception, ex:
         print ex
     raise Http404

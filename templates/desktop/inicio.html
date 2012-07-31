@@ -47,18 +47,13 @@
         </div>
         <div class="logeo" id="logeo">
             <div id="registro" hidden>
-                <form action="/login/" method="post">
+                <form action="/register/" method="post">
                     {% csrf_token %}
-                    <label for="">Nombre:</label><input type="text">
-                    <label for="">Apellidos:</label><input type="text">
-                    <label for="">Correo electronico:</label><input type="text">
-                    <label for="">seleccione su perfil:</label>
-                    <select name="" id="">
-                        <option></option>
-                    </select>
-
-                    <label for="">Contraseña:</label><input type="password">
-                    <label for="">Repetir Contraseña:</label><input type="password">
+                    <label for="">Nombre:</label><input name="nombre" type="text">
+                    <label for="">Apellidos:</label><input name="apellidos" type="text">
+                    <label for="">Correo electronico:</label><input  name="email" type="text">
+                    <label for="">Contraseña:</label><input name="password" type="password">
+                    <label for="">Repetir Contraseña:</label><input name="repassw" type="password">
 
                     <div class="captcha"></div>
                     <div class="lower">

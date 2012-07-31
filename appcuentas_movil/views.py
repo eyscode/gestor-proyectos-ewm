@@ -84,9 +84,9 @@ def view_traer_proyectos_movil(request):
             return HttpResponse(response, mimetype='application/json')
         else:
             #client=get_object_or_404(Client,user__id=id_user)
-            proyectos1 = Client_has_Project.objects.filter(client__user__id=id_user)
-            proyectos2=Project.objects.filter(creador__user__id=id_user)
-            proyectos=set(proyectos1).union(set(proyectos2))
+            proyectos = Project.objects.filter(creador=request.user.get_profile()).order_by('-date_creation')
+            chp = Client_has_Project.objects.filter(client=Client.objects.get(user=request.user))
+            proyectos = set([proy.project for proy in chp]).union(set(proyectos))
             response = serializers.serialize("json", proyectos)
             response = callback + '(' + response + ');'
             return HttpResponse(response, mimetype='application/json')
@@ -96,21 +96,21 @@ def view_traer_proyectos_movil(request):
 
 @login_required(login_url='/login/')
 def view_traer_grupos_movil(request):
-    to_json = {}
     id_user = request.GET.get("id_user", -1)
     callback = request.GET.get('callback', '')
-    if id_user == -1:
-        groups = None
-        to_json['grupos'] = groups
-        response = simplejson.dumps(to_json)
-        response = callback + '(' + response + ');'
-        return HttpResponse(response, mimetype='application/json')
-    else:
-        groups = Project.objects.filter(client__user__id=id_user)
-        to_json['grupos'] = groups
-        response = simplejsorn.dumps(to_json)
-        response = callback + '(' + response + ');'
-        return HttpResponse(response, mimetype='application/json')
+    try:
+            if id_user == -1:
+                groups = None
+                response = serializers.serialize("json",groups)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                groups = Group.objects.filter(creador__user__id=id_user)
+                response = serializers.serialize("json",groups)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception,ex:
+        print ex
     raise Http404
 
 @login_required(login_url='/login/')
@@ -472,31 +472,7 @@ def view_eliminar_proyecto(request):
         print ex
     raise Http404
 
-@login_required(login_url='/login/')
-def view_eliminar_proyecto(request):
-    try:
-        if request.method == "GET":
-            user = request.GET.get("id_usuario", -1)
-            project = request.GET.get("id_proyecto", -1)
-            callback = request.GET.get('callback', '')
-            req={}
-            if user!=-1 and project!=-1:
-                p = get_object_or_404(Project,id=project)
-                c = get_object_or_404(Client,user__id=user)
-                if p.creador.user==c.user:
-                    p.delete()
-                req['id']= 1
-                response = simplejson.dumps(req)
-                response = callback + '(' + response + ');'
-                return HttpResponse(response, mimetype='application/json')
-            else:
-                req['id']= -1
-                response = simplejson.dumps(req)
-                response = callback + '(' + response + ');'
-                return HttpResponse(response, mimetype='application/json')
-    except Exception, ex:
-        print ex
-    raise Http404
+
 
 @login_required(login_url='/login/')
 def view_agregar_paquete_tablero(request):
@@ -515,6 +491,7 @@ def view_agregar_paquete_tablero(request):
                 tareas=Task.objects.filter(work_package= p)
                 if len(colum)>0 and len(tareas)>0:
                     for t in tareas:
+                        print t.title
                         t.column = colum[0]
                         t.save()
                 req['id']= 1
@@ -577,18 +554,29 @@ def view_detalles_tarea(request):
 @login_required(login_url='/login/')
 def view_add_miembros_proyecto(request):
     try:
+        req={}
         if request.method == "GET":
-            id_proyecto = request.GET.get("id_proyecto",-1)
+            id_proyecto = request.GET.get("id_project",-1)
             email = request.GET.get("email",-1)
             callback = request.GET.get('callback', '')
-            u =User.objects.filter(email=email)
+            u =User.objects.filter(username=email)
+            us =User.objects.filter(email=email)
+            user=None
             if u:
-                client = get_object_or_404(Client, user=u[0])
+                user=u[0]
+            if us:
+                user=us[0]
+            if user:
+                client = get_object_or_404(Client, user=user)
                 project = get_object_or_404(Project, id=id_proyecto)
                 existe = Client_has_Project.objects.filter(client=client, project=project)
                 if not existe:
                     Client_has_Project.objects.create(client=client, project=project)
-            req['id']= 1
+                    req['id']= 1
+                else:
+                    req['id']= -2
+            else:
+                req['id']= -1
             response = simplejson.dumps(req)
             response = callback + '(' + response + ');'
             return HttpResponse(response, mimetype='application/json')
@@ -606,7 +594,7 @@ def view_agregar_comentario_tarea(request):
             req={}
             if id_tarea!=-1 and comentario!=-1:
                 tarea = get_object_or_404(Task,id=id_tarea)
-                Comment.objects.create(task=tarea, content=comentario)
+                Comment.objects.create(task=tarea, content=comentario,like=0)
                 req['id']= 1
                 response = simplejson.dumps(req)
                 response = callback + '(' + response + ');'
@@ -628,7 +616,7 @@ def view_mover_tarea(request):
             id_columna = request.GET.get('id_columna', -1)
             callback = request.GET.get('callback', '')
             req={}
-            if id_tarea!=-1 and comentario!=-1:
+            if id_tarea!=-1 and id_columna!=-1:
                 tarea = get_object_or_404(Task,id=id_tarea)
                 columna= get_object_or_404(Column,id=id_columna)
                 tarea.column=columna
@@ -649,17 +637,27 @@ def view_mover_tarea(request):
 @login_required(login_url='/login/')
 def view_add_miembros_grupo(request):
     try:
+        req={}
         if request.method == "GET":
             id_grupo = request.GET.get("id_grupo",-1)
             email = request.GET.get("email",-1)
             callback = request.GET.get('callback', '')
-            u =User.objects.filter(email=email)
-            client = get_object_or_404(Client, user=u)
-            group = get_object_or_404(Group, id=id_grupo)
-            existe = Group_has_Client.objects.filter(client=client, group=group)
-            if not existe:
-                Group_has_Client.objects.create(client=client, group=group)
-            req['id']= 1
+            u =User.objects.filter(username=email)
+            us =User.objects.filter(email=email)
+            user=None
+            if u:
+                user=u[0]
+            if us:
+                user=us[0]
+            if user:
+                client = get_object_or_404(Client, user=user)
+                group = get_object_or_404(Group, id=id_grupo)
+                existe = Group_has_Client.objects.filter(client=client, group=group)
+                if not existe:
+                    Group_has_Client.objects.create(client=client, group=group)
+                req['id']= 1
+            else:
+                req['id']= -1
             response = simplejson.dumps(req)
             response = callback + '(' + response + ');'
             return HttpResponse(response, mimetype='application/json')
@@ -674,6 +672,7 @@ def view_add_grupo(request):
         nombre = request.GET.get('nombre',-1)
         descripcion = request.GET.get('descripcion',-1)
         user=  request.GET.get('id_user',-1)
+        callback = request.GET.get('callback', '')
         if nombre!=-1 and user!=-1:
             creador=get_object_or_404(Client, user__id=user)
             if not Group.objects.filter(creador=creador, name=nombre):
@@ -699,37 +698,31 @@ def view_traer_reuniones(request):
     id_project = request.GET.get("id_project", -1)
     callback = request.GET.get('callback', '')
     if id_project == -1:
-        groups = None
-        to_json['reuniones'] = groups
-        response = simplejson.dumps(to_json)
-        response = callback + '(' + response + ');'
+        reuniones = None
+        response = serializers.serialize("json", reuniones)
+        response = callback + '([]);'
         return HttpResponse(response, mimetype='application/json')
     else:
         reuniones = Meeting.objects.filter(project__id=id_project)
-        to_json['reuniones'] = reuniones
-        response = simplejson.dumps(to_json)
+        response = serializers.serialize("json", reuniones)
         response = callback + '(' + response + ');'
         return HttpResponse(response, mimetype='application/json')
     raise Http404
 
 @login_required(login_url='/login/')
 def view_traer_comentarios(request):
-    to_json = {}
     id_task = request.GET.get("id_task", -1)
     callback = request.GET.get('callback', '')
-    if id_project == -1:
-        comentarios = None
-        to_json['comentarios'] = comentarios
-        response = simplejson.dumps(to_json)
-        response = callback + '(' + response + ');'
+    if id_task == -1:
+        response = callback + '([]);'
         return HttpResponse(response, mimetype='application/json')
     else:
         comentarios = Comment.objects.filter(task__id=id_task)
-        to_json['comentarios'] = comentarios
-        response = simplejson.dumps(to_json)
+        response = serializers.serialize("json",comentarios)
         response = callback + '(' + response + ');'
         return HttpResponse(response, mimetype='application/json')
     raise Http404
+
 
 @login_required(login_url='/login/')
 def view_traer_profile(request):
@@ -748,4 +741,47 @@ def view_traer_profile(request):
         response = simplejson.dumps(to_json)
         response = callback + '(' + response + ');'
         return HttpResponse(response, mimetype='application/json')
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_traer_miembros_grupo(request):
+    try:
+        if request.method == "GET":
+            id_grupo = request.GET.get("id_grupo", -1)
+            callback = request.GET.get('callback', '')
+            if id_grupo == -1:
+                response = callback + '([]);'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                grupo_cliente =Group_has_Client.objects.filter(group__id= id_grupo )
+                miembros=[]
+                for c in grupo_cliente:
+                    print c.client.user.username
+                    miembros.append(c.client.user)
+                response = serializers.serialize("json",miembros)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
+    raise Http404
+
+@login_required(login_url='/login/')
+def view_traer_miembros_proyecto(request):
+    try:
+        if request.method == "GET":
+            id_project = request.GET.get("id_project", -1)
+            callback = request.GET.get('callback', '')
+            if id_project == -1:
+                response = callback + '([]);'
+                return HttpResponse(response, mimetype='application/json')
+            else:
+                project_cliente =Client_has_Project.objects.filter(project__id= id_project )
+                miembros=[]
+                for c in project_cliente:
+                    miembros.append(c.client.user)
+                response = serializers.serialize("json",miembros)
+                response = callback + '(' + response + ');'
+                return HttpResponse(response, mimetype='application/json')
+    except Exception, ex:
+        print ex
     raise Http404
