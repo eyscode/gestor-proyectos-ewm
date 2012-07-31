@@ -9,18 +9,15 @@
     background: #ccc;
 }
 .mas{
-    float:right;
+    clear:both;
     margin:25px;
     }
 #botonCont{
     overflow:hidden;
 }
-.mas a{
-     color:#156;   
-     text-decoration:none;
-     border:solid 2px;
-     padding:0 5px 0 5px;
-     border-radius:5px;
+.mas a{   
+    display:block;
+    text-align:right;
 }    
 #Khome footer {
     clear: both;
@@ -35,12 +32,14 @@
 }
 
 #record {
-    min-height:500px;
+    height:650px;
     border-radius:8px;    
     background: #eee;
     border-radius: 12px;
 }
-
+#Kproy{
+  float:right;  
+}
 #Kproy button {
     width: 80%;
     margin:2px;
@@ -61,8 +60,6 @@
 }
 
 .KshortEnter {
-    border:solid 1px #ccc;
-    border-radius:8px;
     margin-right:2%;
     width: 44%;
     float: left;
@@ -75,6 +72,7 @@
     margin-top:15%;
     font-size:2em;
     width:100%;
+    color:#999;
     word-wrap:break-word;
 }
 .KshortLinks {
@@ -160,7 +158,6 @@
 
 #ayuda h5 {
     margin-top:8%;
-    font-family: Chiller;
     color: #153;
     float:left;
     width:100%;
@@ -203,7 +200,7 @@
 .recordDivision {
     float: left;
     width: 50%;
-    height: 100%;
+    height: 550px;
 }
 
 .recordDivision .Kseparador {
@@ -234,4 +231,8 @@
     float: left;
     width: 60%;
     word-wrap: break-word;
+}
+#KperfilDescripcion button{
+    display:block;
+    float:right;
 }
