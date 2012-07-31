@@ -1,25 +1,38 @@
 #Kboard {
-    background: #ccc;
-    border: groove 2px #999;
-    padding: 15px;
     overflow: hidden;
+    min-width: 1100px;
 }
 
 #Ktablero {
-    background: #ddd;
-    overflow: scroll;
+    overflow: auto;
     overflow-y: hidden;
 }
 
-#Ktablero .Ktask {
-    width: 31%;
+#div-paquetes {
+    width: 250px;
     margin: 0.5em;
-    display: inline-block;
+    float:left;
     height: 400px;
     background: #eee;
     border: solid #888 0.1em;
     border-radius: 12px;
-    overflow: scroll;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#kboardContent{
+    float: left;
+}
+
+#Ktablero .Ktask {
+    width: 250px;
+    margin: 0.5em;
+    float: left;
+    height: 400px;
+    background: #eee;
+    border: solid #888 0.1em;
+    border-radius: 12px;
+    overflow: auto;
     overflow-x: hidden;
 }
 
