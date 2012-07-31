@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.utils import simplejson
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project
+from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -355,10 +355,13 @@ def view_board(request):
 
 @login_required(login_url="/login/")
 def view_tables(request):
-    return render_to_response("desktop/tableros.html",context_instance=RequestContext(request))
+    if request.method == 'GET' and request.is_ajax():
+        return render_to_response("desktop/tableros.html",context_instance=RequestContext(request))
     raise Http404
 
 @login_required(login_url="/login/")
 def view_reuniones(request):
-    render_to_response("reuniones.html",context_instance=RequestContext(request))
+    if request.method == 'GET' and request.is_ajax():
+        reuniones = Meeting.objects.filter(project__id = request.GET.get('project_id',''))
+        return render_to_response("desktop/reuniones.html",{'reuniones':reuniones},context_instance=RequestContext(request))
     raise Http404
