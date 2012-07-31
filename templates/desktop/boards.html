@@ -1,0 +1,11 @@
+<p class="titulo">Listado de tableros</p>
+<div class="listado">
+    <ul class="alt">
+        {% for board in boards %}
+            <li draggable="true" iduser="2">
+                <span class="icon darkgray" data-icon="Y" style="display: inline-block; "><span
+                        aria-hidden="true">u</span>{{ board.name }}</span>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

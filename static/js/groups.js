@@ -272,7 +272,6 @@ $(document).ready(function () {
 
     $('#grupos .un-grupo .editar').click(function () {
         var idgroup = $(this).parent().parent().parent().attr('idgroup');
-        console.log();
         $.ajax({
             url:'/projects/get-project/?idgroup=' + idgroup,
             success:function (data) {
@@ -439,12 +438,35 @@ $(document).ready(function () {
         return false;
     });
 
+    $('#grupos .un-grupo .tablero').click(function () {
+        var idgroup = $(this).parent().parent().parent().attr('idgroup');
+        $.ajax({
+            url:"/projects/get-boards/?idgroup=" + idgroup,
+            type:'GET',
+            success:function (data) {
+                $('#contenido-derecha').html(data);
+            }
+        })
+        return false;
+    });
+
+    /*$('#grupos .un-grupo .tablero').click(function () {
+        var idgroup = $(this).parent().parent().parent().attr('idgroup');
+        $.ajax({
+            url:"/projects/get-board/?idgroup=" + idgroup,
+            type:'GET',
+            success:function (data) {
+                $('#contenido').html(data);
+            }
+        })
+        return false;
+    });*/
+
     $('#grupos .buscar-client').click(function () {
         $.ajax({
             url:'/groups/find-client',
             data:'GET',
             success:function (data) {
-                $('#contenido-derecha').html('');
                 $('#contenido-derecha').html(data);
                 var grupos = document.querySelectorAll('#grupos .un-grupo');
                 [].forEach.call(grupos, function (col) {
