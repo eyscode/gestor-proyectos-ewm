@@ -5,11 +5,11 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.utils import simplejson
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table
+from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
-
+from django.utils.timezone import now
 def view_login(request):
     error = None
     if request.method == "POST":
@@ -350,28 +350,19 @@ def view_explore(request):
         context_instance=RequestContext(request))
 
 
+@login_required(login_url="/login")
 def view_board(request):
     return render_to_response("desktop/board.html", context_instance=RequestContext(request))
-
-
-def view_get_boards(request):
-    if request.GET.get('idgroup'):
-        project = get_object_or_404(Project, id=request.GET.get('idgroup'))
-        boards = Table.objects.filter(project=project)
-    return render_to_response("desktop/boards.html", {'boards': boards}, context_instance=RequestContext(request))
-
 
 @login_required(login_url="/login/")
 def view_tables(request):
     if request.method == 'GET' and request.is_ajax():
-        return render_to_response("desktop/tableros.html", context_instance=RequestContext(request))
+        return render_to_response("desktop/tableros.html",context_instance=RequestContext(request))
     raise Http404
-
 
 @login_required(login_url="/login/")
 def view_reuniones(request):
     if request.method == 'GET' and request.is_ajax():
-        reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-        return render_to_response("desktop/reuniones.html", {'reuniones': reuniones},
-            context_instance=RequestContext(request))
+        reuniones = Meeting.objects.filter(project__id = request.GET.get('project_id',''))
+        return render_to_response("desktop/reuniones.html",{'reuniones':reuniones},context_instance=RequestContext(request))
     raise Http404

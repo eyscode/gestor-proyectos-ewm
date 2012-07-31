@@ -1,7 +1,47 @@
+<script type="text/javascript">
+    $('#enviar_reunion').submit(function () {
+        console.log({{ project }});
+        $.ajax({
+            method:'GET',
+            url:'/projects/crear_reunion/',
+            data:{
+                'project_id': {{ project }},
+                'summary':$('#summary').val(),
+                'description':$('#description').val(),
+                'initial':$('#initial').val(),
+                'end':$('#end').val()
+            },
+            success:function (data) {
+                console.log("ksdjfl");
+                $('#Kmostrar').html(data);
+            }
+        });
+        return false;
+    });
+</script>
+
 <p>
     {% for reunion in reuniones %}
         <p>{{ reunion.summary }}</p>
+        <p>{{ reunion.date_creation }}</p>
         <p>{{ reunion.description }}</p>
         <p>{{ reunion.initial }}</p>
+        <p>{{ reunion.end }}</p>
     {% endfor %}
+
+<div>
+    <form id="enviar_reunion" class="vertical">
+        <section>
+            <label>Resumen</label>
+            <input type="text" id="summary"/>
+            <label>Descripci&oacute;n</label>
+            <input type="text" id="description"/>
+            <label>Fecha de inicio</label>
+            <input type="text" id="initial"/>
+            <label>Fecha de fin</label>
+            <input type="text" id="end"/>
+            <input type="submit" value="enviar"/>
+        </section>
+    </form>
+</div>
 </p>
