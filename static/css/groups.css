@@ -62,13 +62,16 @@ input[type="text"] {
     overflow-y: auto;
 }
 
+.link {
+    cursor: pointer;
+}
+
 #grupos .un-grupo {
     overflow: hidden;
     color: #666666;
     width: 80%;
     height: 90px;
     margin: 40px auto 40px auto;
-    cursor: pointer;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
@@ -106,6 +109,7 @@ input[type="text"] {
     position: absolute;
     top: 34px;
     right: 14px;
+    z-index: 2000;
 }
 
 #grupos .un-grupo .mensaje {
@@ -113,6 +117,11 @@ input[type="text"] {
     right: 16px;
     top: 31px;
     display: none;
+    z-index: 2000;
+}
+
+.titulo {
+    font-size: 1.5em;
 }
 
 #grupos .un-grupo .mensaje p {
@@ -124,16 +133,34 @@ input[type="text"] {
     font-size: 0.9em;
 }
 
+.span-right {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    text-align: right;
+    display: inline-block;
+}
+
 #grupos .boton-crear {
     width: 80%;
     margin: 10px auto 10px auto;
     height: 70px;
 }
 
-#grupos .un-grupo .icon {
+#grupos .un-grupo .x-large {
     margin: 22px 22px 40px 22px;
     float: left;
     display: block;
+}
+
+#grupos .un-grupo .button-bar {
+    position: absolute;
+    top: 48px;
+    left: 91px;
+}
+
+#grupos .un-grupo .button-bar li a {
+    padding: 12px 15px;
 }
 
 #contenido-derecha .lupa {
@@ -193,4 +220,29 @@ input[type="text"] {
 
 #contenido-derecha .abandonado-bien {
     display: none;
+}
+
+/*********/
+#tabyreu {
+    border: solid 2px #ccc;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+#opMostrar {
+    overflow: hidden;
+
+}
+
+#Kmostrar {
+    border: solid 2px #ccc;
+    padding: 8px;
+}
+
+#Kmostrar li {
+    list-style-type: none;
+}
+
+#Kmostrar li a {
+    text-decoration: none;
 }

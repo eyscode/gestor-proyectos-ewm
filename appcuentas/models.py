@@ -103,7 +103,7 @@ class Meeting(models.Model):
 
 class Table(models.Model):
     name = models.CharField(max_length=50)
-    date_creation = models.DateTimeField()
+    date_creation = models.DateTimeField(auto_now_add=True)
     columns = models.IntegerField()
     project = models.ForeignKey(Project)
 

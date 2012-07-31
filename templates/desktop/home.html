@@ -1,66 +1,65 @@
 {% extends ext %}
 {% block contenido %}
     <div id="Khome">
-        <header>===============================================================</header>
         <div id="shortMethods">
 
             <div class="clearFloat">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="S"></span>Proyectos Recientes</h5>
+                    <h5>Proyectos Recientes</h5>
+                    <img src="../../static/img/proy.png" alt="">
                 </div>
                 <div class="KshortLinks" id="Kproy">
                     {% for proy in proyectos %}
-                        <button href="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
-                                                                                alt=""
-                                                                                style="margin:0.5em;"></a>
-                        <!--[El mas]-->
+                        <div id="botonCont">
+                        <button ><img src="../../static/img/group.png" alt="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
+                                                                                                                      alt=""
+                                                                                                                      style="margin:0.5em;"></a>
+                        </div>
                     {% endfor %}
-                    <a href="" class="Kplus"
-                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Ver más</span></a>
+
+                </div>
+                <div class="mas">
+                   <a href="">mas..</a>
                 </div>
             </div>
 
 
             <div class="clearFloat">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="U"></span>Grupos Recientes</h5>
+                    <h5>Grupos Recientes</h5">
+                    <img src="../../static/img/group_link.png" alt="">
                 </div>
 
-                <div class="KshortLinks">
+                <div class="KshortLinks"  id="Kgroup">
                     {% for grupo in grupos %}
-                        <button href="">{{ grupo.name }}</button>
-                        <!--[El mas]-->
+                        <button >{{ grupo.name }}</button>
                     {% endfor %}
-                    <a href="" class="Kplus"
-                       style="background:#ddd;border-bottom:2px solid #aaa;"><span>Recientes</span></a>
+                </div>
+
+                <div class="mas">
+                    <a href="">mas..</a>
                 </div>
             </div>
 
 
             <div class="clearFloat" id="ayuda">
                 <div class="KshortEnter">
-                    <h5><span class="icon x-large gray" data-icon="g"></span>KODEVIANITO</h5>
-                </div>
-                <div class="KshortLinks">
-                    <a href="" class="Kplus">Ayuda? <span class="icon x-large gray" data-icon="?"></span></a>
+                    <h5><img src="../../static/img/master.png" alt=""></span>Sunrise<button style="float:right;"><span class="icon x-large gray" data-icon="?"></span>Ayuda</button></h5>
+
                 </div>
             </div>
         </div>
 
         <div id="record">
 
-            <h3>Mi Historial</h3>
+            <h3>Perfil</h3>
 
             <div class="recordDivision">
                 <div class="Kseparador">
                     <h4>Ultimos movimientos</h4>
                     <ul>
-                        <li><a href="">op1</a></li>
-                        <li><a href="">op2</a></li>
-                        <li><a href="">op3</a></li>
-                        <li><a href="">op4</a></li>
-                        <li><a href="">op5</a></li>
-                        <li><a href="">op6</a></li>
+                        <li><a href="">........</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -71,18 +70,22 @@
                             <img src="../../static/img/perfil.jpg" alt="">
                         </p>
                     </div>
-                    <div id="KperfilDescricion">
-                        <p>Descripcion</p>
+                    <div id="KperfilDescripcion">
+                        <h6>Mis Datos:</h6>
+                        <ul>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                        </ul>
+
+                        <button class="blue">Editar Perfil</button>
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <footer>
-            <a href="" class="btn">Mas opciones</a>
-            <a href="" class="btn">Mas opciones</a>
-            <a href="" class="btn">Mas Opciones</a>
-        </footer>
+
     </div>
 {% endblock %}
