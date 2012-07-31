@@ -8,17 +8,21 @@
     border-radius: 5px;
     background: #ccc;
 }
-.mas{
-    clear:both;
-    margin:25px;
-    }
-#botonCont{
-    overflow:hidden;
+
+.mas {
+    clear: both;
+    margin: 25px;
 }
-.mas a{   
-    display:block;
-    text-align:right;
-}    
+
+#botonCont {
+    overflow: hidden;
+}
+
+.mas a {
+    display: block;
+    text-align: right;
+}
+
 #Khome footer {
     clear: both;
     margin: 0 0 20px 0;
@@ -32,25 +36,42 @@
 }
 
 #record {
-    height:650px;
-    border-radius:8px;    
+    border-radius: 8px;
     background: #eee;
     border-radius: 12px;
 }
-#Kproy{
-  float:right;  
+
+#Kproy {
+    float: right;
 }
+
+#Kgroup {
+    float: right;
+}
+
 #Kproy button {
-    width: 80%;
-    margin:2px;
+    margin: 2px;
     float: left;
     display: inline;
 }
-#Kproy button img{
-    margin:1%;
-    float:left;    
+
+#Kgroup button {
+    margin: 2px;
+    float: left;
+    display: inline;
 }
-#Kproy a,#Kgroup a{
+
+#Kproy button img {
+    margin: 1%;
+    float: left;
+}
+
+#Kgroup button img {
+    margin: 1%;
+    float: left;
+}
+
+#Kproy a, #Kgroup a {
     margin: 3px;
     height: 30px;
     background: #ddd;
@@ -60,24 +81,28 @@
 }
 
 .KshortEnter {
-    margin-right:2%;
+    margin-right: 2%;
     width: 44%;
     float: left;
 }
 
-.KshortEnter img{
-    margin:10px;
+.KshortEnter img {
+    margin: 10px;
 }
-.KshortEnter h5{
-    margin-top:15%;
-    font-size:2em;
-    width:100%;
-    color:#999;
-    word-wrap:break-word;
+
+.KshortEnter h5 {
+    margin-top: 15%;
+    font-size: 2em;
+    width: 100%;
+    color: #999;
+    word-wrap: break-word;
 }
+
 .KshortLinks {
     width: 50%;
     float: left;
+    margin-top: 10px;
+    margin-right: 5px;
 }
 
 .KshortLinks button {
@@ -99,14 +124,14 @@
 
 .clearFloat {
 
-    overflow:hidden;
+    overflow: hidden;
     clear: both;
     margin-bottom: 10px;
     margin-right: 10px;
     /*******/
     /*******/
-    min-height:150px;
-    
+    min-height: 150px;
+
     padding: 4px 10px 4px;
     font-size: 13px;
     line-height: 18px;
@@ -151,26 +176,28 @@
 
 }
 
-
 .clearFloat span {
     margin-right: 12px;
 }
 
 #ayuda h5 {
-    margin-top:8%;
+    margin-top: 8%;
     color: #153;
-    float:left;
-    width:100%;
+    float: left;
+    width: 100%;
     font-size: 30px;
 }
-#ayuda h5 a{
-    margin:50px;
+
+#ayuda h5 a {
+    margin: 50px;
 }
-#ayuda .KshortEnter{
-    width:100%;
-    border:none;
-    
+
+#ayuda .KshortEnter {
+    width: 100%;
+    border: none;
+
 }
+
 #record h3 {
     margin: 0 0 2px 0;
     border-radius: 12px;
@@ -200,15 +227,14 @@
 .recordDivision {
     float: left;
     width: 50%;
-    height: 550px;
 }
 
 .recordDivision .Kseparador {
     margin: 5px;
     padding: 10px;
-    height: 100%;
-    border-radius:8px;
-    border:solid 1px #ccc;
+    height: 345px;
+    border-radius: 8px;
+    border: solid 1px #ccc;
 }
 
 #Kfoto {
@@ -226,13 +252,12 @@
 
 #Kfoto p span {
     position: relative;
-    top: 20px;
     left: 10px;
     float: left;
-    width: 60%;
     word-wrap: break-word;
 }
-#KperfilDescripcion button{
-    display:block;
-    float:right;
+
+#KperfilDescripcion button {
+    display: block;
+    float: right;
 }

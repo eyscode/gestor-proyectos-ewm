@@ -1,54 +1,121 @@
+<script type="text/javascript" src="../../static/js/board.js"></script>
+<script type="text/javascript" src="../../static/js/jquery.simplemodal-1.4.2.js"></script>
+<input type="hidden" id="board-id" value="{{ board.id }}">
+<div id="Kactions">
+    <button class="crear-columna green">Crear Columna</button>
+    <button class="eliminar-columna blue">Eliminar Columna</button>
+    <button class="crear-paquete green">Crear Paquete</button>
+    <button class="eliminar-paquete blue">Eliminar Paquete</button>
+    <button class="crear-tarea green">Crear Tarea</button>
+    <button class="eliminar-tarea blue">Eliminar Tarea</button>
+</div>
+<div id="crear-columna-content">
+    <form method="POST" class="vertical" action="/projects/create-column/">
+        <input type="text" name="nombre" placeholder="Nombre de la columna">
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Crear">
+    </form>
+</div>
+<div id="eliminar-columna-content">
+    <form method="POST" class="vertical" action="/projects/delete-column/">
+        <select name="columna">
+            {% for columna in columnas %}
+                <option value="{{ columna.id }}">{{ columna.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Eliminar">
+    </form>
+</div>
+<div id="crear-paquete-content">
+    <form method="POST" class="vertical" action="/projects/create-package/">
+        <input type="text" name="nombre" placeholder="Nombre de la columna">
+        <textarea type="text" name="description" placeholder="Inserte una descripcion"></textarea>
+        <input type="text" name="prioridad" placeholder="Prioridad del paquete">
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Crear">
+    </form>
+</div>
+<div id="eliminar-paquete-content">
+    <form method="POST" class="vertical" action="/projects/delete-package/">
+        <select name="paquete">
+            {% for paquete in paquetes %}
+                <option value="{{ paquete.id }}">{{ paquete.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Eliminar">
+    </form>
+</div>
+<div id="crear-tarea-content">
+    <form method="POST" class="vertical" action="/projects/create-task/">
+        <input type="text" name="titulo" placeholder="Titulo de la tarea">
+        <textarea type="text" name="description" placeholder="Inserte una descripcion"></textarea>
+        <label>Columna:</label>
+        <select name="columna">
+            <option value="0">--------------------------</option>
+            {% for columna in columnas %}
+                <option value="{{ columna.id }}">{{ columna.name }}</option>
+            {% endfor %}
+        </select>
+        <label>Paquete:</label>
+        <select name="paquete">
+            {% for paquete in paquetes %}
+                <option value="{{ paquete.id }}">{{ paquete.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Crear">
+    </form>
+</div>
+<div id="eliminar-tarea-content">
+    <form method="POST" class="vertical" action="/projects/delete-task/">
+        <select name="tarea">
+            {% for tarea in tareas %}
+                <option value="{{ tarea.id }}">{{ tarea.title }}</option>
+            {% endfor %}
+        </select>
+        <input type="hidden" name="idtable" value="{{ board.id }}">
+        <input type="submit" value="Crear">
+    </form>
+</div>
+
 <div id="Kboard">
     <div id="div-paquetes">
-        <div class="titulo">
+        <h5>
             Pila del Tablero
-        </div>
+        </h5>
+        {% for paquete in board.project.paquetes.all %}
+            <div class="paquete">
+                {{ paquete.name }}
+                {% for task in paquete.tareas.all %}
+                    <div class="one-task" idtask="{{ task.id }}" pila="true" draggable="true">
+                        <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
+                        <p>{{ task.title }}</p>
+
+                        <p>{{ task.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
     </div>
     <div id="kboardContent">
         <div id="Ktablero">
 
-            <div class="Ktask">
+            {% for columna in board.columnas.all %}
+                <div class="Ktask" draggable="true" idcolumn="{{ columna.id }}">
 
-                <h5>Nombre de columna</h5>
+                    <h5>{{ columna.name }}</h5>
+                    {% for task in columna.tareas.all %}
+                        <div class="one-task" idtask="{{ task.id }}" pila="false" draggable="true">
+                            <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
+                            <p>{{ task.title }}</p>
 
-                <div draggable="true">
-                    <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
-                    <h6>titulo</h6>
-
-                    <p>Descripcion</p>
+                            <p>{{ task.description }}</p>
+                        </div>
+                    {% endfor %}
                 </div>
-                <div draggable="true">
-                    <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
-                    <h6>titulo</h6>
-
-                    <p>Descripcion</p>
-                </div>
-
-
-            </div>
-
-            <div class="Ktask">
-                <h5>Nombre de columna</h5>
-
-                <div draggable="true">
-                    <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
-                    <h6>titulo</h6>
-
-                    <p>Descripcion</p>
-                </div>
-            </div>
-
-            <div class="Ktask">
-
-                <h5>Nombre de columna</h5>
-
-                <div draggable="true">
-                    <button class="handTask"><img src="../../static/img/move-Task.png" alt=""></button>
-                    <h6>titulo</h6>
-
-                    <p>Descripcion</p>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </div>

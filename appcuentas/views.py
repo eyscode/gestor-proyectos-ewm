@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404, ge
 from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import now
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table
+from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table, Task, Column, Work_Package
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -49,10 +49,13 @@ def view_home(request):
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    proyectos1 = Client_has_Project.objects.filter(client__user__id=request.user.id)
+    proyectos1 = Client_has_Project.objects.filter(client__user=request.user)
     proyectos2 = Project.objects.filter(creador__user__id=request.user.id)
-    proyectos = set(proyectos1).union(set(proyectos2))
-    return render_to_response("desktop/home.html", {'ext': ext, 'actual': 'home', 'proyectos': proyectos},
+    proyectos = list(set(proyectos1).union(set(proyectos2)))[0:3]
+    grupos = Group_has_Client.objects.filter(client__user=request.user)
+    grupos = list(set(Group.objects.filter(creador=request.user.get_profile())).union(set(grupos)))[0:3]
+    return render_to_response("desktop/home.html",
+            {'ext': ext, 'actual': 'home', 'proyectos': proyectos, 'grupos': grupos},
         context_instance=RequestContext(request))
 
 
@@ -352,16 +355,27 @@ def view_explore(request):
 
 
 def view_board(request):
-    return render_to_response("desktop/board.html", context_instance=RequestContext(request))
+    try:
+        if request.GET.get('idboard'):
+            board = get_object_or_404(Table, id=request.GET.get('idboard'))
+            columnas = Column.objects.filter(table=board)
+            paquetes = Work_Package.objects.filter(table=board)
+            tareas = set()
+            for paquete in paquetes:
+                tareas = tareas.union(set(Task.objects.filter(work_package=paquete)))
+            print(tareas)
+            return render_to_response("desktop/board.html",
+                    {'board': board, 'columnas': columnas, 'paquetes': paquetes, 'tareas': tareas}
+                , context_instance=RequestContext(request))
+        return Http404
+    except Exception, ex:
+        print ex
 
 
 def view_get_boards(request):
     if request.GET.get('idgroup'):
         project = get_object_or_404(Project, id=request.GET.get('idgroup'))
         boards = Table.objects.filter(project=project)
-        proyectos = Project.objects.filter(creador=request.user.get_profile()).order_by('-date_creation')
-        chp = Client_has_Project.objects.filter(client=Client.objects.get(user=request.user))
-        proyectos = set([proy.project for proy in chp]).union(set(proyectos))
     return render_to_response("desktop/boards.html", {'boards': boards, 'idproject': project.id},
         context_instance=RequestContext(request))
 
@@ -382,6 +396,15 @@ def view_create_board(request):
         return HttpResponse(simplejson.dumps({'estado': 0, 'error': error}), mimetype='application/json')
 
 
+def view_delete_board(request):
+    if request.GET.get('idboard'):
+        idboard = request.GET.get('idboard')
+        table = Table.objects.get(id=idboard)
+        table.delete()
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+    return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+
+
 @login_required(login_url="/login/")
 def view_tables(request):
     if request.method == 'GET' and request.is_ajax():
@@ -389,12 +412,31 @@ def view_tables(request):
     raise Http404
 
 
+def view_move_task(request):
+    if request.GET.get('idtask') and request.GET.get('idcolumn') and request.GET.get('pila'):
+        task = Task.objects.get(id=request.GET.get('idtask'))
+        print task.column, Column.objects.get(id=request.GET.get('idcolumn')), request.GET.get('pila')
+        if task.column == Column.objects.get(id=request.GET.get('idcolumn')):
+            return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+        elif task.column != None and task.column != Column.objects.get(
+            id=request.GET.get('idcolumn')) and request.GET.get('pila') == "true":
+            return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+        else:
+            task.column = Column.objects.get(id=request.GET.get('idcolumn'))
+            task.save()
+            return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+    return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+
+
 @login_required(login_url="/login/")
 def view_reuniones(request):
     if request.method == 'GET' and request.is_ajax():
         reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-        return render_to_response("desktop/reuniones.html",{'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
+        return render_to_response("desktop/reuniones.html",
+                {'reuniones': reuniones, 'project': request.GET.get('project_id')},
+            context_instance=RequestContext(request))
     raise Http404
+
 
 @login_required(login_url="/login/")
 def view_crear_reunion(request):
@@ -407,9 +449,74 @@ def view_crear_reunion(request):
             date_creation = now()
             project = Project.objects.filter(id=request.GET.get('project_id', ''))[0]
             reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,date_creation=date_creation, project=project)
-            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},
-                    context_instance=RequestContext(request))
+            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,
+                date_creation=date_creation, project=project)
+            return render_to_response("desktop/reuniones.html",
+                    {'reuniones': reuniones, 'project': request.GET.get('project_id')},
+                context_instance=RequestContext(request))
     except Exception, ex:
         print ex
     raise Http404
+
+
+def view_create_column(request):
+    if request.method == "POST" and request.POST.get('nombre') and request.POST.get('idtable'):
+        nombre = request.POST.get("nombre")
+        position = 0;
+        tabla = Table.objects.get(id=request.POST.get('idtable'))
+        Column.objects.create(name=nombre, position=position, table=tabla)
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+
+
+def view_delete_column(request):
+    if request.GET.get('columna'):
+        columna = get_object_or_404(Column, id=request.GET.get('columna'))
+        for tarea in columna.tareas.all():
+            tarea.column = None;
+            tarea.save()
+        columna.delete()
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+
+
+def view_create_paquete(request):
+    if  request.method == "POST" and request.POST.get('nombre') and request.POST.get(
+        'description') and request.POST.get(
+        'prioridad') and request.POST.get('idtable'):
+        nombre = request.POST.get("nombre")
+        description = request.POST.get('description')
+        prioridad = request.POST.get('prioridad')
+        table = Table.objects.get(id=request.POST.get('idtable'))
+        Work_Package.objects.create(name=nombre, description=description, prioridad=prioridad, table=table,
+            project=table.project)
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+
+
+def view_delete_paquete(request):
+    if request.GET.get('paquete'):
+        paquete = get_object_or_404(Work_Package, id=request.GET.get('paquete'))
+        for tarea in paquete.tareas.all():
+            tarea.column = None
+            tarea.save()
+        for tarea in paquete.tareas.all():
+            tarea.delete()
+        paquete.delete()
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+
+
+def view_create_tarea(request):
+    if  request.method == "POST" and request.POST.get('titulo') and request.POST.get(
+        'description') and request.POST.get('paquete'):
+        titulo = request.POST.get("titulo")
+        description = request.POST.get('description')
+        paquete = Work_Package.objects.get(id=request.POST.get('paquete'))
+        column = Column.objects.filter(id=request.POST.get('column'))
+        if not column: column = None
+        Task.objects.create(title=titulo, description=description, work_package=paquete, column=column)
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+
+
+def view_delete_tarea(request):
+    if request.GET.get('tarea'):
+        tarea = get_object_or_404(Task, id=request.GET.get('tarea'))
+        tarea.delete();
+        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')

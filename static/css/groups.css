@@ -206,6 +206,14 @@ input[type="text"] {
     margin: 0 10px 0 10px;
 }
 
+#contenido-derecha .creado-board-bien {
+    display: none;
+}
+
+#contenido-derecha .borrado-board-bien {
+    display: none;
+}
+
 #contenido-derecha .editado-bien {
     display: none;
 }

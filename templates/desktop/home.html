@@ -10,16 +10,13 @@
                 </div>
                 <div class="KshortLinks" id="Kproy">
                     {% for proy in proyectos %}
-                        <div id="botonCont">
-                        <button ><img src="../../static/img/group.png" alt="">{{ proy.name }}</button><a href=""><img src="../../static/img/tablero.png"
-                                                                                                                      alt=""
-                                                                                                                      style="margin:0.5em;"></a>
-                        </div>
+                        <button><img src="../../static/img/tablero.png" alt="">{{ proy.name }}
+                        </button>
                     {% endfor %}
 
                 </div>
                 <div class="mas">
-                   <a href="">mas..</a>
+                    <a href="/projects/">mas..</a>
                 </div>
             </div>
 
@@ -30,22 +27,14 @@
                     <img src="../../static/img/group_link.png" alt="">
                 </div>
 
-                <div class="KshortLinks"  id="Kgroup">
+                <div class="KshortLinks" id="Kgroup">
                     {% for grupo in grupos %}
-                        <button >{{ grupo.name }}</button>
+                        <button><img src="../../static/img/group.png" alt="">{{ grupo.name }}</button>
                     {% endfor %}
                 </div>
 
                 <div class="mas">
-                    <a href="">mas..</a>
-                </div>
-            </div>
-
-
-            <div class="clearFloat" id="ayuda">
-                <div class="KshortEnter">
-                    <h5><img src="../../static/img/master.png" alt=""></span>Sunrise<button style="float:right;"><span class="icon x-large gray" data-icon="?"></span>Ayuda</button></h5>
-
+                    <a href="/groups/">mas..</a>
                 </div>
             </div>
         </div>
@@ -66,17 +55,20 @@
             <div class="recordDivision">
                 <div class="Kseparador">
                     <div id="Kfoto">
-                        <p><span>Eysenk Gomez Orihuela</span>
-                            <img src="../../static/img/perfil.jpg" alt="">
+                        <h6>Nombres:</h6>
+
+                        <p><span>{{ user.get_full_name }}</span>
                         </p>
                     </div>
                     <div id="KperfilDescripcion">
                         <h6>Mis Datos:</h6>
                         <ul>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
-                            <li><h5>correo:</h5><p>fapencio@gmail.com</p></li>
+                            <li><h5>Username:</h5>
+
+                                <p>{{ user.username }}</p></li>
+                            <li><h5>correo:</h5>
+
+                                <p>{{ user.email }}</p></li>
                         </ul>
 
                         <button class="blue">Editar Perfil</button>

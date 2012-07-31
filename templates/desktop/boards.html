@@ -2,9 +2,9 @@
 <div class="listado">
     <ul class="alt">
         {% for board in boards %}
-            <li iduser="2">
+            <li idboard="{{ board.id }}">
                 <span class="icon darkgray" data-icon="Y" style="display: inline-block; "><span
-                        aria-hidden="true">Y</span></span>{{ board.name }}
+                        aria-hidden="true">Y</span></span>{{ board.name }}<a>X</a>
             </li>
         {% empty %}
             <li>

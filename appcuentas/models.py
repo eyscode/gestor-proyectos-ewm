@@ -114,7 +114,7 @@ class Table(models.Model):
 class Column(models.Model):
     name = models.CharField(max_length=45)
     position = models.IntegerField()
-    table = models.ForeignKey(Table)
+    table = models.ForeignKey(Table, related_name="columnas")
 
     def __unicode__(self):
         return self.name
@@ -125,7 +125,7 @@ class Work_Package(models.Model):
     description = models.CharField(max_length=50)
     prioridad = models.IntegerField()
     table = models.ForeignKey(Table)
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, related_name="paquetes")
 
     def __unicode__(self):
         return self.name
@@ -133,11 +133,11 @@ class Work_Package(models.Model):
 
 class Task(models.Model):
     title = models.CharField(max_length=100)
-    subtitle = models.CharField(max_length=100)
+    subtitle = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField()
-    state = models.CharField(max_length=50)
-    column = models.ForeignKey(Column)
-    work_package = models.ForeignKey(Work_Package)
+    state = models.CharField(max_length=50, null=True, blank=True)
+    column = models.ForeignKey(Column, related_name="tareas", null=True, blank=True)
+    work_package = models.ForeignKey(Work_Package, null=True, blank=True, related_name="tareas")
 
     def __unicode__(self):
         return self.title

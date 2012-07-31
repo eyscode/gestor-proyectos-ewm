@@ -489,6 +489,52 @@ $(document).ready(function () {
                     });
                     return false;
                 });
+                $('#contenido-derecha .listado li').click(function () {
+                    var idboard = $(this).attr('idboard');
+                    $.ajax({
+                        url:"/projects/get-board/?idboard=" + idboard,
+                        type:'GET',
+                        success:function (data) {
+                            $('#contenido').html(data);
+                            $(window).scrollTop(0);
+                        }
+                    })
+                });
+                $('#contenido-derecha .listado li a').click(function () {
+                    var idgroup = $(this).parent().attr('idboard');
+                    $.ajax({
+                        url:"/projects/delete-board/?idboard=" + idgroup,
+                        type:'GET',
+                        success:function (data) {
+                            console.log(data);
+                            $.ajax({
+                                url:'/projects/',
+                                type:'GET',
+                                success:function (data) {
+                                    $('#contenido').html(data);
+                                    $(window).scrollTop(0);
+                                    grupos = document.querySelectorAll('#grupos .un-grupo');
+                                    [].forEach.call(grupos, function (col) {
+                                        col.addEventListener('dragenter', handleDragEnter, false);
+                                        col.addEventListener('dragleave', handleDragLeave, false);
+                                        col.addEventListener('drop', handleDrop, false);
+                                        col.addEventListener('dragend', handleDragEnd, false);
+                                        col.addEventListener('dragover', handleDragOver, false);
+                                    });
+
+                                    clientes = document.querySelectorAll('#contenido-derecha .listado li');
+                                    [].forEach.call(clientes, function (col) {
+                                        col.addEventListener('dragstart', handleDragStart, false);
+                                        col.addEventListener('dragover', handleDragOver, false);
+                                        col.addEventListener('dragend', handleDragEnd, false);
+                                    });
+                                    $('#contenido-derecha .borrado-board-bien').show();
+                                }
+                            });
+                        }
+                    })
+                    return false;
+                });
             }
         })
         return false;
