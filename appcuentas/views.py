@@ -5,12 +5,11 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
 from django.template import RequestContext
 from django.utils import simplejson
-from django.utils.timezone import now
 from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
-
+from django.utils.timezone import now
 def view_login(request):
     error = None
     if request.method == "POST":
@@ -350,7 +349,7 @@ def view_explore(request):
     return render_to_response("desktop/explore.html", {'ext': ext, 'actual': 'explore'},
         context_instance=RequestContext(request))
 
-
+@login_required(login_url="/login")
 def view_board(request):
     return render_to_response("desktop/board.html", context_instance=RequestContext(request))
 
@@ -368,26 +367,11 @@ def view_tables(request):
         return render_to_response("desktop/tableros.html", context_instance=RequestContext(request))
     raise Http404
 
+
 @login_required(login_url="/login/")
 def view_reuniones(request):
     if request.method == 'GET' and request.is_ajax():
         reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-        return render_to_response("desktop/reuniones.html",{'reuniones': reuniones, 'project': request.GET.get('project_id')},context_instance=RequestContext(request))
-    raise Http404
-
-@login_required(login_url="/login/")
-def view_crear_reunion(request):
-    try:
-        if request.method == 'GET' and request.is_ajax():
-            summary = request.GET.get('summary', '')
-            description = request.GET.get('description', '')
-            initial = now()#request.GET.get('initial',datetime.now())
-            end = now()#request.GET.get('end',datetime.now())
-            date_creation = now()
-            project = Project.objects.filter(id=request.GET.get('project_id', ''))[0]
-            reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,date_creation=date_creation, project=project)
-            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
-    except Exception, ex:
-        print ex
+        return render_to_response("desktop/reuniones.html", {'reuniones': reuniones},
+            context_instance=RequestContext(request))
     raise Http404

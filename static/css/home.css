@@ -8,7 +8,17 @@
     border-radius: 5px;
     background: #ccc;
 }
-
+.mas{
+    clear:both;
+    margin:25px;
+    }
+#botonCont{
+    overflow:hidden;
+}
+.mas a{   
+    display:block;
+    text-align:right;
+}    
 #Khome footer {
     clear: both;
     margin: 0 0 20px 0;
@@ -22,16 +32,24 @@
 }
 
 #record {
+    height:650px;
+    border-radius:8px;    
     background: #eee;
     border-radius: 12px;
 }
-
+#Kproy{
+  float:right;  
+}
 #Kproy button {
     width: 80%;
+    margin:2px;
     float: left;
     display: inline;
 }
-
+#Kproy button img{
+    margin:1%;
+    float:left;    
+}
 #Kproy a,#Kgroup a{
     margin: 3px;
     height: 30px;
@@ -42,10 +60,21 @@
 }
 
 .KshortEnter {
-    width: 50%;
+    margin-right:2%;
+    width: 44%;
     float: left;
 }
 
+.KshortEnter img{
+    margin:10px;
+}
+.KshortEnter h5{
+    margin-top:15%;
+    font-size:2em;
+    width:100%;
+    color:#999;
+    word-wrap:break-word;
+}
 .KshortLinks {
     width: 50%;
     float: left;
@@ -64,7 +93,6 @@
     text-align: right;
     text-decoration: none;
     font-weight: bold;
-
     width: 100%;
     display: block;
 }
@@ -123,22 +151,26 @@
 
 }
 
-#ayuda div a {
-    padding-top: 10;
-    color: blue;
-    text-align: center;
-}
 
 .clearFloat span {
     margin-right: 12px;
 }
 
 #ayuda h5 {
-    font-family: Chiller;
+    margin-top:8%;
     color: #153;
+    float:left;
+    width:100%;
     font-size: 30px;
 }
-
+#ayuda h5 a{
+    margin:50px;
+}
+#ayuda .KshortEnter{
+    width:100%;
+    border:none;
+    
+}
 #record h3 {
     margin: 0 0 2px 0;
     border-radius: 12px;
@@ -165,24 +197,18 @@
     height: 100%;
 }
 
-#ayuda .KshortLinks {
-    margin: 25px auto;
-
-}
-
 .recordDivision {
     float: left;
     width: 50%;
-    height: 100%;
+    height: 550px;
 }
 
 .recordDivision .Kseparador {
-    background: #ffd;
     margin: 5px;
-    border-left: solid 2px #aaa;
     padding: 10px;
-    border-radius: 10px;
     height: 100%;
+    border-radius:8px;
+    border:solid 1px #ccc;
 }
 
 #Kfoto {
@@ -205,4 +231,8 @@
     float: left;
     width: 60%;
     word-wrap: break-word;
+}
+#KperfilDescripcion button{
+    display:block;
+    float:right;
 }

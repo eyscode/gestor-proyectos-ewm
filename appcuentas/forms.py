@@ -15,3 +15,15 @@ class RegisterForm(forms.Form):
         if passw != repassw:
             raise Exception("Los password no coinciden")
         return repassw
+
+class ReunionForm(forms.Form):
+    resumen=forms.CharField(
+        max_length=100,
+        error_messages={'required':'el resumen es necesario'},
+        widget=forms.TextInput(attrs={'class':'input-xlarge','style':'height:28px'})
+    )
+    descripcion=forms.CharField(
+        widget=forms.Textarea(attrs={'rows':'8','class':'input-xxlarge'})
+    )
+    fecha_inicio = forms.DateTimeField(required=False)
+    fecha_fin = forms.DateTimeField(required=False)
