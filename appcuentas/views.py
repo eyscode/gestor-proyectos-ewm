@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render_to_response, get_object_or_404, ge
 from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import now
-from appcuentas.models import Group, Group_has_Client, Project, Client_has_Project, Meeting, Table, Profile
+from appcuentas.models import *
 from models import Client, User
 from forms import RegisterForm
 from django.core import serializers
@@ -552,16 +552,18 @@ def view_delete_paquete(request):
 
 
 def view_create_tarea(request):
-    if  request.method == "POST" and request.POST.get('titulo') and request.POST.get(
-        'description') and request.POST.get('paquete'):
-        titulo = request.POST.get("titulo")
-        description = request.POST.get('description')
-        paquete = Work_Package.objects.get(id=request.POST.get('paquete'))
-        column = Column.objects.filter(id=request.POST.get('column'))
-        if not column: column = None
-        Task.objects.create(title=titulo, description=description, work_package=paquete, column=column)
-        return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
-
+    try:
+        if  request.method == "POST" and request.POST.get('titulo') and request.POST.get(
+            'description') and request.POST.get('paquete'):
+            titulo = request.POST.get("titulo")
+            description = request.POST.get('description')
+            paquete = Work_Package.objects.get(id=request.POST.get('paquete'))
+            column = Column.objects.filter(id=request.POST.get('column'))
+            if not column: column = None
+            Task.objects.create(title=titulo,subtitle=titulo,state="1", description=description, work_package=paquete, column=column)
+            return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+    except Exception,ex :
+        print ex
 
 def view_delete_tarea(request):
     if request.GET.get('tarea'):
