@@ -6,6 +6,10 @@
     <script type="text/javascript">
         var reg = false;
 
+        {% if vista == 'registrar' %}
+            reg = true;
+        {% endif %}
+
         function aparecer() {
             if (!reg) {
                 $('#registro').show();
@@ -20,14 +24,17 @@
                 reg = false;
             }
         }
+        $(document).ready(function () {
+            aparecer();
+        });
     </script>
-    <title>Ofisis 2012</title>
+    <title></title>
 </head>
 <body>
 
 <header>
     <div>
-        <div class="logo"><a href="">Ofisis 2012</a></div>
+        <div class="logo"><a href="">calidad de software</a></div>
         <meta http-equiv=”Cache-Control” content=”no-cache”/>
         <div class="opciones">
 
@@ -46,12 +53,21 @@
             </div>
         </div>
         <div class="logeo" id="logeo">
+
             <div id="registro" hidden>
+                <div>
+                    {% if mostrar == 1 %}
+                        Registrado correctamente
+                    {% endif %}
+                    {% if error %}
+                        {{ error }}
+                    {% endif %}
+                </div>
                 <form action="/register/" method="post">
                     {% csrf_token %}
                     <label for="">Nombre:</label><input name="nombre" type="text">
                     <label for="">Apellidos:</label><input name="apellidos" type="text">
-                    <label for="">Correo electronico:</label><input  name="email" type="text">
+                    <label for="">Correo electronico:</label><input name="email" type="text">
                     <label for="">Contraseña:</label><input name="password" type="password">
                     <label for="">Repetir Contraseña:</label><input name="repassw" type="password">
 

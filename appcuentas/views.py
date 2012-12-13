@@ -29,69 +29,83 @@ def view_login(request):
 def view_register(request):
     #registerform = RegisterForm()
     error = None
+    vista = "register"
     if request.POST:
-        #registerform = RegisterForm(request.POST)
-        #if registerform.is_valid():
-            nombre = request.POST.get('nombre',-1)
-            apellidos = request.POST.get("apellidos",-1)
-            email = request.POST.get("email",-1)
-            profiles = Profile.objects.all()
-            passw = request.POST.get("password",-1)
-            repassw = request.POST.get("repassw",-1)
-            if repassw==passw and email!=-1 and apellidos!=-1 and nombre!=-1:
-                print nombre
-                print apellidos
-                u = User(username=nombre,first_name=nombre,last_name=apellidos,email=email)
-                u.set_password(repassw)
-                u.save()
-                Client.objects.create(user=u, profile=profiles[0])
-                return redirect(to="/register")
+    #registerform = RegisterForm(request.POST)
+    #if registerform.is_valid():
+        nombre = request.POST.get('nombre', -1)
+        apellidos = request.POST.get("apellidos", -1)
+        email = request.POST.get("email", -1)
+        profiles = Profile.objects.all()
+        passw = request.POST.get("password", -1)
+        repassw = request.POST.get("repassw", -1)
+        if repassw == passw and email != -1 and apellidos != -1 and nombre != -1:
+            u = User(username=nombre, first_name=nombre, last_name=apellidos, email=email)
+            u.set_password(repassw)
+            u.save()
+            Client.objects.create(user=u, profile=profiles[0])
+            request.session['registrado'] = True
+            return redirect(to="/register")
+        else:
+            if repassw == passw:
+                error = "los password no son iguales"
             else:
-                error="Datos insertados incorrectos"
-    return render_to_response("desktop/inicio.html", {"error": error}, context_instance=RequestContext(request))
+                error = "Falta insertar datos"
+    mostrar = 0
+
+    if request.session.get('registrado'):
+        mostrar = 1
+        del request.session['registrado']
+    print error
+    return render_to_response("desktop/inicio.html", {"error": error, 'mostrar': mostrar, 'vista': vista},
+        context_instance=RequestContext(request))
 
 login_required(login_url='/login/')
+
 def view_change_password(request):
-    error=''
+    error = ''
     if request.is_ajax():
-        delete_pass= request.POST.get('password','')
-        passw = request.POST.get('password_new','')
-        repassw = request.POST.get('repassword_new','')
-        if delete_pass!='' and passw!='' and repassw!='':
-            if passw==repassw:
-                client=get_object_or_404(Client,user__id=request.user.id)
-                user=client.user
+        delete_pass = request.POST.get('password', '')
+        passw = request.POST.get('password_new', '')
+        repassw = request.POST.get('repassword_new', '')
+        if delete_pass != '' and passw != '' and repassw != '':
+            if passw == repassw:
+                client = get_object_or_404(Client, user__id=request.user.id)
+                user = client.user
                 if user.check_password(delete_pass):
                     user.set_password(repassw)
                     user.save()
-                    error='password cambiado correctamente'
+                    error = 'password cambiado correctamente'
                 else:
-                    error='password incorrecto'
+                    error = 'password incorrecto'
             else:
-                error='password diferente'
+                error = 'password diferente'
         else:
-            error="todos los campos son obligatorios"
+            error = "todos los campos son obligatorios"
     print error
-    return HttpResponse(simplejson.dumps({'error': error}),mimetype='application/json')
+    return HttpResponse(simplejson.dumps({'error': error}), mimetype='application/json')
 
 login_required(login_url='/login/')
+
 def view_change_datos(request):
-    error=''
+    error = ''
     if request.is_ajax():
-        nombre= request.POST.get('nombre_change_profile','')
-        apellidos = request.POST.get('apellido_change_profile','')
-        email = request.POST.get('email_change_profile','')
-        client=get_object_or_404(Client,user__id=request.user.id)
-        user=client.user
-        if nombre!='':
-            user.first_name=nombre
-        if apellidos!='':
-            user.last_name=apellidos
-        if email!='':
-            user.email=email
+        nombre = request.POST.get('nombre_change_profile', '')
+        apellidos = request.POST.get('apellido_change_profile', '')
+        email = request.POST.get('email_change_profile', '')
+        client = get_object_or_404(Client, user__id=request.user.id)
+        user = client.user
+        if nombre != '':
+            user.first_name = nombre
+        if apellidos != '':
+            user.last_name = apellidos
+        if email != '':
+            user.email = email
         user.save()
     ext = "desktop/layout.html"
-    return render_to_response("desktop/account.html", {'error':'','ext': ext, 'actual': 'account'},context_instance=RequestContext(request))
+    return render_to_response("desktop/account.html", {'error': '', 'ext': ext, 'actual': 'account'},
+        context_instance=RequestContext(request))
+
 
 @login_required(login_url='/login/')
 def view_home(request):
@@ -482,8 +496,11 @@ def view_move_task(request):
 def view_reuniones(request):
     if request.method == 'GET' and request.is_ajax():
         reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
-        return render_to_response("desktop/reuniones.html",{'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
+        return render_to_response("desktop/reuniones.html",
+                {'reuniones': reuniones, 'project': request.GET.get('project_id')},
+            context_instance=RequestContext(request))
     raise Http404
+
 
 @login_required(login_url="/login/")
 def view_crear_reunion(request):
@@ -499,9 +516,12 @@ def view_crear_reunion(request):
             project = Project.objects.filter(id=request.GET.get('project_id', ''))[0]
             reuniones = Meeting.objects.filter(project__id=request.GET.get('project_id', ''))
             print 'hola'
-            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,date_creation=date_creation, project=project)
+            Meeting.objects.create(summary=summary, description=description, initial=initial, end=end,
+                date_creation=date_creation, project=project)
             print 'hola'
-            return render_to_response("desktop/reuniones.html", {'reuniones': reuniones,'project': request.GET.get('project_id')},context_instance=RequestContext(request))
+            return render_to_response("desktop/reuniones.html",
+                    {'reuniones': reuniones, 'project': request.GET.get('project_id')},
+                context_instance=RequestContext(request))
     except Exception, ex:
         print ex
     raise Http404
@@ -560,10 +580,12 @@ def view_create_tarea(request):
             paquete = Work_Package.objects.get(id=request.POST.get('paquete'))
             column = Column.objects.filter(id=request.POST.get('column'))
             if not column: column = None
-            Task.objects.create(title=titulo,subtitle=titulo,state="1", description=description, work_package=paquete, column=column)
+            Task.objects.create(title=titulo, subtitle=titulo, state="1", description=description, work_package=paquete,
+                column=column)
             return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
-    except Exception,ex :
+    except Exception, ex:
         print ex
+
 
 def view_delete_tarea(request):
     if request.GET.get('tarea'):
