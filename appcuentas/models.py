@@ -17,6 +17,7 @@ class Template(models.Model):
 class Client(models.Model):
     user = models.OneToOneField(User)
     profile = models.ForeignKey(Profile)
+    projects = models.ManyToManyField('Project', through='Client_has_Project')
 
     def __unicode__(self):
         return self.user.__unicode__()
@@ -168,3 +169,12 @@ class Check(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+class Log(models.Model):
+    project = models.ForeignKey(Project)
+    datetime = models.DateTimeField(auto_now_add=True)
+    mensaje = models.CharField(max_length=200)
+
+    def __unicode__(self):
+        return self.mensaje.format(self.project)

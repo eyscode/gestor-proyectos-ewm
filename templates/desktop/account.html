@@ -1,27 +1,40 @@
 {% extends ext %}
 {% block contenido %}
-<div id="account_content">
-    <div id="account" style="width: 50%;float: left;">
+    <div id="account_content">
+        <div id="account" style="width: 50%;float: left;">
             <div class="div-oscuro clearfix" style="height: 80%;width: 100%;overflow-x: auto;">
                 <span class="icon x-large black icon-div-grande" data-icon="K"></span>
                 <ul style="display: block;margin-left: 25%;list-style: none;">
                     <li>
-                    <div class="">
-                        <p class="">Nombre:</p>
-                        <span class="" id="nombre_profile" style="font-size: 200%;color: #000000;">{{user.first_name}}<button id="edit_nombre_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
+                        <div class="">
+                            <p class="">Nombre:</p>
+                            <span class="" id="nombre_profile"
+                                  style="font-size: 200%;color: #000000;">{{ user.first_name }}
+                            <button id="edit_nombre_profile" style="margin-left: 10px;"><span class="icon gray"
+                                                                                              data-icon="7"
+                                                                                              style="display: inline-block; "/>
+                            </button></span>
 
-                        <form hidden id="form_cambiar_nombre" method="">
-                            <input type="text"  id="nombre_change_profile" name="nombre_change_profile" value="{{ user.first_name}}">
-                            <input type="submit" value="cambiar" style="width: 100px;">
-                        </form>
-                    </div>
+                            <form hidden id="form_cambiar_nombre" action="/change_data">
+                                <input type="text" id="nombre_change_profile" name="nombre_change_profile"
+                                       value="{{ user.first_name}}">
+                                <input type="submit" value="cambiar" style="width: 100px;">
+                            </form>
+                        </div>
                     </li>
                     <li>
                         <div class="">
                             <p class="">Apellidos:</p>
-                            <span class="" id="apellido_profile" style="font-size: 200%;color: #000000;">{{user.last_name}}<button id="edit_apellido_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
-                            <form hidden id="form_cambiar_apellido" action="">
-                                <input type="text" id="apellido_change_profile" name="apellido_change_profile" value="{{ user.last_name}}">
+                            <span class="" id="apellido_profile"
+                                  style="font-size: 200%;color: #000000;">{{ user.last_name }}
+                            <button id="edit_apellido_profile" style="margin-left: 10px;"><span class="icon gray"
+                                                                                                data-icon="7"
+                                                                                                style="display: inline-block; "/>
+                            </button></span>
+
+                            <form hidden id="form_cambiar_apellidos" action="/change_data">
+                                <input type="text" id="apellido_change_profile" name="apellido_change_profile"
+                                       value="{{ user.last_name}}">
                                 <input type="submit" value="cambiar" style="width: 100px;">
                             </form>
                         </div>
@@ -29,9 +42,15 @@
                     <li>
                         <div class="">
                             <p class="">Email:</p>
-                            <span class="" id="email_profile" style="font-size: 200%;color: #000000;">{{user.email}}<button id="edit_email_profile" style="margin-left: 10px;"><span class="icon gray" data-icon="7" style="display: inline-block; "/></button></span>
-                            <form hidden id="form_cambiar_email" action="">
-                                <input type="text" id="email_change_profile" name="email_change_profile" value="{{ user.email}}">
+                            <span class="" id="email_profile" style="font-size: 200%;color: #000000;">{{ user.email }}
+                            <button id="edit_email_profile" style="margin-left: 10px;"><span class="icon gray"
+                                                                                             data-icon="7"
+                                                                                             style="display: inline-block; "/>
+                            </button></span>
+
+                            <form hidden id="form_cambiar_email" action="/change_data">
+                                <input type="text" id="email_change_profile" name="email_change_profile"
+                                       value="{{ user.email}}">
                                 <input type="submit" value="cambiar" style="width: 100px;">
                             </form>
                         </div>
@@ -39,35 +58,36 @@
 
                 </ul>
             </div>
-    </div>
-
-    <div id="contenido-derecha" style="width: 45%;margin-left: 3%;">
-        <div class="notice success" id="div_error_account" hidden style="width: 80%;" >
-            <a href="#close" class="icon close" data-icon="x" style="display: inline-block; ">
-                <span aria-hidden="true">x</span>
-            </a>
-            <span id="error_account">error</span>
         </div>
-        <div id="form-cambiar-password">
-            <form class="vertical"  id="form-change-password" action="">
-                <label>Password Actual</label>
 
-                <div class="nombre-errors"></div>
-                <input type="password" name="password" id="password" style="width: 75%;">
-                <label>Nuevo Password</label>
+        <div id="contenido-derecha" style="width: 45%;margin-left: 3%;">
+            <div class="notice success" id="div_error_account" hidden style="width: 80%;">
+                <a href="#close" class="icon close" data-icon="x" style="display: inline-block; ">
+                    <span aria-hidden="true">x</span>
+                </a>
+                <span id="error_account">error</span>
+            </div>
+            <div id="form-cambiar-password">
+                <form class="vertical" id="form-change-password" action="">
+                    <label>Password Actual</label>
 
-                <div class="nombre-errors"></div>
-                <input type="password" name="password_new" id="password_new" style="width: 75%;">
-                <label>Repetir Nuevo Password</label>
+                    <div class="nombre-errors"></div>
+                    <input type="password" name="password" id="password" style="width: 75%;">
+                    <label>Nuevo Password</label>
 
-                <div class="nombre-errors"></div>
-                <input type="password" name="repassword_new" id="repassword_new" style="width: 75%;">
-                <input class="green" type="submit" id="btn_change_password" value="Cambiar" style="width: 75%;margin-top: 10%;">
-            </form>
+                    <div class="nombre-errors"></div>
+                    <input type="password" name="password_new" id="password_new" style="width: 75%;">
+                    <label>Repetir Nuevo Password</label>
+
+                    <div class="nombre-errors"></div>
+                    <input type="password" name="repassword_new" id="repassword_new" style="width: 75%;">
+                    <input class="green" type="submit" id="btn_change_password" value="Cambiar"
+                           style="width: 75%;margin-top: 10%;">
+                </form>
+            </div>
         </div>
+        <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-</div>
     <script type="text/javascript">
         $('#form-change-password').submit(function () {
             $.ajax({
@@ -117,19 +137,19 @@
                 }
             });
         });
-        $('#edit_nombre_profile').click(function(){
+        $('#edit_nombre_profile').click(function () {
             //alert("llega");
             $('#form_cambiar_nombre').show();
             $('#nombre_profile').hide();
 
         });
-        $('#edit_apellido_profile').click(function(){
+        $('#edit_apellido_profile').click(function () {
             //alert("llega");
             $('#form_cambiar_apellido').show();
             $('#apellido_profile').hide();
 
         });
-        $('#edit_email_profile').click(function(){
+        $('#edit_email_profile').click(function () {
             //alert("llega");
             $('#form_cambiar_email').show();
             $('#email_profile').hide();

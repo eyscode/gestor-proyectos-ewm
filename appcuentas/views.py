@@ -1,14 +1,14 @@
+# coding=utf-8
 # Create your views here.
 from django.http import HttpResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from django.shortcuts import redirect, render_to_response, get_object_or_404, get_list_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect, render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.utils import simplejson
 from django.utils.timezone import now
 from appcuentas.models import *
 from models import Client, User
-from forms import RegisterForm
 from django.core import serializers
 
 def view_login(request):
@@ -24,6 +24,11 @@ def view_login(request):
             else:
                 error = "Su password o usuario es incorrecto"
     return render_to_response("desktop/inicio.html", {"error": error}, context_instance=RequestContext(request))
+
+
+def view_logout(request):
+    logout(request)
+    return redirect('/')
 
 
 def view_register(request):
@@ -82,26 +87,23 @@ def view_change_password(request):
                 error = 'password diferente'
         else:
             error = "todos los campos son obligatorios"
-    print error
     return HttpResponse(simplejson.dumps({'error': error}), mimetype='application/json')
 
 login_required(login_url='/login/')
 
 def view_change_datos(request):
-    error = ''
-    if request.is_ajax():
-        nombre = request.POST.get('nombre_change_profile', '')
-        apellidos = request.POST.get('apellido_change_profile', '')
-        email = request.POST.get('email_change_profile', '')
-        client = get_object_or_404(Client, user__id=request.user.id)
-        user = client.user
-        if nombre != '':
-            user.first_name = nombre
-        if apellidos != '':
-            user.last_name = apellidos
-        if email != '':
-            user.email = email
-        user.save()
+    nombre = request.POST.get('nombre_change_profile')
+    apellidos = request.POST.get('apellido_change_profile')
+    email = request.POST.get('email_change_profile')
+    user = request.user
+    if nombre:
+        user.first_name = nombre
+    if apellidos:
+        user.last_name = apellidos
+    if email:
+        user.email = email
+    user.save()
+    print user, "csmmmmmmmm"
     ext = "desktop/layout.html"
     return render_to_response("desktop/account.html", {'error': '', 'ext': ext, 'actual': 'account'},
         context_instance=RequestContext(request))
@@ -113,13 +115,18 @@ def view_home(request):
         ext = "desktop/vacio.html"
     else:
         ext = "desktop/layout.html"
-    proyectos1 = Client_has_Project.objects.filter(client__user=request.user)
-    proyectos2 = Project.objects.filter(creador__user__id=request.user.id)
-    proyectos = list(set(proyectos1).union(set(proyectos2)))[0:3]
-    grupos = Group_has_Client.objects.filter(client__user=request.user)
-    grupos = list(set(Group.objects.filter(creador=request.user.get_profile())).union(set(grupos)))[0:3]
+    proyectos = list(Project.objects.filter(creador__user=request.user).order_by('-date_creation')) + list(
+        Client.objects.get(user=request.user).projects.all().order_by('-date_creation'))
+    logs = []
+    for p in proyectos:
+        logs += list(Log.objects.filter(project=p))
+    logs.sort(key=lambda l: l.datetime)
+    logs.reverse()
+    logs = logs[:4]
+    proyectos = proyectos[:3]
+    grupos = list(Group.objects.filter(creador=request.user.get_profile()))[:3]
     return render_to_response("desktop/home.html",
-            {'ext': ext, 'actual': 'home', 'proyectos': proyectos, 'grupos': grupos},
+            {'ext': ext, 'actual': 'home', 'proyectos': proyectos, 'grupos': grupos, 'logs': logs},
         context_instance=RequestContext(request))
 
 
@@ -131,7 +138,8 @@ def view_projects(request):
         ext = "desktop/layout.html"
     proyectos = Project.objects.filter(creador=request.user.get_profile()).order_by('-date_creation')
     chp = Client_has_Project.objects.filter(client=Client.objects.get(user=request.user))
-    proyectos2 = set([proy.project for proy in chp])
+    proyectos2 = Client.objects.get(user=request.user).projects.all()
+    print proyectos2
     clients = Client.objects.exclude(user=request.user)
     return render_to_response("desktop/projects.html",
             {'ext': ext, 'actual': 'projects', 'proyectos': proyectos, 'proyectos2': proyectos2, 'clients': clients},
@@ -165,7 +173,9 @@ def view_create_project(request):
                 nombre = request.POST.get('nombre')
                 company = request.POST.get('company')
                 if not Project.objects.filter(creador=request.user.get_profile(), name=nombre):
-                    Project.objects.create(name=nombre, company=company, creador=request.user.get_profile())
+                    p = Project.objects.create(name=nombre, company=company, creador=request.user.get_profile())
+                    Log.objects.create(project=p,
+                        mensaje=u'{} ha creado el proyecto {}'.format(request.user.get_full_name(), "{}"))
                     return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
                 else:
                     error['nombre'].append('Ya existe un proyecto con ese nombre')
@@ -226,6 +236,8 @@ def view_delete_project(request):
     try:
         if 'groupid' in request.GET:
             project = get_object_or_404(Project, id=request.GET.get('groupid'))
+            Log.objects.create(project=project,
+                mensaje=u'{} ha borrado el proyecto {}'.format(request.user.get_full_name(), "{}"))
             project.delete()
             return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
     except Exception, ex:
@@ -238,6 +250,8 @@ def view_leave_project(request):
         if 'groupid' in request.GET:
             project = get_object_or_404(Client_has_Project, client=request.user.get_profile(),
                 project__id=request.GET.get('groupid'))
+            Log.objects.create(project=project.project,
+                mensaje=u'{} ha abandonado el proyecto {}'.format(request.user.get_full_name(), "{}"))
             project.delete()
             return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
     except Exception, ex:
@@ -390,6 +404,10 @@ def view_projects_add_client(request):
             existe = Client_has_Project.objects.filter(client=client, project=proyecto)
             if not existe:
                 Client_has_Project.objects.create(client=client, project=proyecto)
+                l = Log.objects.create(project=proyecto,
+                    mensaje=u"{} agregó a {} al proyecto {}".format(request.user.get_full_name(),
+                        client.user.get_full_name(), '{}'))
+                print l
                 return HttpResponse(1, mimetype="application/json")
             else:
                 return HttpResponse(2, mimetype="application/json")
@@ -451,7 +469,10 @@ def view_create_board(request):
             nombre = request.POST.get('nombre')
             project = Project.objects.get(id=request.POST.get('idproject'))
             if not Table.objects.filter(project=project, name=nombre):
-                Table.objects.create(name=nombre, columns=0, project=project)
+                t = Table.objects.create(name=nombre, columns=0, project=project)
+                Log.objects.create(project=t.project,
+                    mensaje=u'{} ha creado un tablero {} en el proyecto {}'.format(request.user.get_full_name(), t.name,
+                        "{}"))
                 return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
             else:
                 error['nombre'].append('Ya existe un tablero con ese nombre')
@@ -464,6 +485,9 @@ def view_delete_board(request):
     if request.GET.get('idboard'):
         idboard = request.GET.get('idboard')
         table = Table.objects.get(id=idboard)
+        Log.objects.create(project=table.project,
+            mensaje=u'{} ha borrado el tablero {} en el proyecto {}'.format(request.user.get_full_name(), table.name,
+                "{}"))
         table.delete()
         return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
     return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
@@ -477,19 +501,28 @@ def view_tables(request):
 
 
 def view_move_task(request):
-    if request.GET.get('idtask') and request.GET.get('idcolumn') and request.GET.get('pila'):
-        task = Task.objects.get(id=request.GET.get('idtask'))
-        print task.column, Column.objects.get(id=request.GET.get('idcolumn')), request.GET.get('pila')
-        if task.column == Column.objects.get(id=request.GET.get('idcolumn')):
-            return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
-        elif task.column != None and task.column != Column.objects.get(
-            id=request.GET.get('idcolumn')) and request.GET.get('pila') == "true":
-            return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
-        else:
-            task.column = Column.objects.get(id=request.GET.get('idcolumn'))
-            task.save()
-            return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
-    return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+    try:
+        if request.GET.get('idtask') and request.GET.get('idcolumn') and request.GET.get('pila'):
+            task = Task.objects.get(id=request.GET.get('idtask'))
+            if task.column == Column.objects.get(id=request.GET.get('idcolumn')):
+                return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+            elif task.column is not None and task.column != Column.objects.get(
+                id=request.GET.get('idcolumn')) and request.GET.get('pila') == "true":
+                return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+            else:
+                ncolumn = Column.objects.get(id=request.GET.get('idcolumn'))
+                columna_anterior = task.column if task.column else "la Pila"
+                Log.objects.create(project=task.work_package.table.project,
+                    mensaje=u'{} ha movido la tarea {} de {} a {} en el tablero {} en el proyecto {}'.format(
+                        request.user.get_full_name(), task, columna_anterior, ncolumn, ncolumn.table,
+                        ncolumn.table.project
+                        , "{}"))
+                task.column = ncolumn
+                task.save()
+                return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
+        return HttpResponse(simplejson.dumps({'estado': 0}), mimetype='application/json')
+    except Exception, ex:
+        print ex
 
 
 @login_required(login_url="/login/")
@@ -580,8 +613,12 @@ def view_create_tarea(request):
             paquete = Work_Package.objects.get(id=request.POST.get('paquete'))
             column = Column.objects.filter(id=request.POST.get('column'))
             if not column: column = None
-            Task.objects.create(title=titulo, subtitle=titulo, state="1", description=description, work_package=paquete,
+            t = Task.objects.create(title=titulo, subtitle=titulo, state="1", description=description,
+                work_package=paquete,
                 column=column)
+            Log.objects.create(project=t.work_package.table.project,
+                mensaje=u'{} ha agregado la tarea {} en el tablero {} en el proyecto {}'.format(
+                    request.user.get_full_name(), t, t.work_package.table, "{}"))
             return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')
     except Exception, ex:
         print ex
@@ -590,5 +627,8 @@ def view_create_tarea(request):
 def view_delete_tarea(request):
     if request.GET.get('tarea'):
         tarea = get_object_or_404(Task, id=request.GET.get('tarea'))
-        tarea.delete();
+        Log.objects.create(project=t.work_package.table.project,
+            mensaje=u'{} ha borrado la tarea {} del tablero {} en el proyecto {}'.format(
+                request.user.get_full_name(), tarea, tarea.work_package.table, "{}"))
+        tarea.delete()
         return HttpResponse(simplejson.dumps({'estado': 1}), mimetype='application/json')

@@ -38,4 +38,5 @@ urlpatterns = patterns('appcuentas.views',
     url(r'^projects/create-task/', 'view_create_tarea'),
     url(r'^projects/delete-task/', 'view_delete_tarea'),
     url(r'^projects/move-task/', 'view_move_task'),
+    url(r'^logout/$', 'view_logout'),
 )

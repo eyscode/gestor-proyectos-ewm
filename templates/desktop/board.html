@@ -29,7 +29,7 @@
 </div>
 <div id="crear-paquete-content">
     <form method="POST" class="vertical" action="/projects/create-package/">
-        <input type="text" name="nombre" placeholder="Nombre de la columna">
+        <input type="text" name="nombre" placeholder="Nombre del paquete">
         <textarea type="text" name="description" placeholder="Inserte una descripcion"></textarea>
         <input type="text" name="prioridad" placeholder="Prioridad del paquete">
         <input type="hidden" name="idtable" value="{{ board.id }}">
@@ -85,7 +85,7 @@
         <h5>
             Pila del Tablero
         </h5>
-        {% for paquete in board.project.paquetes.all %}
+        {% for paquete in paquetes %}
             <div class="paquete">
                 {{ paquete.name }}
                 {% for task in paquete.tareas.all %}

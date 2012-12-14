@@ -356,3 +356,21 @@ textarea {
     margin-bottom: 20px;
     margin-top: 20px;
 }
+
+@media only screen
+and (max-height:800px) {
+    .etiqueta-boton {
+        display: none;
+    }
+}
+
+.logout {
+    position: absolute;
+    top: 46px;
+    right: 50px;
+}
+
+.log-item {
+    font-size: 11px;
+    list-style-type: disc !important;
+}
